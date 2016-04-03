@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Entity
 public class TrainingPool {
 	
-	
-
 	@Id
 	@GeneratedValue
 	int id;
@@ -17,9 +15,24 @@ public class TrainingPool {
 	String name;
 	String description;
 	int level;
+	@ManyToMany
+	Set<Goal>goals=new HashSet<Goal>();
 	
-	public TrainingPool() {	}
+	
+	
+	public Set<Goal> getGoals() {
+		return goals;
+	}
 
+	public void setGoals(Set<Goal> goals) {
+		this.goals = goals;
+	}
+
+	
+
+	public TrainingPool() {	
+		equipmentPoolData = new HashMap<EquipmentPool, Integer>();
+		exercises = new HashMap<Exercise,ExerciseSession>();}
 	public int getId() {
 		return id;
 	}
@@ -60,39 +73,43 @@ public class TrainingPool {
 		this.level = level;
 	}
 	
-	@ManyToMany
-	List<Goal> goals;
+	@ElementCollection
+    @CollectionTable(name="equipmentPoolData")
+    @MapKeyJoinColumn(name="equipmentId")
+    @Column(name="quantity", nullable = false, columnDefinition = "int default 0")
+    private Map<EquipmentPool, Integer> equipmentPoolData;
 	
-	@OneToMany
-	List<ExerciseTrainingData> exercisesData;
-	
-	@OneToMany
-	List<EquipmentPoolData> equipmentPoolData;
-	
-	
-	public List<ExerciseTrainingData> getExercisesData() {
-		return exercisesData;
-	}
-
-	public void setExercisesData(List<ExerciseTrainingData> exercisesData) {
-		this.exercisesData = exercisesData;
-	}
-
-	public List<Goal> getGoals() {
-		return goals;
-	}
-
-	public void setGoals(List<Goal> goals) {
-		this.goals = goals;
-	}
-
-	public List<EquipmentPoolData> getEquipmentPoolData() {
+	public Map<EquipmentPool, Integer> getEquipmentPoolData() {
 		return equipmentPoolData;
 	}
 
-	public void setEquipmentPoolData(List<EquipmentPoolData> equipmentPoolData) {
+	public void setEquipmentPoolData(Map<EquipmentPool, Integer> equipmentPoolData) {
 		this.equipmentPoolData = equipmentPoolData;
 	}
+	
+	public void setEquipmentPoolDataValue(EquipmentPool ep, int quantity){
+		equipmentPoolData.put(ep, quantity);
+	}
+
+	@ElementCollection
+    @CollectionTable(name="exerciseData")
+    @MapKeyJoinColumn(name="exerciseId")
+    Map<Exercise, ExerciseSession> exercises;
+	public Map<Exercise, ExerciseSession> getExercises() {
+		return exercises;
+	}
+
+	public void setExercises(Map<Exercise, ExerciseSession> exercises) {
+		this.exercises = exercises;
+	}
+	
+	public void setExercisesDataValue(Exercise ep,ExerciseSession es){
+		exercises.put(ep, es);
+	}
+	
+	
+	
+	
 
 	
 

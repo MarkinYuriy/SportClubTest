@@ -13,7 +13,8 @@
 
 
 
-	<context:component-scan base-package="sportclub.controller" />
+	<context:component-scan base-package="sportclub.controller, random.context" />
+	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />

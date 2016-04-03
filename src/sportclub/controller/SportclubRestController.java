@@ -36,70 +36,19 @@ import sportclub.nodeprocessor.*;
 public class SportclubRestController {
 	@Autowired
 	ISportclubRepository profiles;
-
+	
 	@RequestMapping({"/","home"})
 	public String home(){
 		return "success";
 
 	}
-	@RequestMapping(value=SportclubConstants.CREATE_RANDOM_PROFILE, method=RequestMethod.PUT)
-	public @ResponseBody boolean createrandomProfile(){
-		try {
-			profiles.addRandomRoles(4);
-		} catch (JsonProcessingException e) {
-
-		}
-		profiles.addRandomProfile();
-		//profiles.addRandomEvent();
-		System.out.println("random profile added");
-		return true;
-	}
-
-
-	@RequestMapping(value=SportclubConstants.CREATE_RANDOM_TRAININGPOOL, method=RequestMethod.PUT)
-	public @ResponseBody boolean createrandomTrainingPool(){
-
-		profiles.addRandomTrainingPool();
-		profiles.addRandomEvent();
-
-		System.out.println("random TrainingPool added");
-		return true;
-	}
-
-	@RequestMapping(value=SportclubConstants.CREATE_RANDOM_TRAINING, method=RequestMethod.PUT)
-	public @ResponseBody boolean createrandomTraining(){
-
-
-		profiles.addRandomTraining();
-		System.out.println("random Training added");
-		return true;
-	}
-
-
-	@RequestMapping(value=SportclubConstants.CREATE_RANDOM_GAME, method=RequestMethod.PUT)
-	public @ResponseBody boolean createRandomGame(){
-
-
-		profiles.addRandomGame();
-		System.out.println("random game added");
-		return true;
-	}
-
-
+	
 	@RequestMapping(value=SportclubConstants.REMOVE+"/{id}", method=RequestMethod.PUT)
 	public @ResponseBody boolean remove(@PathVariable int id){
 
 		return profiles.removeProfile(id);
 	}
-	/*
-	 * @RequestMapping(value = FieldsConstants.FIELD_BY_NAME + "/{fieldName}", method = RequestMethod.GET)
-	@ResponseBody
-	FieldRest getBookByISBN(@PathVariable String fieldName) {
-		FieldRest res = fieldsModel.getFieldByFieldName(fieldName);
-		return res;
-	}
-	 * 
-	 */
+	
 	@RequestMapping(value=SportclubConstants.GET_PROFILES+ "/{SubProfiler}", method=RequestMethod.GET)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
 		String res="";

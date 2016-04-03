@@ -14,6 +14,7 @@
 class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" 
 />
 <bean id="personsModel" class="sportclub.controller.SportclubDB"/>
+<bean id="randomModel" class="random.context.SportclubRandomDB"/>
 <tx:annotation-driven transaction-manager="transactionManager"/>
 <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
     <property name="entityManagerFactory" ref="emf"/>

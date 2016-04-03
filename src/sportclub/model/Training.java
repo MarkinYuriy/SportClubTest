@@ -40,6 +40,7 @@ public class Training extends Event {
 	List<Result> resultes;*/
 	
 
+
 	public TrainingPool getTrainingPool() {
 		return trainingPool;
 	}

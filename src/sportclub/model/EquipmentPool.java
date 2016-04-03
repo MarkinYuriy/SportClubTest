@@ -14,6 +14,11 @@ public class EquipmentPool {
 	String description;
 	/*int quantity;*/
 	
+	@Override
+	public String toString() {
+		
+		return "{\"id\""+"\"name\":"+name+",\"description\":"+description+"\""+"]}";
+	}
 	public EquipmentPool() {	}
 
 	public int getId() {
@@ -40,14 +45,7 @@ public class EquipmentPool {
 		this.description = description;
 	}
 
-	/*public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-	*/
+	
 	
 
 }

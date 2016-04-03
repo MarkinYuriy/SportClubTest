@@ -11,12 +11,6 @@ import sportclub.model.Role;
 public class RoleGenerator {
 	
 	
-	/*public static void main(String args[]) throws JsonProcessingException{
-		JSONRoleGenerator(3);
-	}*/
-	
-	
-
 	public static String JSONRoleGenerator(int n, EntityManager em) throws JsonProcessingException {
 		//count of tree roles
 		//int n=3;

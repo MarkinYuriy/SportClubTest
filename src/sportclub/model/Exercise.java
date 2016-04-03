@@ -15,7 +15,10 @@ public class Exercise {
 	String name;
 	String description;
 	
-	
+	@Override
+	public String toString() {
+		return String.format("\"id\":%s, \"name\":\"%s\", \"description\":\"%s\"", id, name, description);
+	}
 	
 	public Exercise() {	}
 

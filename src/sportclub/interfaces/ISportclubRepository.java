@@ -15,7 +15,7 @@ import sportclub.model.*;
 public interface ISportclubRepository {
 boolean addProfile(Profiler profile);
 
-boolean addRandomProfile() ;
+
 boolean removeProfile(int id);
 boolean addTeam(Team team);
 
@@ -35,15 +35,7 @@ boolean addAthlete(Athlete ath,Team team);
 Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException;
 public Iterable<String> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
 
-boolean addRandomEvent();
 
-boolean addRandomTrainingPool();
-
-boolean addRandomTraining();
-
-boolean addRandomRoles(int n) throws JsonProcessingException;
-
-void addRandomGame();
 
 Iterable<Role> getRoles(String id);
 

@@ -49,14 +49,14 @@ public class Training extends Event {
 		this.trainingPool = trainingPool;
 	}
 
-	public Field getFields() {
+	/*public Field getFields() {
 		return fields;
 	}
 
 	public void setFields(Field fields) {
 		this.fields = fields;
 	}
-	
+	*/
 	
 	
 

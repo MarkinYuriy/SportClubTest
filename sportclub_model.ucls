@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="sportclub.model.ExerciseSession" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/ExerciseSession.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="345" y="1307"/>    
+    <position height="-1" width="-1" x="191" y="1140"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="sportclub.model.Field" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Field.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1384" y="1713"/>    
+    <position height="-1" width="-1" x="1569" y="1775"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="sportclub.model.PrivateTraining" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/PrivateTraining.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="796" y="1423"/>    
+    <position height="-1" width="-1" x="757" y="1321"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -66,7 +66,7 @@
   </class>  
   <class id="8" language="java" name="sportclub.model.VideoExercise" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/VideoExercise.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="44" y="1611"/>    
+    <position height="-1" width="-1" x="-110" y="1444"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -75,7 +75,7 @@
   </class>  
   <class id="9" language="java" name="sportclub.model.Event" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Event.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1639" y="589"/>    
+    <position height="-1" width="-1" x="1526" y="682"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -102,7 +102,7 @@
   </class>  
   <class id="12" language="java" name="sportclub.model.Exercise" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Exercise.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="343" y="1622"/>    
+    <position height="-1" width="-1" x="189" y="1455"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -111,7 +111,7 @@
   </class>  
   <class id="13" language="java" name="sportclub.model.EquipmentPool" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/EquipmentPool.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="342" y="1907"/>    
+    <position height="-1" width="-1" x="188" y="1740"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -129,32 +129,23 @@
   </class>  
   <class id="15" language="java" name="sportclub.model.Team" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Team.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1004" y="675"/>    
+    <position height="-1" width="-1" x="968" y="701"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="sportclub.model.Partition" project="SportClubRestService" 
-    file="/SportClubRestService/src/sportclub/model/Partition.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="913" y="1282"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="17" language="java" name="sportclub.model.Goal" project="SportClubRestService" 
+  <class id="16" language="java" name="sportclub.model.Goal" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Goal.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="699" y="2011"/>    
+    <position height="-1" width="-1" x="1319" y="1787"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="sportclub.model.Position" project="SportClubRestService" 
+  <class id="17" language="java" name="sportclub.model.Position" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Position.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="243" width="154" x="1814" y="518"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -163,7 +154,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="19" language="java" name="sportclub.model.Scheme" project="SportClubRestService" 
+  <class id="18" language="java" name="sportclub.model.Scheme" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Scheme.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="243" width="154" x="1814" y="217"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -172,25 +163,25 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="20" language="java" name="sportclub.model.Game" project="SportClubRestService" 
+  <class id="19" language="java" name="sportclub.model.Game" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Game.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1658" y="1367"/>    
+    <position height="-1" width="-1" x="1411" y="1340"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="sportclub.model.GameAthletes" project="SportClubRestService" 
+  <class id="20" language="java" name="sportclub.model.GameAthletes" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/GameAthletes.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1876" y="969"/>    
+    <position height="-1" width="-1" x="1889" y="1049"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="sportclub.model.ImageBank" project="SportClubRestService" 
+  <class id="21" language="java" name="sportclub.model.ImageBank" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/ImageBank.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1129" y="229"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -199,16 +190,16 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="sportclub.model.TrainingPool" project="SportClubRestService" 
+  <class id="22" language="java" name="sportclub.model.TrainingPool" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/TrainingPool.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1010" y="1762"/>    
+    <position height="-1" width="-1" x="775" y="1699"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="sportclub.model.Result" project="SportClubRestService" 
+  <class id="23" language="java" name="sportclub.model.Result" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/model/Result.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1844" y="88"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -217,7 +208,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="sportclub.profile.AssitPhysicCoach" project="SportClubRestService" 
+  <class id="24" language="java" name="sportclub.profile.AssitPhysicCoach" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/AssitPhysicCoach.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-160" y="474"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -226,7 +217,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="sportclub.profile.AdminManagerClub" project="SportClubRestService" 
+  <class id="25" language="java" name="sportclub.profile.AdminManagerClub" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/AdminManagerClub.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="468" y="48"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -235,7 +226,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="27" language="java" name="sportclub.profile.AssitTeamCoach" project="SportClubRestService" 
+  <class id="26" language="java" name="sportclub.profile.AssitTeamCoach" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/AssitTeamCoach.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="4" y="474"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -244,7 +235,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="28" language="java" name="sportclub.profile.Parent" project="SportClubRestService" 
+  <class id="27" language="java" name="sportclub.profile.Parent" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/Parent.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-29" y="273"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -253,7 +244,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="29" language="java" name="sportclub.profile.PhysiologyCoach" project="SportClubRestService" 
+  <class id="28" language="java" name="sportclub.profile.PhysiologyCoach" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/PhysiologyCoach.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="164" y="474"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -262,7 +253,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="30" language="java" name="sportclub.profile.TeamCoach" project="SportClubRestService" 
+  <class id="29" language="java" name="sportclub.profile.TeamCoach" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/TeamCoach.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="310" y="474"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -271,16 +262,16 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="31" language="java" name="sportclub.profile.Athlete" project="SportClubRestService" 
+  <class id="30" language="java" name="sportclub.profile.Athlete" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/Athlete.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="769" y="817"/>    
+    <position height="-1" width="-1" x="743" y="851"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="sportclub.profile.Psycholog" project="SportClubRestService" 
+  <class id="31" language="java" name="sportclub.profile.Psycholog" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/Psycholog.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-161" y="47"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -289,7 +280,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="33" language="java" name="sportclub.profile.TeamAdminManager" project="SportClubRestService" 
+  <class id="32" language="java" name="sportclub.profile.TeamAdminManager" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/TeamAdminManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-7" y="47"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -298,7 +289,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="34" language="java" name="sportclub.profile.ProffesionalManager" project="SportClubRestService" 
+  <class id="33" language="java" name="sportclub.profile.ProffesionalManager" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/ProffesionalManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="302" y="47"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -307,7 +298,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="35" language="java" name="sportclub.profile.Coach" project="SportClubRestService" 
+  <class id="34" language="java" name="sportclub.profile.Coach" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/Coach.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="83" y="801"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -316,7 +307,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="36" language="java" name="sportclub.profile.Profiler" project="SportClubRestService" 
+  <class id="35" language="java" name="sportclub.profile.Profiler" project="SportClubRestService" 
     file="/SportClubRestService/src/sportclub/profile/Profiler.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="462" y="456"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
@@ -325,299 +316,438 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
+  <class id="36" language="java" name="sportclub.model.FieldSchedule" project="SportClubRestService" 
+    file="/SportClubRestService/src/sportclub/model/FieldSchedule.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1784" y="1413"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
   <association id="37">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="38" name="diary"/>      
-      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="40">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="30"/>    
-    <end type="TARGET" refId="35"/>  
-  </generalization>  
-  <association id="42">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="43" name="athlete"/>      
-      <multiplicity id="44" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="45">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="46" name="coach"/>      
-      <multiplicity id="47" minimum="0" maximum="2147483647"/>    
+      <attribute id="38" name="coach">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="39" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="35" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="48">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="4"/>  
-  </dependency>  
-  <generalization id="49">    
-    <end type="SOURCE" refId="32"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <association id="50">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="51" name="photos"/>      
-      <multiplicity id="52" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="54" name="games"/>      
-      <multiplicity id="55" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="56">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <association id="57">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="58" name="teams"/>      
-      <multiplicity id="59" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="60">    
-    <end type="SOURCE" refId="33"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <association id="61">    
-    <end type="SOURCE" refId="26" navigable="false">      
-      <attribute id="62" name="code"/>      
-      <multiplicity id="63" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="64">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <association id="65">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="66" name="slots"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
+  <association id="40">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="41" name="slot"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="68">    
-    <bendpoint x="1326" y="1217"/>    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="69" name="fields"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="71">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="36"/>  
+  <generalization id="43">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="35"/>  
   </generalization>  
-  <dependency id="72">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="12"/>  
-  </dependency>  
-  <association id="73">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="74" name="roles"/>      
-      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+  <association id="44">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="45" name="roles">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="76">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="77" name="trainingPool"/>      
-      <multiplicity id="78" minimum="0" maximum="1"/>    
+  <association id="47">    
+    <bendpoint x="1681" y="1049"/>    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="48" name="fieldPart3"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="79">    
-    <end type="SOURCE" refId="31"/>    
-    <end type="TARGET" refId="36"/>  
+  <association id="50">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="51" name="athletes">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="52" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="53">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="54" name="teams">        
+        <position height="0" width="0" x="-10" y="34"/>      
+      </attribute>      
+      <multiplicity id="55" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-10" y="34"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="56">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="35"/>  
   </generalization>  
-  <association id="80">    
+  <generalization id="57">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="58">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="59" name="roles">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="60" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="81" name="results"/>      
-      <multiplicity id="82" minimum="0" maximum="2147483647"/>    
+      <attribute id="62" name="profiles">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="63" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="64">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
+  <association id="65">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="66" name="results">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="67" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="83">    
-    <end type="SOURCE" refId="28"/>    
-    <end type="TARGET" refId="36"/>  
+  <association id="68">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="69" name="code">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="70" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="71">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <association id="72">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="73" name="eventSessions"/>      
+      <multiplicity id="74" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="75">    
+    <end type="SOURCE" refId="32"/>    
+    <end type="TARGET" refId="35"/>  
   </generalization>  
-  <association id="84">    
+  <association id="76">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="77" name="athlete">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="78" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="79">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <generalization id="80">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <generalization id="81">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <generalization id="82">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
+  <association id="83">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="84" name="games">        
+        <position height="0" width="0" x="-19" y="-24"/>      
+      </attribute>      
+      <multiplicity id="85" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-19" y="-24"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="86">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="85" name="game"/>      
-      <multiplicity id="86" minimum="0" maximum="1"/>    
+      <attribute id="87" name="game">        
+        <position height="0" width="0" x="-19" y="-24"/>      
+      </attribute>      
+      <multiplicity id="88" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-19" y="-24"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
+    <end type="TARGET" refId="19" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="87">    
-    <end type="SOURCE" refId="19" navigable="false">      
-      <attribute id="88" name="positions"/>      
-      <multiplicity id="89" minimum="0" maximum="2147483647"/>    
+  <association id="89">    
+    <bendpoint x="1678" y="895"/>    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="90" name="fieldPart2"/>      
+      <multiplicity id="91" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="90">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="91" name="exercises"/>      
-      <multiplicity id="92" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <generalization id="92">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
   <association id="93">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="94" name="games"/>      
-      <multiplicity id="95" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="94" name="games">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="95" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="20" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <generalization id="96">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="36"/>  
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="34"/>  
   </generalization>  
   <association id="97">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="98" name="profiles"/>      
-      <multiplicity id="99" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="98" name="slots">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="99" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
+    <end type="TARGET" refId="14" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="100">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="101" name="coach"/>      
-      <multiplicity id="102" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="103">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="11"/>  
-  </generalization>  
-  <generalization id="104">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="35"/>  
-  </generalization>  
-  <association id="105">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="106" name="training"/>      
-      <multiplicity id="107" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="108">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <dependency id="109">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="13"/>  
-  </dependency>  
-  <generalization id="110">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="9"/>  
-  </generalization>  
-  <association id="111">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="112" name="diary"/>      
-      <multiplicity id="113" minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="101" name="diary">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="102" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="114">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="115" name="photos"/>      
-      <multiplicity id="116" minimum="0" maximum="2147483647"/>    
+  <association id="103">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="104" name="photos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="105" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="106">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="107" name="trainingPool">        
+        <position height="0" width="0" x="-235" y="-63"/>      
+      </attribute>      
+      <multiplicity id="108" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-235" y="-63"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="117">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="35"/>  
+  <generalization id="109">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="34"/>  
   </generalization>  
-  <association id="118">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="119" name="goals"/>      
-      <multiplicity id="120" minimum="0" maximum="2147483647"/>    
+  <association id="110">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="111" name="positions">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="112" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="17" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="121">    
+  <association id="113">    
     <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="122" name="viewedRights"/>      
-      <multiplicity id="123" minimum="0" maximum="2147483647"/>    
+      <attribute id="114" name="viewedRights">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="115" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
+    <end type="TARGET" refId="35" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="124">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="125" name="roles"/>      
-      <multiplicity id="126" minimum="0" maximum="2147483647"/>    
+  <generalization id="116">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="9"/>  
+  </generalization>  
+  <association id="117">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="118" name="exercises">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="119" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="127">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="128" name="photos"/>      
-      <multiplicity id="129" minimum="0" maximum="2147483647"/>    
+  <generalization id="120">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="11"/>  
+  </generalization>  
+  <association id="121">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="122" name="goals">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="123" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="130">    
-    <end type="SOURCE" refId="29"/>    
+  <generalization id="124">    
+    <end type="SOURCE" refId="25"/>    
     <end type="TARGET" refId="35"/>  
   </generalization>  
-  <association id="131">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="132" name="teams"/>      
-      <multiplicity id="133" minimum="0" maximum="2147483647"/>    
+  <association id="125">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="126" name="diary">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="127" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="128">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="34"/>  
+  </generalization>  
+  <association id="129">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="130" name="coach">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="131" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="132">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="133" name="teams">        
+        <position height="0" width="0" x="-10" y="34"/>      
+      </attribute>      
+      <multiplicity id="134" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-10" y="34"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="134">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="135" name="athletes"/>      
-      <multiplicity id="136" minimum="0" maximum="2147483647"/>    
+  <association id="135">    
+    <bendpoint x="1571" y="1091"/>    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="136" name="fieldPart1"/>      
+      <multiplicity id="137" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
+    <end type="TARGET" refId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="138">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="139" name="field"/>      
+      <multiplicity id="140" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="141">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="142" name="photos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="143" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="144">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="145" name="photos">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="146" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="147">    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

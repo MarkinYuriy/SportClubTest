@@ -2,7 +2,10 @@ package sportclub.model;
 
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -10,47 +13,22 @@ import javax.persistence.*;
 public class Field {
 	
 	@Id
-	@GeneratedValue@Column(name="FIELD_ID")
+	@GeneratedValue@Column(name="fieldId")
 	int id;
 	
 	String name;
 	String type;
 	String description;
 	
-	@ElementCollection
-    @CollectionTable(name="PARTITIONS")
-    @MapKeyJoinColumn(name="PART_ID")
-    @Column(name="IS_USED")
-    private Map<Integer, Integer> partitions;
+	
+
 
 	public Field() {
-		partitions = new HashMap<Integer, Integer>();
-	}
-	public Map<Integer, Integer> getPartitions() {
-        return partitions;
-    }
-
-    public void setPartitions(Map<Integer, Integer> partitions) {
-		this.partitions = partitions;
-	}
-	public void setPartionsValue(int part, int trainingId){
-    	partitions.put(part, trainingId);
-    }
-	
-	public void setOnePartitionField(){
-		partitions.put(1, null);
+		
 	}
 	
-	public void setTwoPartitionsField(){
-		partitions.put(1, null);
-		partitions.put(2, null);
-	}
-	
-	public void setThreePartitionsField(){
-		partitions.put(1, null);
-		partitions.put(2, null);
-		partitions.put(3, null);
-	}
+	@ManyToMany 
+	Set<FieldSchedule> eventSessions;
     
 	public int getId() {
 		return id;

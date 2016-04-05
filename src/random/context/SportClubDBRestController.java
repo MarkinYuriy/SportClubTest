@@ -1,5 +1,7 @@
 package random.context;
 
+import java.text.ParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,12 @@ public class SportClubDBRestController {
 @RequestMapping(value=SportclubConstants.CREATE_RANDOM_DB, method=RequestMethod.PUT)
 public @ResponseBody boolean createRandomDB() throws JsonProcessingException{
 	
-		dbrepo.addRandomProfile();
+		try {
+			dbrepo.addRandomProfile();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.getMessage();
+		}
 		System.out.println("random Profilers added");
 		dbrepo.addRandomTrainingPool();
 		System.out.println("random TrainingPool added");

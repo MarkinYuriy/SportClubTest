@@ -17,6 +17,7 @@ public class Event {
 	String description;
 	String googleMapLink;
 	
+	
 	public Event() {}
 	
 	public int getId() {
@@ -52,22 +53,24 @@ public class Event {
 	public void setGoogleMapLink(String googleMapLink) {
 		this.googleMapLink = googleMapLink;
 	}
-	@ManyToOne
-	Field fields;
 	
-	public Field getFields() {
-		return fields;
-	}
-
-	public void setFields(Field fields) {
-		this.fields = fields;
-	}
 	@ManyToOne
 	Slot slots;
 	
 	@ManyToMany
 	List<Profiler> viewedRights;
 	
+	/*@ManyToOne
+	Field field;
+	
+	public Field getField() {
+		return field;
+	}
+
+	public void setField(Field field) {
+		this.field = field;
+	}
+*/
 	@ManyToMany
 	List<Team> teams;
 
@@ -93,6 +96,70 @@ public class Event {
 
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((googleMapLink == null) ? 0 : googleMapLink.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((slots == null) ? 0 : slots.hashCode());
+		result = prime * result + ((teams == null) ? 0 : teams.hashCode());
+		result = prime * result + ((viewedRights == null) ? 0 : viewedRights.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Event other = (Event) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (googleMapLink == null) {
+			if (other.googleMapLink != null)
+				return false;
+		} else if (!googleMapLink.equals(other.googleMapLink))
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (slots == null) {
+			if (other.slots != null)
+				return false;
+		} else if (!slots.equals(other.slots))
+			return false;
+		if (teams == null) {
+			if (other.teams != null)
+				return false;
+		} else if (!teams.equals(other.teams))
+			return false;
+		if (viewedRights == null) {
+			if (other.viewedRights != null)
+				return false;
+		} else if (!viewedRights.equals(other.viewedRights))
+			return false;
+		return true;
 	}
 	
 	

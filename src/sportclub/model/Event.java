@@ -60,7 +60,7 @@ public class Event {
 	@ManyToMany
 	List<Profiler> viewedRights;
 	
-	@ManyToOne
+	/*@ManyToOne
 	Field field;
 	
 	public Field getField() {
@@ -70,7 +70,7 @@ public class Event {
 	public void setField(Field field) {
 		this.field = field;
 	}
-
+*/
 	@ManyToMany
 	List<Team> teams;
 

@@ -20,6 +20,12 @@ public class FieldSchedule {
 	Event fieldPart1;
 	@OneToOne
 	Event fieldPart2;
+	@Override
+	public String toString() {
+		return "FieldSchedule [id=" + id + ", slot=" + slot + ", field=" + field + ", fieldPartitionType="
+				+ fieldPartitionType + ", fieldPart1=" + fieldPart1 + ", fieldPart2=" + fieldPart2 + ", fieldPart3="
+				+ fieldPart3 + "]";
+	}
 	@OneToOne
 	Event fieldPart3;
 	

@@ -23,7 +23,14 @@ public class Profiler {
 	String email;
 	String position;
 	String description;
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	Set<Role> roles;
 	
+	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	Set<ImageBank> photos;
+	
+	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	Set<Team> teams;
 	public Profiler() {}
 
 
@@ -91,14 +98,7 @@ public class Profiler {
 		this.description = description;
 	}
 	
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Role> roles;
 	
-	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<ImageBank> photos;
-	
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Team> teams;
 
 	public Set<Role> getRoles() {
 		return roles;

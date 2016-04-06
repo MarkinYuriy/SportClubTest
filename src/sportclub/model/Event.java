@@ -4,19 +4,29 @@ package sportclub.model;
 import java.util.*;
 import javax.persistence.*;
 
+import org.hibernate.engine.internal.Cascade;
+
 import sportclub.profile.Profiler;
 
 @Entity
+@Table(name="event")
 public class Event {
 	
-	@Id
+	@Id@GeneratedValue
 	int id;
 	
 	String name;
 	String address;
 	String description;
 	String googleMapLink;
+	@ManyToOne
+	Slot slots;
 	
+	@ManyToMany
+	List<Profiler> viewedRights;
+	
+	@ManyToMany
+	List<Team> teams;
 	
 	public Event() {}
 	
@@ -54,25 +64,7 @@ public class Event {
 		this.googleMapLink = googleMapLink;
 	}
 	
-	@ManyToOne
-	Slot slots;
 	
-	@ManyToMany
-	List<Profiler> viewedRights;
-	
-	/*@ManyToOne
-	Field field;
-	
-	public Field getField() {
-		return field;
-	}
-
-	public void setField(Field field) {
-		this.field = field;
-	}
-*/
-	@ManyToMany
-	List<Team> teams;
 
 	public Slot getSlots() {
 		return slots;

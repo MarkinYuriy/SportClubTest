@@ -8,10 +8,10 @@ import javax.persistence.*;
 @Entity
 public class Slot {
 	
-	@Id
+	/*@Id
 	@GeneratedValue
-	int id;
-	
+	int id;*/
+	@Id
 	@Temporal(TemporalType.TIMESTAMP)
 	Date startTime;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -19,13 +19,13 @@ public class Slot {
 	
 	public Slot() {	}
 
-	public int getId() {
+	/*public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}
+	}*/
 
 	public Date getStartTime() {
 		return startTime;
@@ -48,7 +48,7 @@ public class Slot {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
-		result = prime * result + id;
+		//result = prime * result + id;
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		return result;
 	}
@@ -67,8 +67,8 @@ public class Slot {
 				return false;
 		} else if (!endTime.equals(other.endTime))
 			return false;
-		if (id != other.id)
-			return false;
+		/*if (id != other.id)
+			return false;*/
 		if (startTime == null) {
 			if (other.startTime != null)
 				return false;

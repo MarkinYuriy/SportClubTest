@@ -24,7 +24,7 @@ public class SportClubDBRestController {
 @RequestMapping(value=SportclubConstants.CREATE_RANDOM_DB, method=RequestMethod.PUT)
 public @ResponseBody boolean createRandomDB() throws JsonProcessingException{
 	
-		try {
+		/*try {
 			dbrepo.addRandomProfile();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -34,11 +34,11 @@ public @ResponseBody boolean createRandomDB() throws JsonProcessingException{
 		dbrepo.addRandomTrainingPool();
 		System.out.println("random TrainingPool added");
 		dbrepo.addRandomEvent();
-		System.out.println("random Event added");
+		System.out.println("random Event added");*/
 		dbrepo.addRandomTraining();
 		System.out.println("random Training added");
-		dbrepo.addRandomGame();
-		System.out.println("random game added");
+		/*dbrepo.addRandomGame();
+		System.out.println("random game added");*/
 	System.out.println("random DB created");
 	return true;
 }

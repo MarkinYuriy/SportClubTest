@@ -28,7 +28,7 @@ public class Court {
 	}
 	
 	@ManyToMany 
-	Set<FieldSchedule> eventSessions;
+	Set<CourtSchedule> eventSessions;
     
 	public int getId() {
 		return id;

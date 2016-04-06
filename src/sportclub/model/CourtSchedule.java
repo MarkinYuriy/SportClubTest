@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-public class FieldSchedule {
+public class CourtSchedule {
 	@Id @GeneratedValue
 	int id;
 	@ManyToOne(cascade=CascadeType.ALL) 

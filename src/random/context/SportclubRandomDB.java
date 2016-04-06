@@ -35,7 +35,7 @@ import sportclub.model.Exercise;
 import sportclub.model.ExerciseSession;
 
 import sportclub.model.Court;
-import sportclub.model.FieldSchedule;
+import sportclub.model.CourtSchedule;
 import sportclub.model.Game;
 import sportclub.model.Goal;
 import sportclub.model.Role;
@@ -59,7 +59,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 	private static final int N_SLOTS = 150;
 	Random random = new Random();
 	RandomData rd = new RandomData();
-	FieldSchedule fsGlobal;
+	CourtSchedule fsGlobal;
 	@PersistenceContext(unitName = "springHibernate", type = PersistenceContextType.EXTENDED)
 	EntityManager em;
 
@@ -298,7 +298,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			@SuppressWarnings("unchecked")
 			List<Slot> slots = q.getResultList();
 			
-			FieldSchedule fs = null;
+			CourtSchedule fs = null;
 			
 			while(fs==null){
 			slot = slots.get(random.nextInt(slots.size()));
@@ -343,7 +343,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		return false;
 
 	}
-private FieldSchedule selectFreeScheduleRow(Slot slot) {
+private CourtSchedule selectFreeScheduleRow(Slot slot) {
 	Query q;
 	try {
 		q = em.createQuery("select fs from FieldSchedule fs join fs.slot sl where sl.startTime= :slotId");
@@ -353,9 +353,9 @@ private FieldSchedule selectFreeScheduleRow(Slot slot) {
 		return null;
 	}
 	@SuppressWarnings("unchecked")
-	List<FieldSchedule> fss = q.getResultList();
+	List<CourtSchedule> fss = q.getResultList();
 	
-	for (FieldSchedule fs: fss){
+	for (CourtSchedule fs: fss){
 		
 	if(isFreeFieldPart(fs)) 
 		return fs;
@@ -363,7 +363,7 @@ private FieldSchedule selectFreeScheduleRow(Slot slot) {
 		return null;
 	}
 
-private boolean isFreeFieldPart(FieldSchedule fs) {
+private boolean isFreeFieldPart(CourtSchedule fs) {
 		
 			if(fs.getFieldPartitionType()==0)
 			return true;
@@ -383,7 +383,7 @@ private void createFieldScheduleTable(){
 	List<Court> courts = q.getResultList();
 	for(Court court: courts){
 			for (Slot slot: slots){
-				FieldSchedule fs = new FieldSchedule ();
+				CourtSchedule fs = new CourtSchedule ();
 				fs.setFieldPartitionType(0);
 				fs.setSlot(slot);
 				fs.setCourt(court);
@@ -406,7 +406,7 @@ private void createFieldScheduleTable(){
 		for (int i = 0; i < 20; i++) {
 			slot = slots.get(i);
 			court = courts.get(random.nextInt(courts.size()));
-			FieldSchedule fs = new FieldSchedule();
+			CourtSchedule fs = new CourtSchedule();
 			fs.setSlot(slot);
 			fs.setCourt(court);
 			fs.setFieldPartitionType(3);
@@ -414,21 +414,21 @@ private void createFieldScheduleTable(){
 		}
 	}
 
-	private FieldSchedule createNewSchedule(Court court, Slot slot) {
+	private CourtSchedule createNewSchedule(Court court, Slot slot) {
 
 		
 		Query q = em.createQuery(
 				"from FieldSchedule fs join fs.field fie join fs.slot sl where fie.id =:fieldId and sl.id=:slotId");
 		q.setParameter("fieldId", court.getId());
 		q.setParameter("slotId", slot.getStartTime());
-		FieldSchedule fs =new FieldSchedule(); 
-		fs = (FieldSchedule) q.getSingleResult();
+		CourtSchedule fs =new CourtSchedule(); 
+		fs = (CourtSchedule) q.getSingleResult();
 		System.out.println(fs);
 		if (fs!=null) {
 			
 			return fs;
 		}
-		FieldSchedule fsThis = new FieldSchedule();
+		CourtSchedule fsThis = new CourtSchedule();
 		fsThis.setCourt(court);
 		fsThis.setSlot(slot);
 		fsThis.setFieldPartitionType(2);

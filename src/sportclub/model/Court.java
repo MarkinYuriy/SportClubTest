@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-public class Field {
+public class Court {
 	
 	@Id
 	@GeneratedValue@Column(name="fieldId")
@@ -23,7 +23,7 @@ public class Field {
 	
 
 
-	public Field() {
+	public Court() {
 		
 	}
 	

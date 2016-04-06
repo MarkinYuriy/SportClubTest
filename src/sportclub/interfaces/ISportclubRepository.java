@@ -19,7 +19,7 @@ boolean addProfile(Profiler profile);
 boolean removeProfile(int id);
 boolean addTeam(Team team);
 
-boolean addField(Field field);
+boolean addCourt(Court court);
 boolean addExercise(Exercise exercise);
 boolean addEquipment(EquipmentPool equipment);
 boolean addTrainingPoolElement(TrainingPool tr);

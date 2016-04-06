@@ -34,7 +34,7 @@ import sportclub.model.Event;
 import sportclub.model.Exercise;
 import sportclub.model.ExerciseSession;
 
-import sportclub.model.Field;
+import sportclub.model.Court;
 import sportclub.model.FieldSchedule;
 import sportclub.model.Game;
 import sportclub.model.Goal;
@@ -138,11 +138,11 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 
 	private void addRandomField(int n) {
 		for (int i = 1; i <= n; i++) {
-			Field field = new Field();
-			field.setName("field" + i);
-			field.setType("type" + i);
+			Court court = new Court();
+			court.setName("field" + i);
+			court.setType("type" + i);
 
-			em.persist(field);
+			em.persist(court);
 		}
 		
 	}
@@ -380,13 +380,13 @@ private void createFieldScheduleTable(){
 	List<Slot> slots = q.getResultList();
 	q = em.createQuery("from Field");
 	@SuppressWarnings("unchecked")
-	List<Field> fields = q.getResultList();
-	for(Field field: fields){
+	List<Court> courts = q.getResultList();
+	for(Court court: courts){
 			for (Slot slot: slots){
 				FieldSchedule fs = new FieldSchedule ();
 				fs.setFieldPartitionType(0);
 				fs.setSlot(slot);
-				fs.setField(field);
+				fs.setCourt(court);
 				em.persist(fs);
 			}		
 	}
@@ -396,30 +396,30 @@ private void createFieldScheduleTable(){
 	private void randomSchedule() {
 
 		Slot slot = new Slot();
-		Field field = new Field();
+		Court court = new Court();
 		Query q = em.createQuery("from Slot");
 
 		List<Slot> slots = q.getResultList();
 		q = em.createQuery("from Field");
-		List<Field> fields = q.getResultList();
+		List<Court> courts = q.getResultList();
 		
 		for (int i = 0; i < 20; i++) {
 			slot = slots.get(i);
-			field = fields.get(random.nextInt(fields.size()));
+			court = courts.get(random.nextInt(courts.size()));
 			FieldSchedule fs = new FieldSchedule();
 			fs.setSlot(slot);
-			fs.setField(field);
+			fs.setCourt(court);
 			fs.setFieldPartitionType(3);
 			em.persist(fs);
 		}
 	}
 
-	private FieldSchedule createNewSchedule(Field field, Slot slot) {
+	private FieldSchedule createNewSchedule(Court court, Slot slot) {
 
 		
 		Query q = em.createQuery(
 				"from FieldSchedule fs join fs.field fie join fs.slot sl where fie.id =:fieldId and sl.id=:slotId");
-		q.setParameter("fieldId", field.getId());
+		q.setParameter("fieldId", court.getId());
 		q.setParameter("slotId", slot.getStartTime());
 		FieldSchedule fs =new FieldSchedule(); 
 		fs = (FieldSchedule) q.getSingleResult();
@@ -429,7 +429,7 @@ private void createFieldScheduleTable(){
 			return fs;
 		}
 		FieldSchedule fsThis = new FieldSchedule();
-		fsThis.setField(field);
+		fsThis.setCourt(court);
 		fsThis.setSlot(slot);
 		fsThis.setFieldPartitionType(2);
 		em.persist(fsThis);

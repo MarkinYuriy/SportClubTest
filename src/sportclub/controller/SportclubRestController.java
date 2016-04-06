@@ -270,8 +270,8 @@ public class SportclubRestController {
     }
 
 	@RequestMapping(value=SportclubConstants.ADD_FIELD, method=RequestMethod.PUT)
-	public @ResponseBody void addField(@RequestBody Field field){
-		profiles.addField(field);
+	public @ResponseBody void addCourt(@RequestBody Court court){
+		profiles.addCourt(court);
 
 
 	}

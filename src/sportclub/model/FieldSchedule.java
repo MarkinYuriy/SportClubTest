@@ -12,7 +12,7 @@ public class FieldSchedule {
 	@ManyToOne(cascade=CascadeType.ALL) 
    	Slot slot;
 	@ManyToOne(cascade=CascadeType.ALL)  
-	Field field;
+	Court court;
 	
 	int fieldPartitionType;
 	
@@ -22,7 +22,7 @@ public class FieldSchedule {
 	Event fieldPart2;
 	@Override
 	public String toString() {
-		return "FieldSchedule [id=" + id + ", slot=" + slot + ", field=" + field + ", fieldPartitionType="
+		return "FieldSchedule [id=" + id + ", slot=" + slot + ", field=" + court + ", fieldPartitionType="
 				+ fieldPartitionType + ", fieldPart1=" + fieldPart1 + ", fieldPart2=" + fieldPart2 + ", fieldPart3="
 				+ fieldPart3 + "]";
 	}
@@ -35,11 +35,11 @@ public class FieldSchedule {
 	public void setSlot(Slot slot) {
 		this.slot = slot;
 	}
-	public Field getField() {
-		return field;
+	public Court getCourt() {
+		return court;
 	}
-	public void setField(Field field) {
-		this.field = field;
+	public void setCourt(Court court) {
+		this.court = court;
 	}
 	public int getFieldPartitionType() {
 		return fieldPartitionType;

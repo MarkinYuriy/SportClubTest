@@ -165,12 +165,12 @@ public class SportclubDB implements ISportclubRepository {
 	
 	@Override
 	@Transactional
-	public boolean addField(Field field) {
+	public boolean addCourt(Court court) {
 		boolean res = false;
 
-		if (em.find(Field.class, field.getId()) == null) {
+		if (em.find(Court.class, court.getId()) == null) {
 
-			em.persist(field);
+			em.persist(court);
 
 			res = true;
 			System.out.println("true");

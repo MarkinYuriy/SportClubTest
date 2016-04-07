@@ -33,19 +33,23 @@ import sportclub.model.EquipmentPool;
 import sportclub.model.Event;
 import sportclub.model.Exercise;
 import sportclub.model.ExerciseSession;
-
+import sportclub.model.Formation;
 import sportclub.model.Court;
 import sportclub.model.CourtSchedule;
 import sportclub.model.Game;
 import sportclub.model.Goal;
 import sportclub.model.Role;
 import sportclub.model.Slot;
+import sportclub.model.StartStaff;
 import sportclub.model.Team;
 import sportclub.model.Training;
 import sportclub.model.TrainingPool;
 import sportclub.nodeprocessor.RoleGenerator;
+import sportclub.profile.AssitTeamCoach;
 import sportclub.profile.Athlete;
+import sportclub.profile.Coach;
 import sportclub.profile.Profiler;
+import sportclub.profile.TeamCoach;
 
 public class SportclubRandomDB implements ISportclubRandomDBRepository {
 	String[] subClasses = { "AdminManagerClub", "AssitPhysicCoach", "AssitTeamCoach", "Athlete",
@@ -57,6 +61,9 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 	private static final int N_ATHLETS = 30;
 
 	private static final int N_SLOTS = 150;
+
+	private static final String FORMATION_NAME = "4-4-2";
+	private static final String POSITIONS_LIST="GK LFB LCB RCB RFB LSM LCM RCM RSM LCF RCF";
 	Random random = new Random();
 	RandomData rd = new RandomData();
 	CourtSchedule fsGlobal;
@@ -75,10 +82,10 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		em.persist(club);
 
 		createSlotTable();
-
+		createFormation();
 		addRandomRoles(5);
-		addRandomField(3);
-		createFieldScheduleTable();
+		addRandomCourt(3);
+		createCourtScheduleTable();
 
 		List<Role> roles = new ArrayList<Role>();
 		Query q = em.createQuery("select roles from Role roles");
@@ -136,15 +143,23 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		return true;
 	}
 
-	private void addRandomField(int n) {
+	private void createFormation() {
+		Formation formation = new Formation();
+		formation.setName(FORMATION_NAME);
+		formation.setPositions(POSITIONS_LIST);
+		em.persist(formation);
+		
+	}
+
+	private void addRandomCourt(int n) {
 		for (int i = 1; i <= n; i++) {
 			Court court = new Court();
-			court.setName("field" + i);
+			court.setName("court" + i);
 			court.setType("type" + i);
 
 			em.persist(court);
 		}
-		
+
 	}
 
 	private void randomGoals() {
@@ -191,9 +206,40 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			ath.setTeams(teamAth);
 			aths.add(ath);
 		}
+		
+		for (int i = 0; i < 5; i++) {
 
+			Profiler assistCoach = new AssitTeamCoach();
+			Set<Team> teamAth = new LinkedHashSet<Team>();
+			teamAth.add(team);
+			assistCoach.setTeams(teamAth);
+			aths.add(assistCoach);
+		}
+		
+		Profiler teamCoach = new TeamCoach();
+		Set<Team> teamAth = new LinkedHashSet<Team>();
+		teamAth.add(team);
+		teamCoach.setTeams(teamAth);
+		aths.add(teamCoach);
+		
 		return aths;
 
+	}
+	
+	private List<Profiler> addRandomCoaches(Team team){
+		
+		List<Profiler> aths = new LinkedList<Profiler>();
+		for (int i = 0; i < 5; i++) {
+
+			Profiler assistCoach = new AssitTeamCoach();
+			Set<Team> teamAth = new LinkedHashSet<Team>();
+			teamAth.add(team);
+			assistCoach.setTeams(teamAth);
+			aths.add(assistCoach);
+		}
+
+		return aths;
+		
 	}
 
 	private Date randomBirthday() {
@@ -228,22 +274,16 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 	public boolean addRandomEvent() {
 
 		Event event = new Event();
-		//event.setId(random.nextInt(1000000));
-		event.setAddress("address" + random.nextInt(10000));
-		event.setDescription(randomDescription());
-		event.setGoogleMapLink("http://" + random.nextInt(10000) + ".htm");
-		event.setName("eventname" + random.nextInt(10000));
-
+		setEventData(event);
+		
 		Query q = em.createQuery("from Slot");
-
 		List<Slot> slots = q.getResultList();
 		Slot slot = slots.get(random.nextInt(slots.size()));
-
 		event.setSlots(slot);
 
 		em.persist(event);
-		
-		Event eventq = em.find (Event.class,event.getId());
+
+		Event eventq = em.find(Event.class, event.getId());
 		recordNewLineToClubDiary(eventq);
 
 		return true;
@@ -261,67 +301,78 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		}
 		diary.add(event);
 
-		em.flush();
+		//em.flush();
 		club.setDiary(diary);
+		em.persist(club);
 	}
 
 	@Override
 	@Transactional
 	public boolean addRandomTraining() {
-		//randomSchedule();
 		for (int j = 0; j < 18; j++) {
 			Training tr = new Training();
-
-			Query q = em.createQuery("from Team team");
-			List<Team> teams = q.getResultList();
-			int size = teams.size();
-			Team team = new Team();
-			team = teams.get(random.nextInt(size));
-			List<Team> thisTeam = new ArrayList<>();
-			thisTeam.add(team);
-			tr.setTeams(thisTeam);
-			tr.setAddress("address" + random.nextInt(10000));
-			tr.setDescription(randomDescription());
-			tr.setGoogleMapLink("http://" + random.nextInt(10000) + ".htm");
-			tr.setName("eventname" + random.nextInt(10000));
-
-			q = em.createQuery("from TrainingPool tp");
+			setEventData(tr);
+			putTeamDataToEvent(tr);
+			
+			Query q = em.createQuery("from TrainingPool tp");
 			List<TrainingPool> tps = new ArrayList<TrainingPool>();
 			tps = q.getResultList();
-			size = tps.size();
+			int size = tps.size();
 			TrainingPool tp = new TrainingPool();
 			tp = tps.get(random.nextInt(size));
 			tr.setTrainingPool(tp);
-			
-			Slot slot = new Slot();
-			q = em.createQuery("select sl from Slot sl");
-			@SuppressWarnings("unchecked")
-			List<Slot> slots = q.getResultList();
-			
-			CourtSchedule fs = null;
-			
-			while(fs==null){
-			slot = slots.get(random.nextInt(slots.size()));
-			tr.setSlots(slot);
-			fs = selectFreeScheduleRow(slot);
+						
+			setEventScheduleAndPersist(tr);
+
 			}
-			
-			em.persist(tr);
-			recordNewLineToClubDiary(tr);
-			
-			Class c = fs.getClass();
-			for(int i=1; i<4; i++){
-			
+
+		return false;
+
+	}
+
+	private void setEventScheduleAndPersist(Event event) {
+		
+		Slot slot = new Slot();
+		Query q = em.createQuery("select sl from Slot sl");
+		@SuppressWarnings("unchecked")
+		List<Slot> slots = q.getResultList();
+
+		CourtSchedule fs = null;
+
+		while (fs == null) {
+			slot = slots.get(random.nextInt(slots.size()));
+			event.setSlots(slot);
+			fs = selectFreeScheduleRow(slot);
+		}
+		em.persist(event);
+		recordNewLineToClubDiary(event);
+		int courtQuantity = 0;
+		int courtPartitionType = fs.getCourtPartitionType();
+		
+		if(courtPartitionType==0){
+				if(event instanceof Game)courtQuantity=1;
+				else courtQuantity=1+random.nextInt(3);
+		}
+		else {courtQuantity = courtPartitionType;}
+		
+		Class<?> c = fs.getClass();
+		
+		
+		for (int i = 1; i <= courtQuantity; i++) {
+
 			try {
-				java.lang.reflect.Field f = c.getDeclaredField("fieldPart"+i);
+				java.lang.reflect.Field f = c.getDeclaredField("courtPart" + i);
 				f.setAccessible(true);
-				if(f.get(fs)==null) {
-					f.set(fs, tr);
-					fs.setFieldPartitionType(3);
+				if (f.get(fs) == null) {
+					f.set(fs, event);
+					fs.setCourtPartitionType(courtQuantity);
 					System.out.println(fs);
 					em.persist(fs);
-					break;
 					
+					
+					
+					break;
+
 				}
 			} catch (NoSuchFieldException e) {
 				// TODO Auto-generated catch block
@@ -336,104 +387,77 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			}
+
 		}
-			
-		return false;
-
-	}
-private CourtSchedule selectFreeScheduleRow(Slot slot) {
-	Query q;
-	try {
-		q = em.createQuery("select fs from FieldSchedule fs join fs.slot sl where sl.startTime= :slotId");
-		q.setParameter("slotId", slot.getStartTime());
-	} catch (HibernateException e) {
-		e.getMessage();
-		return null;
-	}
-	@SuppressWarnings("unchecked")
-	List<CourtSchedule> fss = q.getResultList();
-	
-	for (CourtSchedule fs: fss){
-		
-	if(isFreeFieldPart(fs)) 
-		return fs;
-	}
-		return null;
 	}
 
-private boolean isFreeFieldPart(CourtSchedule fs) {
+	private Team putTeamDataToEvent(Event event) {
+		Query q = em.createQuery("from Team team");
+		List<Team> teams = q.getResultList();
+		int size = teams.size();
+		Team team = new Team();
+		team = teams.get(random.nextInt(size));
+		List<Team> thisTeam = new ArrayList<>();
+		thisTeam.add(team);
+		event.setTeams(thisTeam);
+		return team;
 		
-			if(fs.getFieldPartitionType()==0)
+	}
+
+	private void setEventData(Event event) {
+		event.setAddress("address" + random.nextInt(10000));
+		event.setDescription(randomDescription());
+		event.setGoogleMapLink("http://" + random.nextInt(10000) + ".htm");
+		event.setName("eventname" + random.nextInt(10000));
+	}
+
+	private CourtSchedule selectFreeScheduleRow(Slot slot) {
+		Query q;
+		try {
+			q = em.createQuery("select fs from CourtSchedule fs join fs.slot sl where sl.startTime= :slotId");
+			q.setParameter("slotId", slot.getStartTime());
+		} catch (HibernateException e) {
+			e.getMessage();
+			return null;
+		}
+		@SuppressWarnings("unchecked")
+		List<CourtSchedule> fss = q.getResultList();
+
+		for (CourtSchedule fs : fss) {
+
+			if (isFreeCourtPart(fs))
+				return fs;
+		}
+		return null;
+	}
+
+	private boolean isFreeCourtPart(CourtSchedule fs) {
+
+		if (fs.getCourtPartitionType() == 0)
 			return true;
-			if(fs.getFieldPart1()!=null||fs.getFieldPart2()!=null||fs.getFieldPart3()!=null)return true;
-					
+		if (fs.getCourtPart1() != null || fs.getCourtPart2() != null || fs.getCourtPart3() != null)
+			return true;
+
 		return false;
 	}
 
-private void createFieldScheduleTable(){
-	
-	
-	Query q = em.createQuery("from Slot");
-	@SuppressWarnings("unchecked")
-	List<Slot> slots = q.getResultList();
-	q = em.createQuery("from Field");
-	@SuppressWarnings("unchecked")
-	List<Court> courts = q.getResultList();
-	for(Court court: courts){
-			for (Slot slot: slots){
-				CourtSchedule fs = new CourtSchedule ();
-				fs.setFieldPartitionType(0);
+	private void createCourtScheduleTable() {
+
+		Query q = em.createQuery("select sl from Slot sl");
+		@SuppressWarnings("unchecked")
+		List<Slot> slots = q.getResultList();
+		q = em.createQuery("from Court");
+		@SuppressWarnings("unchecked")
+		List<Court> courts = q.getResultList();
+		for (Court court : courts) {
+			for (Slot slot : slots) {
+				CourtSchedule fs = new CourtSchedule();
+				fs.setCourtPartitionType(0);
 				fs.setSlot(slot);
 				fs.setCourt(court);
 				em.persist(fs);
-			}		
-	}
-}
-	
-
-	private void randomSchedule() {
-
-		Slot slot = new Slot();
-		Court court = new Court();
-		Query q = em.createQuery("from Slot");
-
-		List<Slot> slots = q.getResultList();
-		q = em.createQuery("from Field");
-		List<Court> courts = q.getResultList();
-		
-		for (int i = 0; i < 20; i++) {
-			slot = slots.get(i);
-			court = courts.get(random.nextInt(courts.size()));
-			CourtSchedule fs = new CourtSchedule();
-			fs.setSlot(slot);
-			fs.setCourt(court);
-			fs.setFieldPartitionType(3);
-			em.persist(fs);
+			}
 		}
-	}
-
-	private CourtSchedule createNewSchedule(Court court, Slot slot) {
-
-		
-		Query q = em.createQuery(
-				"from FieldSchedule fs join fs.field fie join fs.slot sl where fie.id =:fieldId and sl.id=:slotId");
-		q.setParameter("fieldId", court.getId());
-		q.setParameter("slotId", slot.getStartTime());
-		CourtSchedule fs =new CourtSchedule(); 
-		fs = (CourtSchedule) q.getSingleResult();
-		System.out.println(fs);
-		if (fs!=null) {
-			
-			return fs;
-		}
-		CourtSchedule fsThis = new CourtSchedule();
-		fsThis.setCourt(court);
-		fsThis.setSlot(slot);
-		fsThis.setFieldPartitionType(2);
-		em.persist(fsThis);
-		return fsThis;
 	}
 
 	private void createSlotTable() throws ParseException {
@@ -527,31 +551,57 @@ private void createFieldScheduleTable(){
 	public void addRandomGame() {
 
 		Game game = new Game();
-		Query q = em.createQuery("from Team");
-
-		List<Team> teams = q.getResultList();
-		List<Team> thisTeam = new ArrayList<>();
-		int size = teams.size();
-		Team team = teams.get(random.nextInt(size));
-		thisTeam.add(team);
-		game.setTeams(thisTeam);
-		
-		game.setName(rd.randomName());
-		game.setType(randomType());
-		game.setDescription(randomDescription());
-
-		Slot slot = new Slot();
-
-		
-		
-		game.setSlots(slot);
-
+		Team team = putTeamDataToEvent(game);
+		setEventData(game);
 		
 		game.setOpponent("opponent" + random.nextInt(20));
+		setStartStaff(game, team);
+		
+		setEventScheduleAndPersist(game);
+}
 
-		em.persist(game);
-
-		recordNewLineToClubDiary(game);
-
+	private void setStartStaff(Game game, Team team) {
+		
+		StartStaff sst = new StartStaff();
+		//get all participants of the game
+		Query q = em.createQuery("select p from Profiler p join p.teams t where t.id=:tId and p.class='Coach'");
+		q.setParameter("tId", team.getId());
+		
+		//add coaches
+		List<Coach> coaches = q.getResultList();
+	//	sst.setCoaches(coaches);
+				
+		q = em.createQuery("select p from Team t join t.profiles p where t.id=:tId and p.class='Athlete'");
+		q.setParameter("tId", team.getId());
+		//add reserve players
+		List<Athlete> athletes = q.getResultList();
+		List<Athlete> reserve = new ArrayList<Athlete>();
+		for(int i=13;i<18;i++){
+			
+			reserve.add(athletes.get(i));
+			
+		}
+		game.setReserve(reserve);
+		
+		//add main staff to composition
+		List<Athlete> mainStaff = new ArrayList<Athlete>();
+		for(int i=0; i<12;i++){
+			mainStaff.add(athletes.get(i));
+		}
+		
+		Formation formation = em.find(Formation.class, FORMATION_NAME);
+		sst.setFormation(formation);
+		sst.setCompositionKeysByFormation(formation);
+		Map<String, Athlete> map = sst.getComposition();
+		int i=0;
+		
+		for(Map.Entry<String, Athlete> pair: map.entrySet()){
+			
+			pair.setValue(mainStaff.get(i));
+			i++;
+		}
+				
+		em.persist(sst);
+		game.setStartStaff(sst);
 	}
 }

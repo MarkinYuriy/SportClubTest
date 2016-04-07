@@ -9,7 +9,6 @@ import org.hibernate.engine.internal.Cascade;
 import sportclub.profile.Profiler;
 
 @Entity
-@Table(name="event")
 public class Event {
 	
 	@Id@GeneratedValue
@@ -22,11 +21,14 @@ public class Event {
 	@ManyToOne
 	Slot slots;
 	
-	@ManyToMany
+	/*@ManyToMany
 	List<Profiler> viewedRights;
-	
+	*/
 	@ManyToMany
 	List<Team> teams;
+	
+	/*@OneToOne
+	CourtSchedule cs;*/
 	
 	public Event() {}
 	
@@ -74,13 +76,13 @@ public class Event {
 		this.slots = slots;
 	}
 
-	public List<Profiler> getViewedRights() {
+	/*public List<Profiler> getViewedRights() {
 		return viewedRights;
 	}
 
 	public void setViewedRights(List<Profiler> viewedRights) {
 		this.viewedRights = viewedRights;
-	}
+	}*/
 
 	public List<Team> getTeams() {
 		return teams;
@@ -101,7 +103,7 @@ public class Event {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((slots == null) ? 0 : slots.hashCode());
 		result = prime * result + ((teams == null) ? 0 : teams.hashCode());
-		result = prime * result + ((viewedRights == null) ? 0 : viewedRights.hashCode());
+		//result = prime * result + ((viewedRights == null) ? 0 : viewedRights.hashCode());
 		return result;
 	}
 
@@ -146,11 +148,11 @@ public class Event {
 				return false;
 		} else if (!teams.equals(other.teams))
 			return false;
-		if (viewedRights == null) {
+		/*if (viewedRights == null) {
 			if (other.viewedRights != null)
 				return false;
 		} else if (!viewedRights.equals(other.viewedRights))
-			return false;
+			return false;*/
 		return true;
 	}
 	

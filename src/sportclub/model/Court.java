@@ -13,7 +13,7 @@ import javax.persistence.*;
 public class Court {
 	
 	@Id
-	@GeneratedValue@Column(name="fieldId")
+	@GeneratedValue@Column(name="courtId")
 	int id;
 	
 	String name;

@@ -14,20 +14,14 @@ public class CourtSchedule {
 	@ManyToOne(cascade=CascadeType.ALL)  
 	Court court;
 	
-	int fieldPartitionType;
+	int courtPartitionType;
 	
 	@OneToOne
-	Event fieldPart1;
+	Event courtPart1;
 	@OneToOne
-	Event fieldPart2;
-	@Override
-	public String toString() {
-		return "FieldSchedule [id=" + id + ", slot=" + slot + ", field=" + court + ", fieldPartitionType="
-				+ fieldPartitionType + ", fieldPart1=" + fieldPart1 + ", fieldPart2=" + fieldPart2 + ", fieldPart3="
-				+ fieldPart3 + "]";
-	}
+	Event courtPart2;
 	@OneToOne
-	Event fieldPart3;
+	Event courtPart3;
 	
 	public Slot getSlot() {
 		return slot;
@@ -41,33 +35,40 @@ public class CourtSchedule {
 	public void setCourt(Court court) {
 		this.court = court;
 	}
-	public int getFieldPartitionType() {
-		return fieldPartitionType;
+	public int getCourtPartitionType() {
+		return courtPartitionType;
 	}
-	public void setFieldPartitionType(int fieldPartitionType) {
-		this.fieldPartitionType = fieldPartitionType;
+	public void setCourtPartitionType(int fieldPartitionType) {
+		this.courtPartitionType = fieldPartitionType;
 	}
-	public Event getFieldPart1() {
-		return fieldPart1;
+	
+	
+	public Event getCourtPart1() {
+		return courtPart1;
 	}
-	public void setFieldPart1(Event fieldPart1) {
-		this.fieldPart1 = fieldPart1;
+	public void setCourtPart1(Event courtPart1) {
+		this.courtPart1 = courtPart1;
 	}
-	public Event getFieldPart2() {
-		return fieldPart2;
+	public Event getCourtPart2() {
+		return courtPart2;
 	}
-	public void setFieldPart2(Event fieldPart2) {
-		this.fieldPart2 = fieldPart2;
+	public void setCourtPart2(Event courtPart2) {
+		this.courtPart2 = courtPart2;
 	}
-	public Event getFieldPart3() {
-		return fieldPart3;
+	public Event getCourtPart3() {
+		return courtPart3;
 	}
-	public void setFieldPart3(Event fieldPart3) {
-		this.fieldPart3 = fieldPart3;
+	public void setCourtPart3(Event courtPart3) {
+		this.courtPart3 = courtPart3;
 	}
 	public int getId() {
 		return id;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "CourtSchedule [id=" + id + ", slot=" + slot + ", court=" + court + ", courtPartitionType="
+				+ courtPartitionType + ", courtPart1=" + courtPart1 + ", courtPart2=" + courtPart2 + ", courtPart3="
+				+ courtPart3 + "]";
+	}
 }

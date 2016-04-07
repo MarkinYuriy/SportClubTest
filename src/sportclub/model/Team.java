@@ -14,9 +14,17 @@ public class Team {
 	@Id
 	@GeneratedValue
 	int id;
-	
 	String name;
 	String description;
+	
+	@OneToMany
+	Set<ImageBank> photos;
+	@OneToMany
+	List<GameTeams> results;
+	@ManyToMany(mappedBy="teams")
+	List<Event> diary;
+	@ManyToMany(mappedBy = "teams")
+	List<Profiler> profiles;
 	
 	public Team() {}
 
@@ -43,15 +51,13 @@ public class Team {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	@OneToMany
-	Set<ImageBank> photos;
-	@OneToMany
-	List<GameTeams> results;
-	@ManyToMany(mappedBy="teams")
-	List<Event> diary;
-	@ManyToMany(mappedBy = "teams")
-	List<Profiler> profiles;
-	
+		
+	public List<Profiler> getProfiles() {
+		return profiles;
+	}
+
+	public void setProfiles(List<Profiler> profiles) {
+		this.profiles = profiles;
+	}
 
 }

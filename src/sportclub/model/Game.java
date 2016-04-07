@@ -16,15 +16,27 @@ public class Game extends Event {
 	String results;
 	@Temporal(TemporalType.TIMESTAMP)
 	Date extraTime;
+	@OneToOne
+	StartStaff startStaff;
 	
-	String scheme;
+	@OneToMany
+	List<Athlete> reserve;
 	
-	public String getScheme() {
-		return scheme;
+	
+	public List<Athlete> getReserve() {
+		return reserve;
 	}
 
-	public void setScheme(String scheme) {
-		this.scheme = scheme;
+	public void setReserve(List<Athlete> reserve) {
+		this.reserve = reserve;
+	}
+	
+	public StartStaff getStartStaff() {
+		return startStaff;
+	}
+
+	public void setStartStaff(StartStaff startStaff) {
+		this.startStaff = startStaff;
 	}
 
 	public Game() {
@@ -63,27 +75,13 @@ public class Game extends Event {
 		this.extraTime = extraTime;
 	}
 
-	@ManyToMany
-	List<Athlete> athletes;
+	
 	//@ManyToMany
 	//List<GameComposition> compositions;
-	@ManyToMany
-	List<Coach> coach;
 	
-	public List<Athlete> getAthletes() {
-		return athletes;
-	}
+	
+	
 
-	public void setAthletes(List<Athlete> athletes) {
-		this.athletes = athletes;
-	}
-
-	public List<Coach> getCoach() {
-		return coach;
-	}
-
-	public void setCoach(List<Coach> coach) {
-		this.coach = coach;
-	}
+	
 
 }

@@ -11,8 +11,8 @@ import sportclub.model.Team;
 @Entity
 public class Profiler {
 	
-	@Id
-	
+	@Id@GeneratedValue
+	@Column(name="profilerId")
 	long code;
 	/*String code; *///Don't set int id as var in this class
 	//@Column(nullable=false,unique=true)
@@ -31,6 +31,7 @@ public class Profiler {
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	Set<Team> teams;
+	
 	public Profiler() {}
 
 
@@ -98,8 +99,6 @@ public class Profiler {
 		this.description = description;
 	}
 	
-	
-
 	public Set<Role> getRoles() {
 		return roles;
 	}

@@ -19,18 +19,6 @@ public class Game extends Event {
 	@OneToOne
 	StartStaff startStaff;
 	
-	@OneToMany
-	List<Athlete> reserve;
-	
-	
-	public List<Athlete> getReserve() {
-		return reserve;
-	}
-
-	public void setReserve(List<Athlete> reserve) {
-		this.reserve = reserve;
-	}
-	
 	public StartStaff getStartStaff() {
 		return startStaff;
 	}

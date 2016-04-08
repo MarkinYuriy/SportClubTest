@@ -116,7 +116,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		for (Profiler el : profiles) {
 
 			el.setDescription(rd.randomDescription());
-			el.setCode(rd.randomCode());
+			//el.setCode(rd.randomCode());
 			el.setEmail(rd.randomEmail());
 			el.setLastName(rd.randomLastName());
 			el.setLogin(rd.randomLogin());
@@ -569,7 +569,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		
 		//add coaches
 		List<Coach> coaches = q.getResultList();
-	//	sst.setCoaches(coaches);
+		sst.setCoaches(coaches);
 				
 		q = em.createQuery("select p from Team t join t.profiles p where t.id=:tId and p.class='Athlete'");
 		q.setParameter("tId", team.getId());
@@ -581,7 +581,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			reserve.add(athletes.get(i));
 			
 		}
-		game.setReserve(reserve);
+		sst.setReserve(reserve);
 		
 		//add main staff to composition
 		List<Athlete> mainStaff = new ArrayList<Athlete>();

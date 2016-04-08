@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-
+import org.codehaus.jackson.map.JsonSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -22,6 +22,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
+
+import flexjson.JSONSerializer;
+import flexjson.transformer.MapTransformer;
+//import flexjson.JSONSerializer;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
@@ -279,15 +283,24 @@ public class SportclubRestController {
 
 	@RequestMapping(value=SportclubConstants.ALL_QUERIES, method=RequestMethod.PUT)
 	public @ResponseBody void getAnyRequest(@RequestBody String jpql) throws JsonGenerationException, JsonMappingException, IOException {
+System.out.println("query");
+		Iterable<Object> it = profiles.getAnyRequest(jpql);
+		
+		for(Object t: it){
+			//String stri = om.writeValueAsString(t);
+		//String stri = new ObjectMapper().writeValueAsString(it);
 
-		Iterable<String> it = profiles.getAnyRequest(jpql);
+			JSONSerializer ser = new JSONSerializer()
+					.transform(new MapTransformer( ),"t.equipmentPoolData");
 
+			String h = ser.exclude("diary").deepSerialize(t);
 
-		for(String str: it){
+			System.out.println(h);}
 
-			System.out.println(str);
-
-		};
+		
+		
+		
+		
 	}
 
 

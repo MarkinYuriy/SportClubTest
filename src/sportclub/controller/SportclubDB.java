@@ -276,34 +276,34 @@ public class SportclubDB implements ISportclubRepository {
 	 * Get any request from database
 	 */
 	@Override
-	//@Transactional
-	public Iterable<String> getAnyRequest(String jpql)
+	@Transactional
+	public Iterable<Object> getAnyRequest(String jpql)
 			throws JsonGenerationException, JsonMappingException, IOException {
-
+System.out.println("getAnyRequest");
 		boolean flMultiple = hasMultipleArguments(jpql);
 		return flMultiple ? runMultipleArgumentsRequest(jpql) : runSingleArgumentRequest(jpql);
 	}
 
-	private Iterable<String> runSingleArgumentRequest(String jpql)
+	private Iterable<Object> runSingleArgumentRequest(String jpql)
 			throws JsonGenerationException, JsonMappingException, IOException {
 
 		javax.persistence.Query q = em.createQuery(jpql);
 		@SuppressWarnings("unchecked")
 		List<Object> objects = q.getResultList();
 
-		return objectsToStringsList(objects);
+		return objects/*objectsToStringsList(objects)*/;
 	}
 
-	private Iterable<String> objectsToStringsList(List<Object> objects)
-			throws JsonGenerationException, JsonMappingException, IOException {
-		List<String> res = new LinkedList<String>();
-		ObjectMapper mapper = new ObjectMapper();
-		for (Object obj : objects)
-			res.add(mapper.writeValueAsString(obj));
-		return res;
-	}
+//	private Iterable<String> objectsToStringsList(List<Object> objects)
+//			throws JsonGenerationException, JsonMappingException, IOException {
+//		List<String> res = new LinkedList<String>();
+//		ObjectMapper mapper = new ObjectMapper();
+//		for (Object obj : objects)
+//			res.add(mapper.writeValueAsString(obj));
+//		return res;
+//	}
 
-	private Iterable<String> runMultipleArgumentsRequest(String jpql)
+	private Iterable<Object> runMultipleArgumentsRequest(String jpql)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		System.out.println(jpql);
 		Query q = em.createQuery(jpql);
@@ -312,12 +312,12 @@ public class SportclubDB implements ISportclubRepository {
 		return toIterableString(objects);
 	}
 
-	private Iterable<String> toIterableString(List<Object[]> objects)
+	private Iterable<Object> toIterableString(List<Object[]> objects)
 			throws JsonGenerationException, JsonMappingException, IOException {
-		List<String> res = new LinkedList<String>();
+		List<Object> res = new LinkedList<Object>();
 
 		for (Object[] args : objects)
-			res.add(objectToJson(args));
+			res.add(args);
 
 		return res;
 	}

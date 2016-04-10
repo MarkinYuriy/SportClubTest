@@ -7,21 +7,21 @@ import javax.persistence.*;
 
 @Entity
 public class CourtSchedule {
-	@Id @GeneratedValue
-	int id;
-	@ManyToOne(cascade=CascadeType.ALL) 
-   	Slot slot;
-	@ManyToOne(cascade=CascadeType.ALL)  
-	Court court;
+	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	@ManyToOne(cascade=CascadeType.REFRESH) 
+	private Slot slot;
+	@ManyToOne(cascade=CascadeType.REFRESH)  
+	private Court court;
 	
-	int courtPartitionType;
+	private int courtPartitionType;//add table CourtPartitionType
 	
 	@OneToOne
-	Event courtPart1;
+	private Event courtPart1;
 	@OneToOne
-	Event courtPart2;
+	private Event courtPart2;
 	@OneToOne
-	Event courtPart3;
+	private Event courtPart3;
 	
 	public Slot getSlot() {
 		return slot;

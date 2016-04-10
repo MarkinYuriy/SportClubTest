@@ -11,8 +11,7 @@ public class Formation {
 		return "Formation [name=" + name + ", positions=" + positions + "]";
 	}
 
-	@Id/*@GeneratedValue
-	int formationId;*/
+	@Id
 	String name;
 	String positions;
 	

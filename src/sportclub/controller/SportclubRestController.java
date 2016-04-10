@@ -289,9 +289,9 @@ System.out.println("query");
 		for(Object t: it){
 			//String stri = om.writeValueAsString(t);
 		//String stri = new ObjectMapper().writeValueAsString(it);
-
-			JSONSerializer ser = new JSONSerializer()
-					.transform(new MapTransformer( ),"t.equipmentPoolData");
+			MapTransformer mt = new MapTransformer( );
+			
+			JSONSerializer ser = new JSONSerializer();
 
 			String h = ser.exclude("diary").deepSerialize(t);
 

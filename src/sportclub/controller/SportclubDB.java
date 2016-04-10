@@ -50,9 +50,9 @@ public class SportclubDB implements ISportclubRepository {
 	};
 	
 	@PersistenceContext(unitName = "springHibernate", type = PersistenceContextType.EXTENDED)
-	EntityManager em;
+	private EntityManager em;
 	
-	String data;
+	private String data;
 
 	@Override
 	public boolean removeProfile(int id) {

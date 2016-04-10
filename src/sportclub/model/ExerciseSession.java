@@ -3,22 +3,40 @@ package sportclub.model;
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import flexjson.JSON;
 
 
 
 @SuppressWarnings("serial")
-@Embeddable
+@Entity
 public class ExerciseSession implements Serializable{
 	
-
+	public ExerciseSession(Exercise exercise, int sets, int reps, int duration) {
+		super();
+		this.exercise = exercise;
+		this.sets = sets;
+		this.reps = reps;
+		this.duration = duration;
+	}
+	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 	@Override
 	public String toString() {
 		return "ExerciseSession [sets=" + sets + ", reps=" + reps + ", duration=" + duration + "]";
 	}
-
-	int sets;
-	int reps;
-	int duration;
+	@ManyToOne
+	private Exercise exercise;
+	
+	
+	private int sets;
+	private int reps;
+	private int duration;
 	
 	public ExerciseSession(){
 		sets = 0;
@@ -89,6 +107,18 @@ public class ExerciseSession implements Serializable{
 			return false;
 		}
 		return true;
+	}
+
+	public Exercise getExercise() {
+		return exercise;
+	}
+
+	public void setExercise(Exercise exercise) {
+		this.exercise = exercise;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	

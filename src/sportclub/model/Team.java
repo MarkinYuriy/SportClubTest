@@ -24,15 +24,50 @@ public class Team {
 	int id;
 	String name;
 	String description;
+	boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Set<ImageBank> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(Set<ImageBank> photos) {
+		this.photos = photos;
+	}
+
+	public List<GameTeams> getResults() {
+		return results;
+	}
+
+	public void setResults(List<GameTeams> results) {
+		this.results = results;
+	}
+
+	public Set<Event> getDiary() {
+		return diary;
+	}
+
+	public void setDiary(Set<Event> diary) {
+		this.diary = diary;
+	}
+
 	@OneToMany
 	Set<ImageBank> photos;
 	@OneToMany
 	List<GameTeams> results;
+	
 	@ManyToMany(mappedBy="teams")
-	List<Event> diary;
+	Set<Event> diary;
+	
 	@ManyToMany(mappedBy = "teams")
-	List<Profiler> profiles;
+	Set<Profiler> profiles;
 	
 	
 
@@ -63,11 +98,11 @@ public class Team {
 		this.description = description;
 	}
 		
-	public List<Profiler> getProfiles() {
+	public Set<Profiler> getProfiles() {
 		return profiles;
 	}
 
-	public void setProfiles(List<Profiler> profiles) {
+	public void setProfiles(Set<Profiler> profiles) {
 		this.profiles = profiles;
 	}
 

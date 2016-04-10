@@ -29,7 +29,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import sportclub.model.Club;
 import sportclub.model.EquipmentPool;
-
+import sportclub.model.EquipmentPoolData;
 import sportclub.model.Event;
 import sportclub.model.Exercise;
 import sportclub.model.ExerciseSession;
@@ -294,9 +294,9 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		Club club = new Club();
 		Query q = em.createQuery("select club from Club club where club.name='club1'");
 		club = (Club) q.getSingleResult();
-		List<Event> diary = club.getDiary();
+		Set<Event> diary = club.getDiary();
 		if (diary == null) {
-			diary = new ArrayList<Event>();
+			diary = new HashSet<Event>();
 			club.setDiary(diary);
 		}
 		diary.add(event);
@@ -397,7 +397,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		int size = teams.size();
 		Team team = new Team();
 		team = teams.get(random.nextInt(size));
-		List<Team> thisTeam = new ArrayList<>();
+		Set<Team> thisTeam = new HashSet<>();
 		thisTeam.add(team);
 		event.setTeams(thisTeam);
 		return team;
@@ -513,33 +513,44 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 
 			Query q = em.createQuery("from Exercise e");
 			List<Exercise> exs = q.getResultList();
-			Map<Exercise, ExerciseSession> etds = new HashMap<Exercise, ExerciseSession>();
+			List<ExerciseSession> etds = new ArrayList<ExerciseSession>();
 			for (Exercise ex : exs) {
-				ExerciseSession es = new ExerciseSession(random.nextInt(20), random.nextInt(20), random.nextInt(20));
-
-				etds.put(ex, es);
+				ExerciseSession es = new ExerciseSession(ex, random.nextInt(20), random.nextInt(20), random.nextInt(20));
+				
+				em.persist(es);
+				etds.add(es);
 
 			}
 			tp.setExercises(etds);
 
-			Query q1 = em.createQuery("from EquipmentPool e");
-			List<EquipmentPool> equipments = q1.getResultList();
-
-			for (EquipmentPool equipment : equipments) {
-
-				tp.setEquipmentPoolDataValue(equipment, random.nextInt(20));
-
-			}
-
-			Query q2 = em.createQuery("from Goal e");
-			List<Goal> gls = q2.getResultList();
+			
+			//tp.setEquipmentPoolData(epds);
+			q = em.createQuery("from Goal e");
+			List<Goal> gls = q.getResultList();
 			Set<Goal> glsSet = new HashSet<Goal>();
 			glsSet.addAll(gls);
 
 			tp.setGoals(glsSet);
 
 			em.persist(tp);
+			tp = em.find(TrainingPool.class, tp.getId());
+			q = em.createQuery("from EquipmentPool e");
+			List<EquipmentPool> equipments = q.getResultList();
+			
+			//Set<EquipmentPoolData>epds = new HashSet<>();
+			
+			for (EquipmentPool equipment : equipments) {
+				EquipmentPoolData epd = new EquipmentPoolData();
+				epd.setTrainingPool(tp);
+				epd.setEquipmentPool(equipment);
+				epd.setQuantity(random.nextInt(20));
+				em.persist(epd);
+				
+				//epds.add(epd);
 
+			}
+			
+			
 		}
 
 		return true;
@@ -570,6 +581,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		//add coaches
 		List<Coach> coaches = q.getResultList();
 		sst.setCoaches(coaches);
+				
 				
 		q = em.createQuery("select p from Team t join t.profiles p where t.id=:tId and p.class='Athlete'");
 		q.setParameter("tId", team.getId());

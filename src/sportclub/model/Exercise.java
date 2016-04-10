@@ -10,11 +10,12 @@ public class Exercise {
 	
 	@Id
 	@GeneratedValue
-	int id;
+	private int id;
 	
-	String name;
-	String description;
+	private String name;
+	private String description;
 	
+
 	@Override
 	public String toString() {
 		return String.format("\"id\":%s, \"name\":\"%s\", \"description\":\"%s\"", id, name, description);

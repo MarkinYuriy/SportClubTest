@@ -11,18 +11,18 @@ public class Role {
 	@Id
 	/*@GeneratedValue
 	int id;*/
-	String id_code;
-	String description;
+	private String idCode;
+	private String description;
 	
 	public Role() {
 		}
 
-	public String getId_code() {
-		return id_code;
+	public String getIdCode() {
+		return idCode;
 	}
 
-	public void setId_code(String id_code) {
-		this.id_code = id_code;
+	public void setIdCode(String id_code) {
+		this.idCode = id_code;
 	}
 
 	public String getDescription() {

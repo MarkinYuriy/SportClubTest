@@ -12,7 +12,15 @@ public class Goal {
 	
 	String name;
 	String description;
-	
+	boolean deleted;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Goal() {	}
 
 	public int getId() {

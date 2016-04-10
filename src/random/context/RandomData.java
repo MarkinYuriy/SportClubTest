@@ -18,8 +18,8 @@ import sportclub.data.TeamData;
 public class RandomData {
 	private Random random = new Random();
 	private int nCode = 1000;
-	private int nLogin = 1000;
-	private int nPassword = 1000;
+	private int nLogin = 100000;
+	private int nPassword = 100000;
 	private int nName = 1000;
 	private int nLastName = 1000;
 	private int nEmail=1000;

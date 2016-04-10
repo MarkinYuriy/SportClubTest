@@ -13,8 +13,10 @@ public class Slot {
 	int id;*/
 	@Id
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(unique=true, nullable = false, updatable = false )
 	Date startTime;
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(unique=true, nullable = false, updatable = false )
 	Date endTime;
 	
 	public Slot() {	}

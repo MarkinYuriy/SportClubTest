@@ -5,14 +5,16 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import sportclub.profile.Profiler;
+
 @Entity
 public class License {
 	
 	@Id
-	@GeneratedValue
-	int id;
-	String code;
-	String description;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	private String code;
+	private String description;
 	
 	public License() {}
 	
@@ -46,7 +48,13 @@ public class License {
 	}
 	
 	@ManyToMany
-	List<Role> roles;
+	@JoinTable
+	  (
+		      name="licenseRole",
+		      joinColumns={ @JoinColumn(name="licenseId", referencedColumnName="id") },
+		      inverseJoinColumns={ @JoinColumn(name="rolesId", referencedColumnName="idCode") }
+		  )
+	private Set<Role> roles;
 	
 	
 	

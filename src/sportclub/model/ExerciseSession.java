@@ -11,8 +11,6 @@ import javax.persistence.ManyToOne;
 
 import flexjson.JSON;
 
-
-
 @SuppressWarnings("serial")
 @Entity
 public class ExerciseSession implements Serializable{
@@ -26,13 +24,10 @@ public class ExerciseSession implements Serializable{
 	}
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	@Override
-	public String toString() {
-		return "ExerciseSession [sets=" + sets + ", reps=" + reps + ", duration=" + duration + "]";
-	}
+	private boolean deleted;
+	
 	@ManyToOne
 	private Exercise exercise;
-	
 	
 	private int sets;
 	private int reps;
@@ -75,40 +70,6 @@ public class ExerciseSession implements Serializable{
 		this.duration = duration;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + duration;
-		result = prime * result + reps;
-		result = prime * result + sets;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof ExerciseSession)) {
-			return false;
-		}
-		ExerciseSession other = (ExerciseSession) obj;
-		if (duration != other.duration) {
-			return false;
-		}
-		if (reps != other.reps) {
-			return false;
-		}
-		if (sets != other.sets) {
-			return false;
-		}
-		return true;
-	}
-
 	public Exercise getExercise() {
 		return exercise;
 	}
@@ -119,6 +80,14 @@ public class ExerciseSession implements Serializable{
 
 	public int getId() {
 		return id;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	

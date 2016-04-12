@@ -6,12 +6,9 @@ import javax.persistence.*;
 
 @Entity
 public class Training extends Event {
-	
-	
-	
-	
-	String results;
-	int resultsPercent;
+		
+	private String results;
+	private int resultsPercent;
 	
 	public Training() {
 		super();
@@ -35,7 +32,7 @@ public class Training extends Event {
 	}
 	
 	@ManyToOne
-	TrainingPool trainingPool;
+	private TrainingPool trainingPool;
 	/*@OneToMany
 	List<Result> resultes;*/
 	

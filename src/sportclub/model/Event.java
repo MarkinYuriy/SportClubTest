@@ -18,6 +18,15 @@ public class Event {
 	private String address;
 	private String description;
 	private String googleMapLink;
+	private boolean deleted;
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@ManyToOne
 	private Slot slots;
 	

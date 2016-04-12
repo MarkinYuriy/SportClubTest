@@ -15,7 +15,8 @@ public class CourtSchedule {
 	private Court court;
 	
 	private int courtPartitionType;//add table CourtPartitionType
-	
+	private boolean deleted;
+		
 	@OneToOne
 	private Event courtPart1;
 	@OneToOne
@@ -64,7 +65,13 @@ public class CourtSchedule {
 	public int getId() {
 		return id;
 	}
-	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@Override
 	public String toString() {
 		return "CourtSchedule [id=" + id + ", slot=" + slot + ", court=" + court + ", courtPartitionType="

@@ -11,13 +11,13 @@ import sportclub.profile.Coach;
 @Entity
 public class Game extends Event {
 	
-	String type;
-	String opponent;
-	String results;
+	private String type;
+	private String opponent;
+	private String results;
 	@Temporal(TemporalType.TIMESTAMP)
-	Date extraTime;
+	private Date extraTime;
 	@OneToOne
-	StartStaff startStaff;
+	private StartStaff startStaff;
 	
 	public StartStaff getStartStaff() {
 		return startStaff;

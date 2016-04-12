@@ -15,7 +15,14 @@ import sportclub.profile.*;
 public class StartStaff {
 	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int staffId;
-	
+	private boolean deleted;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	
 	@ManyToOne
 	private Formation formation;

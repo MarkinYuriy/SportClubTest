@@ -14,11 +14,19 @@ public class Slot {
 	@Id
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(unique=true, nullable = false, updatable = false )
-	Date startTime;
+	private Date startTime;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(unique=true, nullable = false, updatable = false )
-	Date endTime;
+	private Date endTime;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Slot() {	}
 
 	/*public int getId() {

@@ -14,7 +14,15 @@ public class Exercise {
 	
 	private String name;
 	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	@Override
 	public String toString() {

@@ -63,7 +63,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 	private static final int N_SLOTS = 150;
 
 	private static final String FORMATION_NAME = "4-4-2";
-	private static final String POSITIONS_LIST="GK LFB LCB RCB RFB LSM LCM RCM RSM LCF RCF";
+	private static final String POSITIONS_LIST = "GK LFB LCB RCB RFB LSM LCM RCM RSM LCF RCF";
 	Random random = new Random();
 	RandomData rd = new RandomData();
 	CourtSchedule fsGlobal;
@@ -116,7 +116,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		for (Profiler el : profiles) {
 
 			el.setDescription(rd.randomDescription());
-			//el.setCode(rd.randomCode());
+			// el.setCode(rd.randomCode());
 			el.setEmail(rd.randomEmail());
 			el.setLastName(rd.randomLastName());
 			el.setLogin(rd.randomLogin());
@@ -148,7 +148,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		formation.setName(FORMATION_NAME);
 		formation.setPositions(POSITIONS_LIST);
 		em.persist(formation);
-		
+
 	}
 
 	private void addRandomCourt(int n) {
@@ -206,7 +206,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			ath.setTeams(teamAth);
 			aths.add(ath);
 		}
-		
+
 		for (int i = 0; i < 5; i++) {
 
 			Profiler assistCoach = new AssitTeamCoach();
@@ -215,19 +215,19 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			assistCoach.setTeams(teamAth);
 			aths.add(assistCoach);
 		}
-		
+
 		Profiler teamCoach = new TeamCoach();
 		Set<Team> teamAth = new LinkedHashSet<Team>();
 		teamAth.add(team);
 		teamCoach.setTeams(teamAth);
 		aths.add(teamCoach);
-		
+
 		return aths;
 
 	}
-	
-	private List<Profiler> addRandomCoaches(Team team){
-		
+
+	private List<Profiler> addRandomCoaches(Team team) {
+
 		List<Profiler> aths = new LinkedList<Profiler>();
 		for (int i = 0; i < 5; i++) {
 
@@ -239,7 +239,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		}
 
 		return aths;
-		
+
 	}
 
 	private Date randomBirthday() {
@@ -275,7 +275,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 
 		Event event = new Event();
 		setEventData(event);
-		
+
 		Query q = em.createQuery("from Slot");
 		List<Slot> slots = q.getResultList();
 		Slot slot = slots.get(random.nextInt(slots.size()));
@@ -301,7 +301,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		}
 		diary.add(event);
 
-		//em.flush();
+		// em.flush();
 		club.setDiary(diary);
 		em.persist(club);
 	}
@@ -313,7 +313,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			Training tr = new Training();
 			setEventData(tr);
 			putTeamDataToEvent(tr);
-			
+
 			Query q = em.createQuery("from TrainingPool tp");
 			List<TrainingPool> tps = new ArrayList<TrainingPool>();
 			tps = q.getResultList();
@@ -321,17 +321,17 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			TrainingPool tp = new TrainingPool();
 			tp = tps.get(random.nextInt(size));
 			tr.setTrainingPool(tp);
-						
+
 			setEventScheduleAndPersist(tr);
 
-			}
+		}
 
 		return false;
 
 	}
 
 	private void setEventScheduleAndPersist(Event event) {
-		
+
 		Slot slot = new Slot();
 		Query q = em.createQuery("select sl from Slot sl");
 		@SuppressWarnings("unchecked")
@@ -348,16 +348,18 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		recordNewLineToClubDiary(event);
 		int courtQuantity = 0;
 		int courtPartitionType = fs.getCourtPartitionType();
-		
-		if(courtPartitionType==0){
-				if(event instanceof Game)courtQuantity=1;
-				else courtQuantity=1+random.nextInt(3);
+
+		if (courtPartitionType == 0) {
+			if (event instanceof Game)
+				courtQuantity = 1;
+			else
+				courtQuantity = 1 + random.nextInt(3);
+		} else {
+			courtQuantity = courtPartitionType;
 		}
-		else {courtQuantity = courtPartitionType;}
-		
+
 		Class<?> c = fs.getClass();
-		
-		
+
 		for (int i = 1; i <= courtQuantity; i++) {
 
 			try {
@@ -368,9 +370,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 					fs.setCourtPartitionType(courtQuantity);
 					System.out.println(fs);
 					em.persist(fs);
-					
-					
-					
+
 					break;
 
 				}
@@ -401,7 +401,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		thisTeam.add(team);
 		event.setTeams(thisTeam);
 		return team;
-		
+
 	}
 
 	private void setEventData(Event event) {
@@ -515,42 +515,38 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			List<Exercise> exs = q.getResultList();
 			List<ExerciseSession> etds = new ArrayList<ExerciseSession>();
 			for (Exercise ex : exs) {
-				ExerciseSession es = new ExerciseSession(ex, random.nextInt(20), random.nextInt(20), random.nextInt(20));
-				
+				ExerciseSession es = new ExerciseSession(ex, random.nextInt(20), random.nextInt(20),
+						random.nextInt(20));
+
 				em.persist(es);
 				etds.add(es);
 
 			}
 			tp.setExercises(etds);
 
-			
-			//tp.setEquipmentPoolData(epds);
 			q = em.createQuery("from Goal e");
 			List<Goal> gls = q.getResultList();
 			Set<Goal> glsSet = new HashSet<Goal>();
 			glsSet.addAll(gls);
-
 			tp.setGoals(glsSet);
-
 			em.persist(tp);
 			tp = em.find(TrainingPool.class, tp.getId());
+
 			q = em.createQuery("from EquipmentPool e");
 			List<EquipmentPool> equipments = q.getResultList();
-			
-			//Set<EquipmentPoolData>epds = new HashSet<>();
-			
+
+			List<EquipmentPoolData> epds = new ArrayList<>();
 			for (EquipmentPool equipment : equipments) {
 				EquipmentPoolData epd = new EquipmentPoolData();
-				epd.setTrainingPool(tp);
+
 				epd.setEquipmentPool(equipment);
 				epd.setQuantity(random.nextInt(20));
 				em.persist(epd);
-				
-				//epds.add(epd);
+				epds.add(epd);
 
 			}
-			
-			
+			tp.setEpd(epds);
+
 		}
 
 		return true;
@@ -564,55 +560,54 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		Game game = new Game();
 		Team team = putTeamDataToEvent(game);
 		setEventData(game);
-		
+
 		game.setOpponent("opponent" + random.nextInt(20));
 		setStartStaff(game, team);
-		
+
 		setEventScheduleAndPersist(game);
-}
+	}
 
 	private void setStartStaff(Game game, Team team) {
-		
+
 		StartStaff sst = new StartStaff();
-		//get all participants of the game
+		// get all participants of the game
 		Query q = em.createQuery("select p from Profiler p join p.teams t where t.id=:tId and p.class='Coach'");
 		q.setParameter("tId", team.getId());
-		
-		//add coaches
+
+		// add coaches
 		List<Coach> coaches = q.getResultList();
 		sst.setCoaches(coaches);
-				
-				
+
 		q = em.createQuery("select p from Team t join t.profiles p where t.id=:tId and p.class='Athlete'");
 		q.setParameter("tId", team.getId());
-		//add reserve players
+		// add reserve players
 		List<Athlete> athletes = q.getResultList();
 		List<Athlete> reserve = new ArrayList<Athlete>();
-		for(int i=13;i<18;i++){
-			
+		for (int i = 13; i < 18; i++) {
+
 			reserve.add(athletes.get(i));
-			
+
 		}
 		sst.setReserve(reserve);
-		
-		//add main staff to composition
+
+		// add main staff to composition
 		List<Athlete> mainStaff = new ArrayList<Athlete>();
-		for(int i=0; i<12;i++){
+		for (int i = 0; i < 12; i++) {
 			mainStaff.add(athletes.get(i));
 		}
-		
+
 		Formation formation = em.find(Formation.class, FORMATION_NAME);
 		sst.setFormation(formation);
 		sst.setCompositionKeysByFormation(formation);
 		Map<String, Athlete> map = sst.getComposition();
-		int i=0;
-		
-		for(Map.Entry<String, Athlete> pair: map.entrySet()){
-			
+		int i = 0;
+
+		for (Map.Entry<String, Athlete> pair : map.entrySet()) {
+
 			pair.setValue(mainStaff.get(i));
 			i++;
 		}
-				
+
 		em.persist(sst);
 		game.setStartStaff(sst);
 	}

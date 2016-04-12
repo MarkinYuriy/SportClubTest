@@ -18,6 +18,16 @@ public class TrainingPool {
 	private String name;
 	private String description;
 	private int level;
+
+	private boolean deleted;
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@ManyToMany
 	private Set<Goal>goals=new HashSet<Goal>();
 	
@@ -77,56 +87,20 @@ public class TrainingPool {
 	}
 	
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy ="trainingPool", cascade = 
-	    {CascadeType.PERSIST, CascadeType.MERGE})
-	    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
-	private Set<EquipmentPoolData> equipmentPoolData = new HashSet<EquipmentPoolData>();*/
-	/*@ElementCollection
-    @CollectionTable(name="equipmentPoolData")
-    @MapKeyJoinColumn(name="equipmentId")
-    @Column(name="quantity", nullable = false, columnDefinition = "int default 0")
-    private Map<EquipmentPool, Integer> equipmentPoolData;
-	
-	public Map<EquipmentPool, Integer> getEquipmentPoolData() {
-		return equipmentPoolData;
-	}
-
-	public void setEquipmentPoolData(Map<EquipmentPool, Integer> equipmentPoolData) {
-		this.equipmentPoolData = equipmentPoolData;
-	}
-	
-	public void setEquipmentPoolDataValue(EquipmentPool ep, int quantity){
-		equipmentPoolData.put(ep, quantity);
-	}*/
-
-	/*@ElementCollection
-    @CollectionTable(name="exerciseData")
-    @MapKeyJoinColumn(name="exerciseId")*/
-	
-	/*public Set<EquipmentPoolData> getEquipmentPoolData() {
-		return equipmentPoolData;
-	}
-
-	public void setEquipmentPoolData(Set<EquipmentPoolData> equipmentPoolData) {
-		this.equipmentPoolData = equipmentPoolData;
-	}*/
-
-	/*public Map<Exercise, ExerciseSession> getExercises() {
-		return exercises;
-	}
-
-	public void setExercises(Map<Exercise, ExerciseSession> exercises) {
-		this.exercises = exercises;
-	}
-	
-	public void setExercisesDataValue(Exercise ep,ExerciseSession es){
-		exercises.put(ep, es);
-	}*/
 	@OneToMany
     private List<ExerciseSession> exercises;
 	
+	@OneToMany
+	private List<EquipmentPoolData> epd;
 	
-	
+	public List<EquipmentPoolData> getEpd() {
+		return epd;
+	}
+
+	public void setEpd(List<EquipmentPoolData> epd) {
+		this.epd = epd;
+	}
+
 	public List<ExerciseSession> getExercises() {
 		return exercises;
 	}

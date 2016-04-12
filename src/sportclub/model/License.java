@@ -15,7 +15,15 @@ public class License {
 	private int id;
 	private String code;
 	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public License() {}
 	
 	public License(String code, String description) {

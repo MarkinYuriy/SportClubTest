@@ -7,12 +7,13 @@ import javax.persistence.*;
 public class Goal {
 
 	@Id
-	@GeneratedValue
-	int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 	
-	String name;
-	String description;
-	boolean deleted;
+	private String name;
+	private String description;
+	private boolean deleted;
+	
 	public boolean isDeleted() {
 		return deleted;
 	}

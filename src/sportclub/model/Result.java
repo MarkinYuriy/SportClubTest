@@ -8,8 +8,8 @@ import sportclub.profile.Profiler;
 @Embeddable
 public class Result {
 	
-	String name;
-	String description;
+	private String name;
+	private String description;
 	
 	public Result() {	}
 

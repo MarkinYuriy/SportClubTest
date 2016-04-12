@@ -8,12 +8,12 @@ public class GameAthletes {
 
 	@Id
 	@GeneratedValue
-	int id;
+	private int id;
 	
-	int grade;
-	int fouls;
-	String position;
-	String description;
+	private int grade;
+	private int fouls;
+	private String position;
+	private String description;
 	
 	public GameAthletes() {	}
 

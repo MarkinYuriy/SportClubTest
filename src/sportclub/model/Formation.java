@@ -12,9 +12,17 @@ public class Formation {
 	}
 
 	@Id
-	String name;
-	String positions;
+	private String name;
+	private String positions;
 	
+	private boolean deleted;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Formation() {	}
 	
 	/*public int getFormationId() {

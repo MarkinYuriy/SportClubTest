@@ -15,7 +15,16 @@ public class Club {
 	private String name;
 	private String location;
 	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Club() {}
 
 	public int getId() {

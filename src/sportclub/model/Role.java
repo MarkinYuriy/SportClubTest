@@ -13,7 +13,15 @@ public class Role {
 	int id;*/
 	private String idCode;
 	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Role() {
 		}
 

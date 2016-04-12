@@ -13,18 +13,28 @@ import sportclub.profile.Profiler;
 @Entity
 public class Team {
 	
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
-				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
-	}
+	
 
 	@Id
-	@GeneratedValue
-	int id;
-	String name;
-	String description;
-	boolean deleted;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	private String name;
+	private String description;
+	private boolean deleted;
+
+	@OneToMany
+	private Set<ImageBank> photos;
+	
+	@OneToMany
+	private List<GameTeams> results;
+	
+	@ManyToMany(mappedBy="teams")
+	private Set<Event> diary;
+	
+	@ManyToMany(mappedBy = "teams")
+	private Set<Profiler> profiles;
+	
+	public Team() {}
 	
 	public boolean isDeleted() {
 		return deleted;
@@ -58,22 +68,6 @@ public class Team {
 		this.diary = diary;
 	}
 
-	@OneToMany
-	Set<ImageBank> photos;
-	@OneToMany
-	List<GameTeams> results;
-	
-	@ManyToMany(mappedBy="teams")
-	Set<Event> diary;
-	
-	@ManyToMany(mappedBy = "teams")
-	Set<Profiler> profiles;
-	
-	
-
-	
-	public Team() {}
-
 	public int getId() {
 		return id;
 	}
@@ -105,5 +99,9 @@ public class Team {
 	public void setProfiles(Set<Profiler> profiles) {
 		this.profiles = profiles;
 	}
-
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
+				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
+	}
 }

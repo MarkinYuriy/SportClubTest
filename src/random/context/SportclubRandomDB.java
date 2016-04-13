@@ -45,6 +45,7 @@ import sportclub.model.Team;
 import sportclub.model.Training;
 import sportclub.model.TrainingPool;
 import sportclub.nodeprocessor.RoleGenerator;
+import sportclub.profile.AdminManagerClub;
 import sportclub.profile.AssitTeamCoach;
 import sportclub.profile.Athlete;
 import sportclub.profile.Coach;
@@ -215,7 +216,8 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			assistCoach.setTeams(teamAth);
 			aths.add(assistCoach);
 		}
-
+		 AdminManagerClub admin = new AdminManagerClub();
+		aths.add(admin);
 		Profiler teamCoach = new TeamCoach();
 		Set<Team> teamAth = new LinkedHashSet<Team>();
 		teamAth.add(team);

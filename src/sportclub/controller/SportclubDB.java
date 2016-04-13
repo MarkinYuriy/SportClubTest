@@ -81,7 +81,7 @@ public class SportclubDB implements ISportclubRepository {
 		}
 
 		if(exist){
-			Query query = em.createQuery("from "+SubProfiler+" p");
+			Query query = em.createQuery("from "+SubProfiler+" p where deleted=false");
 			res = query.getResultList();
 		}
 		return res;
@@ -345,7 +345,7 @@ System.out.println("getAnyRequest");
 	public Iterable<Role> getRoles(String id) {
 		Query query=null;
 		if(id.length()>0){
-			query = em.createQuery("from Role r where id='"+id+"'");
+			query = em.createQuery("from Role r where id='"+id+"' and deleted=false");
 		}else{
 			query = em.createQuery("from Role r");
 		}
@@ -358,25 +358,25 @@ System.out.println("getAnyRequest");
 	//@Transactional
 
 	public Iterable<Club> getClubs() {
-		Query query = em.createQuery("from Club c");
-		
-		
+		Query query = em.createQuery("from Club c where deleted=false");
 		return query.getResultList();
-
 	}
 	
-	public Iterable<Club> getClubs(long id) {
-		Query query = em.createQuery("from Club c where id='"+id+"'");
-		return query.getResultList();
+	public Club getClub(int id) {
+		Query query = em.createQuery("from Club c where id=:id and deleted=false");
+		query.setParameter("id", id);
+		
+		return (Club) query.getSingleResult();
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	//@Transactional
-	public Iterable<Team> getTeams(int id) {
-		Query query = em.createQuery("from Team t where id='"+id+"'");
-		return query.getResultList();
+	public Team getTeam(int id) {
+		Query query = em.createQuery("from Team t where id=:id and deleted=false");
+		query.setParameter("id", id);
+		return (Team) query.getSingleResult();
 
 	}
 
@@ -384,15 +384,26 @@ System.out.println("getAnyRequest");
 	@Override
 	//@Transactional
 	public Iterable<Team> getTeams() {
-		Query query = em.createQuery("from Team t");
+		Query query = em.createQuery("select t.name, t.description, profiles from Team t join t.profiles profiles where t.deleted=false");
+		
+		
 		return query.getResultList();
 
 	}
 
 	@Override
-	public Iterable<Profiler> getProfiles(String SubProfiler, long id) {
+	public Profiler getProfile(String SubProfiler, String id) {
 
-		Iterable<Profiler> res=null;
+		Profiler prf = null;
+		/*Class<? extends Profiler> prfClass;
+		try {
+			prfClass = (Class<? extends Profiler>) Class.forName(SubProfiler);
+			prf = prfClass.newInstance();
+			
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		//System.out.println("Sub "+SubProfiler);
 		String[] subClasses = {
 				"AdminManagerClub",
@@ -420,10 +431,18 @@ System.out.println("getAnyRequest");
 
 		if(exist){
 			//from Athlete a where id='8805712271700122315'
-			Query query = em.createQuery("from "+SubProfiler+" p where id='"+id+"'");
-			res = query.getResultList();
+			Query query = em.createQuery("from "+SubProfiler+" p where code="+"'"+id+"'"+"and deleted=false");
+			//query.setParameter("code", id);
+			
+			try {
+				prf =(Profiler) query.getSingleResult();
+			} catch (javax.persistence.NoResultException e) {
+				// TODO Auto-generated catch block
+				e.getMessage();
+			}
+			System.out.println(prf.toString());
 		}
-		return res;
+		return prf;
 	}
 
 }

@@ -63,7 +63,8 @@ public class Athlete extends Profiler {
 
 	@Override
 	public String toString() {
-		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", games=" + games + "]";
+		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
+				+ federationPlayer + ", games=" + games + "]";
 	}
 	
 

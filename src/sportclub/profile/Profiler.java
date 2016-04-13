@@ -39,6 +39,15 @@ public class Profiler implements Serializable{
     @Column(name="profilerId", columnDefinition ="CHAR(32)" )
     @Id
     private String code;
+	@Override
+	public String toString() {
+		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
+				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+				+ "]";
+	}
+
+
 	@Column(nullable = false)
 	private String login; 
 	@Column(nullable = false)

@@ -66,8 +66,6 @@ public class Event {
 		this.googleMapLink = googleMapLink;
 	}
 	
-	
-
 	public Slot getSlots() {
 		return slots;
 	}

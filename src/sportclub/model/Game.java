@@ -18,6 +18,15 @@ public class Game extends Event {
 	Date extraTime;
 	@OneToOne
 	StartStaff startStaff;
+	@ManyToMany
+	@JoinTable(name="game_athl",
+	joinColumns={@JoinColumn(name="game_id", referencedColumnName="id")})
+	List<Athlete> athletes;
+	@ManyToMany
+	@JoinTable(name="game_coach",
+	joinColumns={@JoinColumn(name="game_id", referencedColumnName="id")})
+	List<Coach> coach;
+	
 	
 	public StartStaff getStartStaff() {
 		return startStaff;
@@ -63,6 +72,21 @@ public class Game extends Event {
 		this.extraTime = extraTime;
 	}
 
+	public List<Athlete> getAthletes() {
+		return athletes;
+	}
+
+	public void setAthletes(List<Athlete> athletes) {
+		this.athletes = athletes;
+	}
+
+	public List<Coach> getCoach() {
+		return coach;
+	}
+
+	public void setCoach(List<Coach> coach) {
+		this.coach = coach;
+	}
 	
 	//@ManyToMany
 	//List<GameComposition> compositions;

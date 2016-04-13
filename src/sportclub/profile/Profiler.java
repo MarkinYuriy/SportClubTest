@@ -23,6 +23,7 @@ public class Profiler {
 	String email;
 	String position;
 	String description;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	Set<Role> roles;
 	

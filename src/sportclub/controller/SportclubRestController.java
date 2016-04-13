@@ -79,7 +79,7 @@ public class SportclubRestController {
 	@RequestMapping(value=SportclubConstants.GET_PROFILES+ "/{SubProfiler}"+ "/{id}", method=RequestMethod.GET)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler, @PathVariable long id) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
 		String res="";
-		Iterable<Profiler> listProfiles = profiles.getProfiles(SubProfiler,id);
+		Profiler listProfiles = profiles.getProfiles(SubProfiler,id);
 		if (listProfiles !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
 			String stri = new ObjectMapper().writeValueAsString(listProfiles);
@@ -99,7 +99,7 @@ public class SportclubRestController {
 	@RequestMapping(value=SportclubConstants.GET_CLUBS+ "/{id}", method=RequestMethod.GET)
 	public @ResponseBody String getClubs(@PathVariable long id) throws JsonGenerationException, JsonMappingException, IOException {
 		String res="";
-		Iterable<Club> listClubs = profiles.getClubs(id);
+		Club listClubs = profiles.getClubs(id);
 		if (listClubs !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
 			String stri = new ObjectMapper().writeValueAsString(listClubs);
@@ -150,7 +150,7 @@ public class SportclubRestController {
 	@RequestMapping(value=SportclubConstants.GET_TEAMS+"/{id}", method=RequestMethod.GET)
 	public @ResponseBody String getTeams(@PathVariable int id) throws JsonGenerationException, JsonMappingException, IOException {
 		String res="";
-		Iterable<Team> listTeams = profiles.getTeams(id);
+		Team listTeams = profiles.getTeams(id);
 		if (listTeams !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
 			String stri = new ObjectMapper().writeValueAsString(listTeams);
@@ -253,14 +253,12 @@ public class SportclubRestController {
 	@ResponseBody
     public String updateTeam(@RequestBody Team team) {
 		String res ="";
-    	profiles.addTeam(team);
-    	
-		Iterable<Team> listTeams = profiles.getTeams(team.getId());
-		if (listTeams !=null){
+		if (profiles.updateTeam(team)){
+			Team resTeam = profiles.getTeams(team.getId());
 			res+="{\"Status\":\"Success\",\"Data\":";
 			String stri="";
 			try {
-				stri = new ObjectMapper().writeValueAsString(listTeams);
+				stri = new ObjectMapper().writeValueAsString(resTeam);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				// e.printStackTrace();
@@ -296,11 +294,47 @@ System.out.println("query");
 			String h = ser.exclude("diary").deepSerialize(t);
 
 			System.out.println(h);}
-
 		
-		
-		
-		
+	}
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_CLUB, method = RequestMethod.POST)
+	@ResponseBody String updateClub(@RequestBody Club club){
+		String res="";
+		if (profiles.updateClub(club)){
+			Club resClub = profiles.getClubs(club.getId());
+			res+="{\"Status\":\"Success\",\"Data\":";
+			String stri="";
+			try {
+				stri = new ObjectMapper().writeValueAsString(resClub);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_PROFILER+"{/subProfiler}", method = RequestMethod.POST)
+	@ResponseBody String updateProfiler(@RequestBody Profiler profiler, @PathVariable String subProfiler){
+		String res="";
+		if (profiles.updateProfiler(profiler)){
+			Profiler resProfiler = profiles.getProfiles(subProfiler, profiler.getCode());
+			res+="{\"Status\":\"Success\",\"Data\":";
+			String stri="";
+			try {
+				stri = new ObjectMapper().writeValueAsString(resProfiler);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
 	}
 
 

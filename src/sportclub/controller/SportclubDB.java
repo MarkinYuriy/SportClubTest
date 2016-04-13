@@ -365,18 +365,20 @@ System.out.println("getAnyRequest");
 
 	}
 	
-	public Iterable<Club> getClubs(long id) {
+	public Club getClubs(long id) {
 		Query query = em.createQuery("from Club c where id='"+id+"'");
-		return query.getResultList();
+		Club resClub = (Club) query.getSingleResult();
+		return resClub;
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	//@Transactional
-	public Iterable<Team> getTeams(int id) {
+	public Team getTeams(int id) {
 		Query query = em.createQuery("from Team t where id='"+id+"'");
-		return query.getResultList();
+		Team resTeam = (Team) query.getSingleResult();
+		return resTeam;
 
 	}
 
@@ -390,9 +392,9 @@ System.out.println("getAnyRequest");
 	}
 
 	@Override
-	public Iterable<Profiler> getProfiles(String SubProfiler, long id) {
+	public Profiler getProfiles(String SubProfiler, long id) {
 
-		Iterable<Profiler> res=null;
+		Profiler res=null;
 		//System.out.println("Sub "+SubProfiler);
 		String[] subClasses = {
 				"AdminManagerClub",
@@ -420,10 +422,58 @@ System.out.println("getAnyRequest");
 
 		if(exist){
 			//from Athlete a where id='8805712271700122315'
-			Query query = em.createQuery("from "+SubProfiler+" p where id='"+id+"'");
-			res = query.getResultList();
+			Query query = em.createQuery("from "+SubProfiler+" p where p.id='"+id+"'");
+			res = (Profiler) query.getSingleResult();
 		}
 		return res;
+	}
+
+	@Override
+	public boolean updateTeam(Team team) {
+		/*Query q = em.createQuery("from Team t Where t.id=?1");
+		q.setParameter(1, team.getId());
+		Team teamTmp = (Team) q.getSingleResult();*/
+		Team resTeam = em.find(Team.class, team.getId());
+		if(resTeam!=null){
+			resTeam.setName(team.getName());
+			resTeam.setDescription(team.getDescription());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateClub(Club club) {
+		/*Query q = em.createQuery("from Club c Where c.id=?1");
+		q.setParameter(1, club.getId());
+		Club cl = (Club) q.getSingleResult();*/
+		Club cl = em.find(Club.class, club.getId());
+		if(cl!=null){
+			cl.setName(club.getName());
+			cl.setLocation(club.getLocation());
+			cl.setDescription(club.getDescription());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateProfiler(Profiler profiler) {
+		/*Query q = em.createQuery("from "+subProfiler+" p Where p.code=?1");
+		q.setParameter(1, profiler.getCode());
+		Profiler pr = (Profiler) q.getSingleResult();*/
+		Profiler pr = em.find(Profiler.class, profiler.getCode());
+		if(pr!=null){
+			pr.setLogin(profiler.getLogin());
+			pr.setPassword(profiler.getPassword());
+			pr.setName(profiler.getName());
+			pr.setLastName(profiler.getLastName());
+			pr.setEmail(profiler.getEmail());
+			pr.setPosition(profiler.getPosition());
+			pr.setDescription(profiler.getDescription());
+			return true;
+		}
+		return false;
 	}
 
 }

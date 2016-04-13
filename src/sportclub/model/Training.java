@@ -8,10 +8,13 @@ import javax.persistence.*;
 public class Training extends Event {
 	
 	
-	
-	
 	String results;
 	int resultsPercent;
+	
+	@ManyToOne
+	TrainingPool trainingPool;
+	/*@OneToMany
+	List<Result> resultes;*/
 	
 	public Training() {
 		super();
@@ -33,13 +36,6 @@ public class Training extends Event {
 	public void setResultsPercent(int resultsPercent) {
 		this.resultsPercent = resultsPercent;
 	}
-	
-	@ManyToOne
-	TrainingPool trainingPool;
-	/*@OneToMany
-	List<Result> resultes;*/
-	
-
 
 	public TrainingPool getTrainingPool() {
 		return trainingPool;

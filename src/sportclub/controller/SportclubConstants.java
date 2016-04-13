@@ -14,6 +14,9 @@ public interface SportclubConstants {
 	String ADD_FIELD = "/addField";
 	String ADD_ATHLETE = "/addAthelet";
 	String CREATE_RANDOM_DB = "/createRandomDB";
+	String UPDATE_TEAM = "/updateTeam";
+	String UPDATE_CLUB = "/updateClub";
+	String UPDATE_PROFILER = "/updateProfiler";
 	
 	
 }

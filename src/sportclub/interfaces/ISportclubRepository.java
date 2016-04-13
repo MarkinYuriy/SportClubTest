@@ -40,19 +40,22 @@ public Iterable<Object> getAnyRequest(String jpql) throws JsonGenerationExceptio
 Iterable<Role> getRoles(String id);
 
 Iterable<Club> getClubs();
-Iterable<Club> getClubs(long id);
+Club getClubs(long id);
 
 
-Iterable<Team> getTeams(int id);
+Team getTeams(int id);
 
 Iterable<Team> getTeams();
 
-Iterable<Profiler> getProfiles(String subProfiler, long id);
+Profiler getProfiles(String subProfiler, long id);
 
 
 
 boolean addProfiler(Profiler profiler, String subProfiler);
 
+boolean updateTeam(Team team);
+boolean updateClub(Club club);
+boolean updateProfiler(Profiler profiler);
 
 
 }

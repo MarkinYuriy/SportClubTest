@@ -71,4 +71,29 @@ public class Team {
 		this.profiles = profiles;
 	}
 
+	public Set<ImageBank> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(Set<ImageBank> photos) {
+		this.photos = photos;
+	}
+
+	public List<GameTeams> getResults() {
+		return results;
+	}
+
+	public void setResults(List<GameTeams> results) {
+		this.results = results;
+	}
+
+	public List<Event> getDiary() {
+		return diary;
+	}
+
+	public void setDiary(List<Event> diary) {
+		this.diary = diary;
+	}
+	
+
 }

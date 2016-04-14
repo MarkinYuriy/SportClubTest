@@ -47,10 +47,7 @@ public class Profiler implements Serializable{
 				+ "]";
 	}
 
-
-	@Column(nullable = false)
 	private String login; 
-	@Column(nullable = false)
 	private String password;
 	private String name;
 	private String lastName;

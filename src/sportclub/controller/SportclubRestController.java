@@ -57,6 +57,27 @@ public class SportclubRestController {
 		return profiles.removeProfile(id);
 	}
 	
+	
+	@RequestMapping(value=SportclubConstants.SIGN_IN, method=RequestMethod.POST)
+	public @ResponseBody String signIn(@RequestBody LoginPassword lp){
+		System.out.println(lp.toString());
+String uid = profiles.signIn(lp);	
+
+String res="";
+if (uid !=null){
+	res+="{\"Status\":\"Success\",\"Data\":";
+	
+	String stri = uid+"";
+	res+=stri+"}";
+}else{
+	res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+}
+	//System.out.println(res);	
+
+		return "answer";
+	}
+	
+	
 	@RequestMapping(value=SportclubConstants.GET_PROFILES+"/{SubProfiler}", method=RequestMethod.POST)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
 			return JSONToClient(profiles.getProfiles(SubProfiler));

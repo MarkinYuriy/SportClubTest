@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import sportclub.profile.*;
+import sportclub.controller.LoginPassword;
 import sportclub.model.*;
 
 public interface ISportclubRepository {
@@ -52,6 +53,9 @@ Team getTeam(int id);
 
 
 boolean addProfiler(Profiler profiler, String subProfiler);
+
+
+String signIn(LoginPassword lp);
 
 
 

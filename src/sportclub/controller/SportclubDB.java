@@ -445,4 +445,16 @@ System.out.println("getAnyRequest");
 		return prf;
 	}
 
+	@Override
+	public String signIn(LoginPassword lp) {
+		//sportclub.profiler WHERE login='login76952' AND password='password99356';
+		Query q = em.createNativeQuery("SELECT p.profilerId "
+				+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
+		q.setParameter(1, lp.getLogin());
+		q.setParameter(2, lp.getPassword());
+		String id = (String) q.getSingleResult();
+		System.out.println(id);
+		return id;
+	}
+
 }

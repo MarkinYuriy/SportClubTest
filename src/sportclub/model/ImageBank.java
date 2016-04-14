@@ -14,13 +14,22 @@ public class ImageBank {
 	}
 
 	@Id
-	@GeneratedValue
-	int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
 	
-	String imageName;
-	String linkToFile;
-	String descriptions;
+	private String imageName;
+	private String linkToFile;
+	private String descriptions;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public ImageBank() {}
 
 	public int getId() {

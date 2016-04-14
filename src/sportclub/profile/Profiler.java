@@ -1,136 +1,172 @@
 package sportclub.profile;
 
+import java.io.Serializable;
+import java.util.Set;
+import java.util.UUID;
 
-import java.util.*;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import sportclub.model.ImageBank;
 import sportclub.model.Role;
 import sportclub.model.Team;
+import sportclub.model.Club;
 
 @Entity
-public class Profiler {
-	
-	@Id@GeneratedValue
-	@Column(name="profilerId")
-	long code;
-	/*String code; *///Don't set int id as var in this class
-	//@Column(nullable=false,unique=true)
-	String login; 
-	String password;
-	String name;
-	String lastName;
-	String email;
-	String position;
-	String description;
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Role> roles;
-	
-	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<ImageBank> photos;
-	
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Team> teams;
-	
-	public Profiler() {}
+public class Profiler implements Serializable {
 
+    public String getCode() {
+        return code;
+    }
 
-	public long getCode() {
-		return code;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 247213587096808684L;
+    /*@Id@GeneratedValue
+	@Column(name="profilerId")*/
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name = "profilerId", columnDefinition = "CHAR(32)")
+    @Id
+    private String code;
 
-	public void setCode(long code) {
-		this.code = code;
-	}
+    @Override
+    public String toString() {
+        return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+                + ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
+                + description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+                + "]";
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    @Column(nullable = false,unique = true)
+    private String login;
+    @Column(nullable = false)
+    private String password;
+    private String name;
+    private String lastName;
+    private String email;
+    private String position;
+    private String description;
+    private boolean deleted;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    private Set<Role> roles;
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    private Set<ImageBank> photos;
 
-	public String getPassword() {
-		return password;
-	}
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    private Set<Team> teams;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @ManyToOne
+    private Club club;
 
-	public String getName() {
-		return name;
-	}
+    public Profiler() {
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public Set<ImageBank> getPhotos() {
-		return photos;
-	}
+    public String getPosition() {
+        return position;
+    }
 
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public void setPhotos(Set<ImageBank> photos) {
-		this.photos = photos;
-	}
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public Set<Team> getTeams() {
-		return teams;
-	}
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
-	public void setTeams(Set<Team> teams) {
-		this.teams = teams;
-	}
+    public Set<ImageBank> getPhotos() {
+        return photos;
+    }
 
+    public void setPhotos(Set<ImageBank> photos) {
+        this.photos = photos;
+    }
 
-	
+    public Set<Team> getTeams() {
+        return teams;
+    }
 
-	
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
+    }
+
+    public Club getClub() {
+        return club;
+    }
+
+    public void setClub(Club club) {
+        this.club = club;
+    }
 
 }

@@ -11,11 +11,18 @@ public class Formation {
 		return "Formation [name=" + name + ", positions=" + positions + "]";
 	}
 
-	@Id/*@GeneratedValue
-	int formationId;*/
-	String name;
-	String positions;
+	@Id
+	private String name;
+	private String positions;
 	
+	private boolean deleted;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Formation() {	}
 	
 	/*public int getFormationId() {

@@ -16,5 +16,7 @@
   <property name="hibernate.order_inserts">true</property>
   <property name="hibernate.query.jpaql_strict_compliance">true</property>
   <property name="hibernate.query.startup_check">true</property>
+  
+   
  </session-factory>
 </hibernate-configuration>

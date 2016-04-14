@@ -8,11 +8,11 @@ public class GameTeams {
 	
 	@Id
 	@GeneratedValue
-	int id;
+	private int id;
 	
-	int grade;
-	String result;
-	String description;
+	private int grade;
+	private String result;
+	private String description;
 	
 	public GameTeams() {	}
 

@@ -9,11 +9,20 @@ import sportclub.model.GameAthletes;
 @Entity
 public class Athlete extends Profiler {
 	
-	int number;
-	String type;
+	private int number;
+	private String type;
 	@Temporal(TemporalType.TIMESTAMP)
-	Date birthday;
+	private Date birthday;
+	private boolean federationPlayer;
 	
+	public boolean isFedPlayer() {
+		return federationPlayer;
+	}
+
+	public void setFedPlayer(boolean fedPlayer) {
+		this.federationPlayer = fedPlayer;
+	}
+
 	public Athlete() {
 		super();
 	}
@@ -50,11 +59,12 @@ public class Athlete extends Profiler {
 	}
 
 	@OneToMany
-	List<GameAthletes> games;
+	private List<GameAthletes> games;
 
 	@Override
 	public String toString() {
-		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", games=" + games + "]";
+		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
+				+ federationPlayer + ", games=" + games + "]";
 	}
 	
 

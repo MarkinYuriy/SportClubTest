@@ -32,27 +32,28 @@ boolean addGame(Game game);
 
 boolean addAthlete(Athlete ath,Team team);
 
-Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException;
 public Iterable<Object> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
 
 
+Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException;
+Profiler getProfile(String subProfiler, String id);
 
 Iterable<Role> getRoles(String id);
 
 Iterable<Club> getClubs();
-Iterable<Club> getClubs(long id);
-
-
-Iterable<Team> getTeams(int id);
+Club getClub(int id);
 
 Iterable<Team> getTeams();
 
-Iterable<Profiler> getProfiles(String subProfiler, long id);
+Team getTeam(int id);
+
+
 
 
 
 boolean addProfiler(Profiler profiler, String subProfiler);
+String login(String login, String password);
+boolean register(String id, Profiler profiler);
 
-
-
+ 
 }

@@ -19,6 +19,8 @@ public interface SportclubConstants {
 	String ADD_ATHLETE = "/addAthelet";
 	String CREATE_RANDOM_DB = "/createRandomDB";
         String ADD_CLUB = "/addClub";
+        String LOGIN = "/login";
+        String REGISTER = "/register";
 	
 	
 }

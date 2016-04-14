@@ -52,7 +52,8 @@ Team getTeam(int id);
 
 
 boolean addProfiler(Profiler profiler, String subProfiler);
-
+String login(String login, String password);
+boolean register(String id, Profiler profiler);
 
  
 }

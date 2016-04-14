@@ -1,15 +1,9 @@
 package sportclub.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -19,13 +13,9 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
-import random.context.RandomData;
 
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
-import sportclub.nodeprocessor.RoleGenerator;
 import sportclub.profile.*;
 
 /**
@@ -451,6 +441,23 @@ public class SportclubDB implements ISportclubRepository {
             System.out.println(prf.toString());
         }
         return prf;
+    }
+
+    @Override
+    public String login(String login, String password) {
+        //private String login;
+    //@Column(nullable = false)
+    //private String password;
+        
+         Query query = em.createQuery("select  p.id  from Profiler p  "
+                 + "where p.deleted=false and p.login='"+login+"' and p.password='"+password+"'");
+
+        return  (String)query.getSingleResult();
+    }
+
+    @Override
+    public boolean register(String id, Profiler profiler) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

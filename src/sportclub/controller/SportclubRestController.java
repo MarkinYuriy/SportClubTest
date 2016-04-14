@@ -35,6 +35,7 @@ import sportclub.model.*;
 import sportclub.model.Role;
 import sportclub.profile.Profiler;
 import sportclub.nodeprocessor.*;
+import utils.classes.LoginPassword;
 
 
 
@@ -230,6 +231,12 @@ System.out.println("query");
 		profiles.addClub(club);
 		System.out.println(club);
 
+	}
+        
+        @RequestMapping(value=SportclubConstants.LOGIN, method=RequestMethod.POST)
+	public @ResponseBody void login(@RequestBody LoginPassword loginPassword){
+		profiles.login(loginPassword.getLogin(), loginPassword.getPassword());
+		//
 	}
 
 }

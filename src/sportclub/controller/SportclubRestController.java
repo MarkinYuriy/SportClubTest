@@ -81,8 +81,9 @@ public class SportclubRestController {
 	@RequestMapping(value=SportclubConstants.GET_TEAMS, method=RequestMethod.POST)
 	public @ResponseBody String getTeams() throws JsonGenerationException, JsonMappingException, IOException {
 		Iterable<Team> teams = profiles.getTeams();
+                System.out.println(teams.toString());
 		String result = JSONToClient(teams);
-		//System.out.println(result);
+		System.out.println(result);
 		return result;
 	}
 		
@@ -223,5 +224,13 @@ System.out.println("query");
 		}
 		return res;
 	}
+        
+        @RequestMapping(value=SportclubConstants.ADD_CLUB, method=RequestMethod.POST)
+	public @ResponseBody void addClub(@RequestBody Club club){
+		profiles.addClub(club);
+		System.out.println(club);
+
+	}
 
 }
+

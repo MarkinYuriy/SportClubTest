@@ -61,26 +61,47 @@ public class SportclubRestController {
 	@RequestMapping(value=SportclubConstants.SIGN_IN, method=RequestMethod.POST)
 	public @ResponseBody String signIn(@RequestBody LoginPassword lp){
 		System.out.println(lp.toString());
-String uid = profiles.signIn(lp);	
+		String uid = profiles.signIn(lp);	
 
-String res="";
-if (uid !=null){
-	res+="{\"Status\":\"Success\",\"Data\":";
+		String res="";
+		if (uid !=null){
+			res+="{\"Status\":\"Success\",\"Data\":";
 	
-	String stri = uid+"";
-	res+=stri+"}";
-}else{
-	res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-}
+			String stri = uid+"";
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Authorization error\"}";
+		}
 	//System.out.println(res);	
 
-		return "answer";
+		return res;
 	}
 	
+	@RequestMapping(value=SportclubConstants.REGISTRATION, method=RequestMethod.POST)
+	public @ResponseBody String registration(@RequestBody LoginPassword lp){
+		System.out.println(lp.toString());
+		String uid = profiles.registration(lp);	
+
+		String res="";
+		if (uid !=null){
+			res+="{\"Status\":\"Success\",\"Data\":";
+	
+			String stri = uid+"";
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"User exist\"}";
+		}
+	//System.out.println(res);	
+
+		return res;
+	}
 	
 	@RequestMapping(value=SportclubConstants.GET_PROFILES+"/{SubProfiler}", method=RequestMethod.POST)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
-			return JSONToClient(profiles.getProfiles(SubProfiler));
+		System.out.println("GET_PROFILES");	
+		String h = JSONToClient(profiles.getProfiles(SubProfiler));
+		System.out.println(h);
+		return h;
 	}
 	
 	@RequestMapping(value=SportclubConstants.GET_PROFILE+"/{SubProfiler}"+"/{id}", method=RequestMethod.POST)
@@ -175,16 +196,33 @@ if (uid !=null){
 	}
 
 	@RequestMapping(value=SportclubConstants.ADD_TEAM, method=RequestMethod.POST)
-	public @ResponseBody void addTeam(@RequestBody Team team){
-		profiles.addTeam(team);
-		System.out.println(team);
-
+	public @ResponseBody String addTeam(@RequestBody Team team){
+		System.out.println("add team");
+		boolean f = profiles.addTeam(team);
+		
+		String res=responseToJSONForAdd(f);
+		
+		return res;
 	}
-	
-	@RequestMapping(value=SportclubConstants.ADD_PROFILE+ "/{SubProfiler}", method=RequestMethod.POST)
-	public @ResponseBody void addProfile(@RequestBody Profiler profile,@PathVariable String SubProfiler){
-		profiles.addProfiler(profile,SubProfiler);
+		
+	private String responseToJSONForAdd(boolean f) {
+		String res="";
+		if (f){
+			res+="{\"Status\":\"Success\",\"Data\":\"record added\"}";
+			}
+		else res+="{\"Status\":\"Unsuccess\",\"Data\":\"data error or record not found\"}";
+		return res;
+	}
 
+	@RequestMapping(value=SportclubConstants.ADD_PROFILE+ "/{SubProfiler}", method=RequestMethod.POST)
+	public @ResponseBody String addProfile(@RequestBody Profiler profile,@PathVariable String SubProfiler){
+		
+		System.out.println("add profile");
+		boolean f = profiles.addProfiler(profile,SubProfiler);
+		
+		String res=responseToJSONForAdd(f);
+		
+		return res;
 		
 	}
 	

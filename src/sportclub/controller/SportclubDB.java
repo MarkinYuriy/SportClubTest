@@ -94,16 +94,18 @@ public class SportclubDB implements ISportclubRepository {
 	@Transactional
 	public boolean addTeam(Team team) {
 		boolean res = false;
-		Team finded = em.find(Team.class, team.getId());
+		
+		Query q = em.createQuery("from Team as team where team.name=?1");
+		q.setParameter(1, team.getName());
+		Team finded = (Team) q.getSingleResult();
 		if (finded== null) {
 
 			em.persist(team);
 
 			res = true;
-			//System.out.println("true");
+			
 		}else{
-			finded.setName(team.getName());
-			finded.setDescription(team.getDescription());
+			res=false;
 		}
 
 		return res;
@@ -116,50 +118,14 @@ public class SportclubDB implements ISportclubRepository {
 	public boolean addProfiler(Profiler profiler, String subProfiler) {
 		boolean res = false;
 		Profiler finded = em.find(Profiler.class, profiler.getCode());
+				
 		if (finded== null) {
-
 			em.persist(profiler);
-
 			res = true;
-			//System.out.println("true");
+			
 		}else{
-			finded.setName(profiler.getName());
-			finded.setDescription(profiler.getDescription());
-			finded.setEmail(profiler.getEmail());
-			finded.setLastName(profiler.getLastName());
-			finded.setLogin(profiler.getLogin());
-			finded.setPassword(profiler.getPassword());
-			finded.setPhotos(profiler.getPhotos());
-			finded.setPosition(profiler.getPosition());
-			finded.setRoles(profiler.getRoles());
-			finded.setTeams(profiler.getTeams());
-			
+			res=false;
 		}
-		boolean exist=false;
-		for(String str:subClasses){
-			if(str.equals(subProfiler)) {
-				exist = true;
-				break;
-			}
-
-		}
-
-	/*	if(exist){
-			try {
-				Class cl = Class.forName(subProfiler);
-				 java.lang.reflect.Field[] fields = cl.getFields();
-				 for (java.lang.reflect.Field field:fields){
-					 field.getName();
-				 }
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-		}*/
-
 		return res;
 	}
 	
@@ -448,13 +414,70 @@ System.out.println("getAnyRequest");
 	@Override
 	public String signIn(LoginPassword lp) {
 		//sportclub.profiler WHERE login='login76952' AND password='password99356';
-		Query q = em.createNativeQuery("SELECT p.profilerId "
-				+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
-		q.setParameter(1, lp.getLogin());
-		q.setParameter(2, lp.getPassword());
-		String id = (String) q.getSingleResult();
-		System.out.println(id);
+		String id;
+		try {
+			Query q = em.createNativeQuery("SELECT p.profilerId "
+					+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
+			q.setParameter(1, lp.getLogin());
+			q.setParameter(2, lp.getPassword());
+			id = (String) q.getSingleResult();
+			System.out.println(id);
+		} catch (javax.persistence.NoResultException e) {
+			id = null;
+		}
 		return id;
+	}
+
+	@Override
+	@Transactional
+	public String registration(LoginPassword lp) {
+		
+		String id;
+		try {
+			Query q = em.createNativeQuery("SELECT p.profilerId "
+					+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
+			q.setParameter(1, lp.getLogin());
+			q.setParameter(2, lp.getPassword());
+			id = (String) q.getSingleResult();
+			id = null;
+			System.out.println(id);
+		} catch (javax.persistence.NoResultException e) {
+			Profiler profile = selectorSubprofiles(lp.subprofile);
+			
+			profile.setLogin(lp.getLogin());
+			profile.setPassword(lp.getPassword());
+			
+			em.persist(profile);
+			
+			
+			id = profile.getCode();
+			System.out.println(id);
+		}
+		return id;
+		
+		
+		
+		
+	}
+
+	private Profiler selectorSubprofiles(String subprofile) {
+		
+		Profiler profile =null;
+		
+		switch(subprofile){
+		case "Athlete":  profile = new Athlete(); break;
+		case "AdminManagerClub":  profile = new AdminManagerClub(); break;
+		case "AssitPhysicCoach": profile = new AssitPhysicCoach(); break;
+		case "AssitTeamCoach": profile = new AssitTeamCoach(); break;
+		case "Parent":  profile = new Parent(); break;
+		case "PhysiologyCoach":  profile = new PhysiologyCoach(); break;
+		case "Psycholog": profile = new Psycholog(); break;
+		case "TeamAdminManager":  profile = new TeamAdminManager(); break;
+		case "ProffesionalManager": profile = new ProffesionalManager(); break;
+		case "TeamCoach": profile = new TeamCoach(); break; 
+					
+		}
+		return profile;
 	}
 
 }

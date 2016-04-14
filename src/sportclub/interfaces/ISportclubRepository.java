@@ -58,5 +58,8 @@ boolean addProfiler(Profiler profiler, String subProfiler);
 String signIn(LoginPassword lp);
 
 
+String registration(LoginPassword lp);
+
+
 
 }

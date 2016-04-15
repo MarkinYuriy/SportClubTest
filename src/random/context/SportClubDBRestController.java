@@ -15,7 +15,7 @@ import sportclub.controller.SportclubConstants;
 
 @Controller
 @Scope("session")
-@RequestMapping("/")
+@RequestMapping("/random")
 public class SportClubDBRestController {
 @Autowired ISportclubRandomDBRepository dbrepo;
 

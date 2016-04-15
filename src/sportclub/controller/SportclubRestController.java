@@ -2,14 +2,11 @@ package sportclub.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Query;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.JsonSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,16 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.gson.Gson;
 
 import flexjson.JSONSerializer;
-import flexjson.transformer.MapTransformer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import flexjson.JSONSerializer;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
@@ -67,7 +63,7 @@ public class SportclubRestController {
 		if (uid !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
 	
-			String stri = uid+"";
+			String stri = "\""+uid+"\"";
 			res+=stri+"}";
 		}else{
 			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Authorization error\"}";
@@ -86,10 +82,39 @@ public class SportclubRestController {
 		if (uid !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
 	
-			String stri = uid+"";
+			String stri = "\""+uid+"\"";
 			res+=stri+"}";
 		}else{
 			res+="{\"Status\":\"Unsuccess\",\"Data\":\"User exist\"}";
+		}
+	//System.out.println(res);	
+
+		return res;
+	}
+        
+        @RequestMapping(value=SportclubConstants.REGISTRATION+"/{id}", method=RequestMethod.POST)
+	public @ResponseBody String registrationWid(@PathVariable String id,@RequestBody LoginPassword lp){
+		Profiler p = profiles.registrationWid(id,lp);	
+
+		String res="";
+		if (p != null){
+			res+="{\"Status\":\"Success\",\"Data\":{";
+	
+			String stri="";
+                    try {
+                        stri = new ObjectMapper().writeValueAsString(p);
+                           stri = stri.replace("\\\"id\\\"","\"id\"");
+			stri = stri.replace("\\\"node\\\"","\"node\"");
+			stri = stri.replace("\"{","{");
+			stri = stri.replace("}\"","}");
+                    } catch (JsonProcessingException ex) {
+                        Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                     
+                        
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"id no correct\"}";
 		}
 	//System.out.println(res);	
 

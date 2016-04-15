@@ -59,7 +59,8 @@ String signIn(LoginPassword lp);
 
 
 String registration(LoginPassword lp);
+String registration(Role[] role, String subProfile);
 
-
+Profiler registrationWid(String id, LoginPassword lp);
 
 }

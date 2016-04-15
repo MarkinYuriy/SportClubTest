@@ -13,12 +13,19 @@ import sportclub.profile.*;
 
 @Entity
 public class StartStaff {
-	@Id@GeneratedValue
-	int staffId;
-	
+	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int staffId;
+	private boolean deleted;
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	
 	@ManyToOne
-	Formation formation;
+	private Formation formation;
 	
 	@OneToMany
 	@JoinTable
@@ -27,12 +34,12 @@ public class StartStaff {
 	      joinColumns={ @JoinColumn(name="staffId", referencedColumnName="staffId") },
 	      inverseJoinColumns={ @JoinColumn(name="profilerId", referencedColumnName="profilerId", unique=true) }
 	  )
-	 List<Athlete> reserve;
+	 private List<Athlete> reserve;
 	
 	@OneToMany@JoinTable(name="staffCoach",
 			joinColumns={ @JoinColumn(name="staffId", referencedColumnName="staffId") },
 		      inverseJoinColumns={ @JoinColumn(name="profilerId", referencedColumnName="profilerId", unique=true)})
-	List<Coach> coaches;
+	private List<Coach> coaches;
 	
 	public List<Athlete> getReserve() {
 		return reserve;
@@ -70,6 +77,28 @@ public class StartStaff {
 
 	public int getStaffId() {
 		return staffId;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + staffId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StartStaff other = (StartStaff) obj;
+		if (staffId != other.staffId)
+			return false;
+		return true;
 	}
 
 	

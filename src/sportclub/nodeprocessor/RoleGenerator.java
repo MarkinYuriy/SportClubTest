@@ -25,7 +25,7 @@ public class RoleGenerator {
 			Role role = new Role();
 			json = objectMapper.writeValueAsString(node(str));
 			System.out.println("role:" +json);
-			role.setId_code(json);
+			role.setIdCode(json);
 			role.setDescription("description for "+str);
 			em.persist(role);
 			

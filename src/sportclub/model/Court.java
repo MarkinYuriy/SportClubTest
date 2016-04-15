@@ -14,12 +14,12 @@ public class Court {
 	
 	@Id
 	@GeneratedValue@Column(name="courtId")
-	int id;
+	private int id;
 	
-	String name;
-	String type;
-	String description;
-	
+	private String name;
+	private String type;
+	private String description;
+	private boolean deleted;
 	
 
 
@@ -28,7 +28,7 @@ public class Court {
 	}
 	
 	@ManyToMany 
-	Set<CourtSchedule> eventSessions;
+	private Set<CourtSchedule> eventSessions;
     
 	public int getId() {
 		return id;

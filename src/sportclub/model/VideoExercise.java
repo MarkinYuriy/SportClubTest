@@ -3,7 +3,7 @@ package sportclub.model;
 
 public class VideoExercise extends Exercise {
 	
-	String videoReference;
+	private String videoReference;
 	
 	
 	public VideoExercise() {

@@ -12,20 +12,40 @@ import sportclub.profile.Profiler;
 public class Event {
 	
 	@Id@GeneratedValue
-	int id;
+	private int id;
 	
-	String name;
-	String address;
-	String description;
-	String googleMapLink;
+	private String name;
+	private String address;
+	private String description;
+	private String googleMapLink;
+	private boolean deleted;
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	@ManyToOne
-	Slot slots;
+	private Slot slots;
 	
-	/*@ManyToMany
-	List<Profiler> viewedRights;
-	*/
 	@ManyToMany
-	List<Team> teams;
+	@JoinTable
+	  (
+		      name="eventProfiler",
+		      joinColumns={ @JoinColumn(name="eventId", referencedColumnName="Id") },
+		      inverseJoinColumns={ @JoinColumn(name="profileId", referencedColumnName="profilerId") }
+		  )
+	private Set<Profiler> viewedRights;
+	
+	@ManyToMany@JoinTable
+	  (
+		      name="eventTeam",
+		      joinColumns={ @JoinColumn(name="eventId", referencedColumnName="Id") },
+		      inverseJoinColumns={ @JoinColumn(name="profileId", referencedColumnName="id") }
+		  )
+	private Set<Team> teams;
 	
 	/*@OneToOne
 	CourtSchedule cs;*/
@@ -84,11 +104,11 @@ public class Event {
 		this.viewedRights = viewedRights;
 	}*/
 
-	public List<Team> getTeams() {
+	public Set<Team> getTeams() {
 		return teams;
 	}
 
-	public void setTeams(List<Team> teams) {
+	public void setTeams(Set<Team> teams) {
 		this.teams = teams;
 	}
 

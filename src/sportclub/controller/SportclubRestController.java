@@ -2,7 +2,11 @@ package sportclub.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.persistence.Query;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.JsonSerializer;
@@ -47,125 +51,90 @@ public class SportclubRestController {
 
 	}
 	
-	@RequestMapping(value=SportclubConstants.REMOVE+"/{id}", method=RequestMethod.PUT)
+	@RequestMapping(value=SportclubConstants.REMOVE+"/{id}", method=RequestMethod.POST)
 	public @ResponseBody boolean remove(@PathVariable int id){
 
 		return profiles.removeProfile(id);
 	}
 	
-	@RequestMapping(value=SportclubConstants.GET_PROFILES+ "/{SubProfiler}", method=RequestMethod.GET)
+	
+	@RequestMapping(value=SportclubConstants.SIGN_IN, method=RequestMethod.POST)
+	public @ResponseBody String signIn(@RequestBody LoginPassword lp){
+		System.out.println(lp.toString());
+		String uid = profiles.signIn(lp);	
+
+		String res="";
+		if (uid !=null){
+			res+="{\"Status\":\"Success\",\"Data\":";
+	
+			String stri = uid+"";
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Authorization error\"}";
+		}
+	//System.out.println(res);	
+
+		return res;
+	}
+	
+	@RequestMapping(value=SportclubConstants.REGISTRATION, method=RequestMethod.POST)
+	public @ResponseBody String registration(@RequestBody LoginPassword lp){
+		System.out.println(lp.toString());
+		String uid = profiles.registration(lp);	
+
+		String res="";
+		if (uid !=null){
+			res+="{\"Status\":\"Success\",\"Data\":";
+	
+			String stri = uid+"";
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"User exist\"}";
+		}
+	//System.out.println(res);	
+
+		return res;
+	}
+	
+	@RequestMapping(value=SportclubConstants.GET_PROFILES+"/{SubProfiler}", method=RequestMethod.POST)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
-		String res="";
-		Iterable<Profiler> listProfiles = profiles.getProfiles(SubProfiler);
-		if (listProfiles !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listProfiles);
-			//System.out.println(stri);
-			//\"id\"   \\\"id\\\"
-			//\"node\"
-			//stri = stri.replace("\\\"","\"");
-			stri = stri.replace("\\\"id\\\"","\"id\"");
-			stri = stri.replace("\\\"node\\\"","\"node\"");
-			stri = stri.replace("\"{","{");
-			stri = stri.replace("}\"","}");
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
+		System.out.println("GET_PROFILES");	
+		String h = JSONToClient(profiles.getProfiles(SubProfiler));
+		System.out.println(h);
+		return h;
 	}
 	
-	@RequestMapping(value=SportclubConstants.GET_PROFILES+ "/{SubProfiler}"+ "/{id}", method=RequestMethod.GET)
-	public @ResponseBody String getProfiles(@PathVariable String SubProfiler, @PathVariable long id) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
-		String res="";
-		Iterable<Profiler> listProfiles = profiles.getProfiles(SubProfiler,id);
-		if (listProfiles !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listProfiles);
-
-			stri = stri.replace("\\\"id\\\"","\"id\"");
-			stri = stri.replace("\\\"node\\\"","\"node\"");
-			stri = stri.replace("\"{","{");
-			stri = stri.replace("}\"","}");
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
+	@RequestMapping(value=SportclubConstants.GET_PROFILE+"/{SubProfiler}"+"/{id}", method=RequestMethod.POST)
+	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id) throws JsonGenerationException, JsonMappingException, IOException, ReflectiveOperationException {
+		
+		return JSONToClient(profiles.getProfile(SubProfiler,id));
 	}
 
-	@RequestMapping(value=SportclubConstants.GET_CLUBS+ "/{id}", method=RequestMethod.GET)
-	public @ResponseBody String getClubs(@PathVariable long id) throws JsonGenerationException, JsonMappingException, IOException {
-		String res="";
-		Iterable<Club> listClubs = profiles.getClubs(id);
-		if (listClubs !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listClubs);
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
+	@RequestMapping(value=SportclubConstants.GET_CLUB+"/{id}", method=RequestMethod.POST)
+	public @ResponseBody String getClub(@PathVariable int id) throws JsonGenerationException, JsonMappingException, IOException {
+			return JSONToClient(profiles.getClub(id));
 	}
 	
-	@RequestMapping(value=SportclubConstants.GET_CLUBS, method=RequestMethod.GET)
+	@RequestMapping(value=SportclubConstants.GET_CLUBS, method=RequestMethod.POST)
 	public @ResponseBody String getClubs() throws JsonGenerationException, JsonMappingException, IOException {
-		String res="";
-		Iterable<Club> listClubs = profiles.getClubs();
-		if (listClubs !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listClubs);
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
+			return JSONToClient(profiles.getClubs());
 	}
 	
-	@RequestMapping(value=SportclubConstants.GET_TEAMS, method=RequestMethod.GET)
-	//public @ResponseBody Iterable<Team> getTeams() {
+	@RequestMapping(value=SportclubConstants.GET_TEAMS, method=RequestMethod.POST)
 	public @ResponseBody String getTeams() throws JsonGenerationException, JsonMappingException, IOException {
-		String res="";
-		Iterable<Team> listTeams = profiles.getTeams();
-		if (listTeams !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listTeams);
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
-
-
-		//return profiles.getTeams();
+		Iterable<Team> teams = profiles.getTeams();
+		String result = JSONToClient(teams);
+		//System.out.println(result);
+		return result;
 	}
-	
-	
-	
-	@RequestMapping(value=SportclubConstants.GET_TEAMS+"/{id}", method=RequestMethod.GET)
-	public @ResponseBody String getTeams(@PathVariable int id) throws JsonGenerationException, JsonMappingException, IOException {
-		String res="";
-		Iterable<Team> listTeams = profiles.getTeams(id);
-		if (listTeams !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri = new ObjectMapper().writeValueAsString(listTeams);
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-
-		return res;
-
-
-		//return profiles.getTeams();
+		
+	@RequestMapping(value=SportclubConstants.GET_TEAM+"/{id}", method=RequestMethod.POST)
+	public @ResponseBody String getTeam(@PathVariable int id) throws JsonGenerationException, JsonMappingException, IOException {
+			return JSONToClient(profiles.getTeam(id));
+		
 	}
 
-	@RequestMapping(value=SportclubConstants.GET_ROLES+"/{id}", method=RequestMethod.GET)
+	@RequestMapping(value=SportclubConstants.GET_ROLE+"/{id}", method=RequestMethod.POST)
 	public @ResponseBody String  getRole(@PathVariable String id) {
 		String res ="";
 		Iterable<Role> getRoles = null;
@@ -197,11 +166,11 @@ public class SportclubRestController {
 			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
 		}
 
-		//System.out.println(json);
+		System.out.println(res);
 		return res;
 	}
 
-	@RequestMapping(value=SportclubConstants.GET_ROLES, method=RequestMethod.GET)
+	@RequestMapping(value=SportclubConstants.GET_ROLES, method=RequestMethod.POST)
 	public @ResponseBody String  getRoles() {
 		String res ="";
 
@@ -210,14 +179,6 @@ public class SportclubRestController {
 
 		if (getRoles !=null){
 			res+="{\"Status\":\"Success\",\"Data\":";
-			/*for(Role rol:getRoles){
-				Node node = new Gson().fromJson(rol.getId_code(),Node.class);
-				String desc=rol.getDescription();
-				sportclub.nodeprocessor.Role role = new sportclub.nodeprocessor.Role();
-				role.setId(node);
-				role.setDescription(desc);
-				roleSet.add(role);
-			}*/
 			String stri=new Gson().toJson(getRoles);
 			stri = stri.replace("\\\"id\\\"","\"id\"");
 			stri = stri.replace("\\\"node\\\"","\"node\"");
@@ -225,8 +186,7 @@ public class SportclubRestController {
 			stri = stri.replace("}\"","}");
 			res+=stri+"}";
 
-			//Gson gson = new Gson();
-			//res+=gson.toJson(roleSet)+"}";
+			
 		}else{
 			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
 		}
@@ -235,96 +195,92 @@ public class SportclubRestController {
 		return res;
 	}
 
-	@RequestMapping(value=SportclubConstants.ADD_TEAM, method=RequestMethod.PUT)
-	public @ResponseBody void addTeam(@RequestBody Team team){
-		profiles.addTeam(team);
-		System.out.println(team);
-
+	@RequestMapping(value=SportclubConstants.ADD_TEAM, method=RequestMethod.POST)
+	public @ResponseBody String addTeam(@RequestBody Team team){
+		System.out.println("add team");
+		boolean f = profiles.addTeam(team);
+		
+		String res=responseToJSONForAdd(f);
+		
+		return res;
 	}
-	
-	@RequestMapping(value=SportclubConstants.ADD_PROFILE+ "/{SubProfiler}", method=RequestMethod.POST)
-	public @ResponseBody void addProfile(@RequestBody Profiler profile,@PathVariable String SubProfiler){
-		profiles.addProfiler(profile,SubProfiler);
+		
+	private String responseToJSONForAdd(boolean f) {
+		String res="";
+		if (f){
+			res+="{\"Status\":\"Success\",\"Data\":\"record added\"}";
+			}
+		else res+="{\"Status\":\"Unsuccess\",\"Data\":\"data error or record not found\"}";
+		return res;
+	}
 
+	@RequestMapping(value=SportclubConstants.ADD_PROFILE+ "/{SubProfiler}", method=RequestMethod.POST)
+	public @ResponseBody String addProfile(@RequestBody Profiler profile,@PathVariable String SubProfiler){
+		
+		System.out.println("add profile");
+		boolean f = profiles.addProfiler(profile,SubProfiler);
+		
+		String res=responseToJSONForAdd(f);
+		
+		return res;
 		
 	}
 	
-	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
-	@ResponseBody
-    public String updateTeam(@RequestBody Team team) {
-		String res ="";
-    	profiles.addTeam(team);
-    	
-		Iterable<Team> listTeams = profiles.getTeams(team.getId());
-		if (listTeams !=null){
-			res+="{\"Status\":\"Success\",\"Data\":";
-			String stri="";
-			try {
-				stri = new ObjectMapper().writeValueAsString(listTeams);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				// e.printStackTrace();
-			}
-			res+=stri+"}";
-		}else{
-			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
-		}
-		//System.out.println(res);
-		return res;
-    }
+//	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
+//	@ResponseBody
+//    public String updateTeam(@RequestBody Team team) {
+//		String res ="";
+//    	profiles.addTeam(team);
+//    	
+//		Team teamCur = profiles.getTeam(team.getId());
+//		if (teamCur !=null){
+//			res+="{\"Status\":\"Success\",\"Data\":";
+//			String stri="";
+//			try {
+//				stri = new ObjectMapper().writeValueAsString(teamCur);
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				// e.printStackTrace();
+//			}
+//			res+=stri+"}";
+//		}else{
+//			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+//		}
+//		//System.out.println(res);
+//		return res;
+//    }
 
-	@RequestMapping(value=SportclubConstants.ADD_FIELD, method=RequestMethod.PUT)
+	@RequestMapping(value=SportclubConstants.ADD_FIELD, method=RequestMethod.POST)
 	public @ResponseBody void addCourt(@RequestBody Court court){
 		profiles.addCourt(court);
-
-
 	}
 
-
-	@RequestMapping(value=SportclubConstants.ALL_QUERIES, method=RequestMethod.PUT)
+	@RequestMapping(value=SportclubConstants.ALL_QUERIES, method=RequestMethod.POST)
 	public @ResponseBody void getAnyRequest(@RequestBody String jpql) throws JsonGenerationException, JsonMappingException, IOException {
 System.out.println("query");
 		Iterable<Object> it = profiles.getAnyRequest(jpql);
 		
 		for(Object t: it){
-			//String stri = om.writeValueAsString(t);
-		//String stri = new ObjectMapper().writeValueAsString(it);
-
-			JSONSerializer ser = new JSONSerializer()
-					.transform(new MapTransformer( ),"t.equipmentPoolData");
+					
+			JSONSerializer ser = new JSONSerializer();
 
 			String h = ser.exclude("diary").deepSerialize(t);
 
 			System.out.println(h);}
 
-		
-		
-		
-		
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//	@RequestMapping(value=SportclubConstants.GET_PERSONS_BY_NAME+"/{name}", method=RequestMethod.GET)
-	//	public @ResponseBody Iterable<Person> getPersonsByName (@PathVariable String name) {
-	//		return persons.getPersonsByCity(name);
-	//	}
-	//	
-	//	@RequestMapping(value=SportclubConstants.GET_PERSONS_BY_CITY+"/{city}", method=RequestMethod.GET)
-	//	public @ResponseBody Iterable<Person> getPersonsByCity (@PathVariable String city) {
-	//		return persons.getPersonsByCity(city);
-	//	}
-
+	private String JSONToClient(Object objects) {
+		String res="";
+		if (objects !=null){
+			res+="{\"Status\":\"Success\",\"Data\":";
+			JSONSerializer ser = new JSONSerializer();
+			String stri = ser.deepSerialize(objects);
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
+	}
 
 }

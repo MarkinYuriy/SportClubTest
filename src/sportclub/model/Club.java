@@ -9,12 +9,22 @@ public class Club {
 	
 	@Id
 	@GeneratedValue
-	int id;
+	@Column(name="clubId")
+	private int id;
 	
-	String name;
-	String location;
-	String description;
+	private String name;
+	private String location;
+	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public Club() {}
 
 	public int getId() {
@@ -45,11 +55,11 @@ public class Club {
 		return description;
 	}
 
-	public List<Event> getDiary() {
+	public Set<Event> getDiary() {
 		return diary;
 	}
 
-	public void setDiary(List<Event> diary) {
+	public void setDiary(Set<Event> diary) {
 		this.diary = diary;
 	}
 
@@ -66,9 +76,15 @@ public class Club {
 	}
 	
 	@OneToMany
-	List<Event> diary;
+	@JoinTable
+	  (
+	      name="clubEvent",
+	      joinColumns={ @JoinColumn(name="clubId", referencedColumnName="clubId") },
+	      inverseJoinColumns={ @JoinColumn(name="eventId", referencedColumnName="id") }
+	  )
+	private Set<Event> diary;
 	
 	@OneToMany
-	List<ImageBank> photos;
+	private List<ImageBank> photos;
 
 }

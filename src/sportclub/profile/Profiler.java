@@ -1,47 +1,83 @@
 package sportclub.profile;
 
 
-import java.util.*;
-import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import sportclub.model.ImageBank;
 import sportclub.model.Role;
 import sportclub.model.Team;
 
 @Entity
-public class Profiler {
+public class Profiler implements Serializable{
 	
-	@Id@GeneratedValue
-	@Column(name="profilerId")
-	long code;
-	/*String code; *///Don't set int id as var in this class
-	//@Column(nullable=false,unique=true)
-	String login; 
-	String password;
-	String name;
-	String lastName;
-	String email;
-	String position;
-	String description;
+	public String getCode() {
+		return code;
+	}
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 247213587096808684L;
+	/*@Id@GeneratedValue
+	@Column(name="profilerId")*/
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name="profilerId", columnDefinition ="CHAR(32)" )
+    @Id
+    private String code;
+	@Override
+	public String toString() {
+		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
+				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+				+ "]";
+	}
+
+	private String login; 
+	private String password;
+	private String name;
+	private String lastName;
+	private String email;
+	private String position;
+	private String description;
+	private boolean deleted;
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Role> roles;
+	private Set<Role> roles;
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<ImageBank> photos;
+	private Set<ImageBank> photos;
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	Set<Team> teams;
+	private Set<Team> teams;
 	
 	public Profiler() {}
 
 
-	public long getCode() {
-		return code;
+	public boolean isDeleted() {
+		return deleted;
 	}
 
-	public void setCode(long code) {
-		this.code = code;
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
+
+
+	
 
 	public String getLogin() {
 		return login;

@@ -5,15 +5,25 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import sportclub.profile.Profiler;
+
 @Entity
 public class License {
 	
 	@Id
-	@GeneratedValue
-	int id;
-	String code;
-	String description;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	private String code;
+	private String description;
+	private boolean deleted;
 	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public License() {}
 	
 	public License(String code, String description) {
@@ -46,7 +56,13 @@ public class License {
 	}
 	
 	@ManyToMany
-	List<Role> roles;
+	@JoinTable
+	  (
+		      name="licenseRole",
+		      joinColumns={ @JoinColumn(name="licenseId", referencedColumnName="id") },
+		      inverseJoinColumns={ @JoinColumn(name="rolesId", referencedColumnName="idCode") }
+		  )
+	private Set<Role> roles;
 	
 	
 	

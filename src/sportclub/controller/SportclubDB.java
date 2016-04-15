@@ -50,9 +50,9 @@ public class SportclubDB implements ISportclubRepository {
 	};
 	
 	@PersistenceContext(unitName = "springHibernate", type = PersistenceContextType.EXTENDED)
-	EntityManager em;
+	private EntityManager em;
 	
-	String data;
+	private String data;
 
 	@Override
 	public boolean removeProfile(int id) {
@@ -81,7 +81,7 @@ public class SportclubDB implements ISportclubRepository {
 		}
 
 		if(exist){
-			Query query = em.createQuery("from "+SubProfiler+" p");
+			Query query = em.createQuery("from "+SubProfiler+" p where deleted=false");
 			res = query.getResultList();
 		}
 		return res;
@@ -94,16 +94,18 @@ public class SportclubDB implements ISportclubRepository {
 	@Transactional
 	public boolean addTeam(Team team) {
 		boolean res = false;
-		Team finded = em.find(Team.class, team.getId());
+		
+		Query q = em.createQuery("from Team as team where team.name=?1");
+		q.setParameter(1, team.getName());
+		Team finded = (Team) q.getSingleResult();
 		if (finded== null) {
 
 			em.persist(team);
 
 			res = true;
-			//System.out.println("true");
+			
 		}else{
-			finded.setName(team.getName());
-			finded.setDescription(team.getDescription());
+			res=false;
 		}
 
 		return res;
@@ -116,50 +118,14 @@ public class SportclubDB implements ISportclubRepository {
 	public boolean addProfiler(Profiler profiler, String subProfiler) {
 		boolean res = false;
 		Profiler finded = em.find(Profiler.class, profiler.getCode());
+				
 		if (finded== null) {
-
 			em.persist(profiler);
-
 			res = true;
-			//System.out.println("true");
+			
 		}else{
-			finded.setName(profiler.getName());
-			finded.setDescription(profiler.getDescription());
-			finded.setEmail(profiler.getEmail());
-			finded.setLastName(profiler.getLastName());
-			finded.setLogin(profiler.getLogin());
-			finded.setPassword(profiler.getPassword());
-			finded.setPhotos(profiler.getPhotos());
-			finded.setPosition(profiler.getPosition());
-			finded.setRoles(profiler.getRoles());
-			finded.setTeams(profiler.getTeams());
-			
+			res=false;
 		}
-		boolean exist=false;
-		for(String str:subClasses){
-			if(str.equals(subProfiler)) {
-				exist = true;
-				break;
-			}
-
-		}
-
-	/*	if(exist){
-			try {
-				Class cl = Class.forName(subProfiler);
-				 java.lang.reflect.Field[] fields = cl.getFields();
-				 for (java.lang.reflect.Field field:fields){
-					 field.getName();
-				 }
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-		}*/
-
 		return res;
 	}
 	
@@ -345,7 +311,7 @@ System.out.println("getAnyRequest");
 	public Iterable<Role> getRoles(String id) {
 		Query query=null;
 		if(id.length()>0){
-			query = em.createQuery("from Role r where id='"+id+"'");
+			query = em.createQuery("from Role r where id='"+id+"' and deleted=false");
 		}else{
 			query = em.createQuery("from Role r");
 		}
@@ -358,25 +324,25 @@ System.out.println("getAnyRequest");
 	//@Transactional
 
 	public Iterable<Club> getClubs() {
-		Query query = em.createQuery("from Club c");
-		
-		
+		Query query = em.createQuery("from Club c where deleted=false");
 		return query.getResultList();
-
 	}
 	
-	public Iterable<Club> getClubs(long id) {
-		Query query = em.createQuery("from Club c where id='"+id+"'");
-		return query.getResultList();
+	public Club getClub(int id) {
+		Query query = em.createQuery("from Club c where id=:id and deleted=false");
+		query.setParameter("id", id);
+		
+		return (Club) query.getSingleResult();
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	//@Transactional
-	public Iterable<Team> getTeams(int id) {
-		Query query = em.createQuery("from Team t where id='"+id+"'");
-		return query.getResultList();
+	public Team getTeam(int id) {
+		Query query = em.createQuery("from Team t where id=:id and deleted=false");
+		query.setParameter("id", id);
+		return (Team) query.getSingleResult();
 
 	}
 
@@ -384,15 +350,26 @@ System.out.println("getAnyRequest");
 	@Override
 	//@Transactional
 	public Iterable<Team> getTeams() {
-		Query query = em.createQuery("from Team t");
+		Query query = em.createQuery("select t.name, t.description, profiles from Team t join t.profiles profiles where t.deleted=false");
+		
+		
 		return query.getResultList();
 
 	}
 
 	@Override
-	public Iterable<Profiler> getProfiles(String SubProfiler, long id) {
+	public Profiler getProfile(String SubProfiler, String id) {
 
-		Iterable<Profiler> res=null;
+		Profiler prf = null;
+		/*Class<? extends Profiler> prfClass;
+		try {
+			prfClass = (Class<? extends Profiler>) Class.forName(SubProfiler);
+			prf = prfClass.newInstance();
+			
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		//System.out.println("Sub "+SubProfiler);
 		String[] subClasses = {
 				"AdminManagerClub",
@@ -420,10 +397,87 @@ System.out.println("getAnyRequest");
 
 		if(exist){
 			//from Athlete a where id='8805712271700122315'
-			Query query = em.createQuery("from "+SubProfiler+" p where id='"+id+"'");
-			res = query.getResultList();
+			Query query = em.createQuery("from "+SubProfiler+" p where code="+"'"+id+"'"+"and deleted=false");
+			//query.setParameter("code", id);
+			
+			try {
+				prf =(Profiler) query.getSingleResult();
+			} catch (javax.persistence.NoResultException e) {
+				// TODO Auto-generated catch block
+				e.getMessage();
+			}
+			System.out.println(prf.toString());
 		}
-		return res;
+		return prf;
+	}
+
+	@Override
+	public String signIn(LoginPassword lp) {
+		//sportclub.profiler WHERE login='login76952' AND password='password99356';
+		String id;
+		try {
+			Query q = em.createNativeQuery("SELECT p.profilerId "
+					+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
+			q.setParameter(1, lp.getLogin());
+			q.setParameter(2, lp.getPassword());
+			id = (String) q.getSingleResult();
+			System.out.println(id);
+		} catch (javax.persistence.NoResultException e) {
+			id = null;
+		}
+		return id;
+	}
+
+	@Override
+	@Transactional
+	public String registration(LoginPassword lp) {
+		
+		String id;
+		try {
+			Query q = em.createNativeQuery("SELECT p.profilerId "
+					+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
+			q.setParameter(1, lp.getLogin());
+			q.setParameter(2, lp.getPassword());
+			id = (String) q.getSingleResult();
+			id = null;
+			System.out.println(id);
+		} catch (javax.persistence.NoResultException e) {
+			Profiler profile = selectorSubprofiles(lp.subprofile);
+			
+			profile.setLogin(lp.getLogin());
+			profile.setPassword(lp.getPassword());
+			
+			em.persist(profile);
+			
+			
+			id = profile.getCode();
+			System.out.println(id);
+		}
+		return id;
+		
+		
+		
+		
+	}
+
+	private Profiler selectorSubprofiles(String subprofile) {
+		
+		Profiler profile =null;
+		
+		switch(subprofile){
+		case "Athlete":  profile = new Athlete(); break;
+		case "AdminManagerClub":  profile = new AdminManagerClub(); break;
+		case "AssitPhysicCoach": profile = new AssitPhysicCoach(); break;
+		case "AssitTeamCoach": profile = new AssitTeamCoach(); break;
+		case "Parent":  profile = new Parent(); break;
+		case "PhysiologyCoach":  profile = new PhysiologyCoach(); break;
+		case "Psycholog": profile = new Psycholog(); break;
+		case "TeamAdminManager":  profile = new TeamAdminManager(); break;
+		case "ProffesionalManager": profile = new ProffesionalManager(); break;
+		case "TeamCoach": profile = new TeamCoach(); break; 
+					
+		}
+		return profile;
 	}
 
 }

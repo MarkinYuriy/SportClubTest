@@ -13,31 +13,60 @@ import sportclub.profile.Profiler;
 @Entity
 public class Team {
 	
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
-				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
-	}
+	
 
 	@Id
-	@GeneratedValue
-	int id;
-	String name;
-	String description;
-	
-	@OneToMany
-	Set<ImageBank> photos;
-	@OneToMany
-	List<GameTeams> results;
-	@ManyToMany(mappedBy="teams")
-	List<Event> diary;
-	@ManyToMany(mappedBy = "teams")
-	List<Profiler> profiles;
-	
-	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	private String name;
+	private String description;
+	private boolean deleted;
 
+	@OneToMany
+	private Set<ImageBank> photos;
+	
+	@OneToMany
+	private List<GameTeams> results;
+	
+	@ManyToMany(mappedBy="teams")
+	private Set<Event> diary;
+	
+	@ManyToMany(mappedBy = "teams")
+	private Set<Profiler> profiles;
 	
 	public Team() {}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public Set<ImageBank> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(Set<ImageBank> photos) {
+		this.photos = photos;
+	}
+
+	public List<GameTeams> getResults() {
+		return results;
+	}
+
+	public void setResults(List<GameTeams> results) {
+		this.results = results;
+	}
+
+	public Set<Event> getDiary() {
+		return diary;
+	}
+
+	public void setDiary(Set<Event> diary) {
+		this.diary = diary;
+	}
 
 	public int getId() {
 		return id;
@@ -63,12 +92,16 @@ public class Team {
 		this.description = description;
 	}
 		
-	public List<Profiler> getProfiles() {
+	public Set<Profiler> getProfiles() {
 		return profiles;
 	}
 
-	public void setProfiles(List<Profiler> profiles) {
+	public void setProfiles(Set<Profiler> profiles) {
 		this.profiles = profiles;
 	}
-
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
+				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
+	}
 }

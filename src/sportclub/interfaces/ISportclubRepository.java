@@ -60,6 +60,11 @@ String signIn(LoginPassword lp);
 
 String registration(LoginPassword lp);
 
-
+boolean updateTeam(Team team);
+boolean updateClub(Club club);
+boolean updateAthlete(Athlete profiler, String subProfiler);
+boolean removeClub(Club club);
+boolean removeTeam(Team team);
+boolean removeProfiler(Profiler profiler, String subProfiler);
 
 }

@@ -34,6 +34,9 @@ public class Team {
 	@ManyToMany(mappedBy = "teams")
 	private Set<Profiler> profiles;
 	
+	@ManyToOne
+	Club club;
+	
 	public Team() {}
 	
 	public boolean isDeleted() {
@@ -99,9 +102,22 @@ public class Team {
 	public void setProfiles(Set<Profiler> profiles) {
 		this.profiles = profiles;
 	}
+	
+	
+	public Club getClub() {
+		return club;
+	}
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+
 	@Override
 	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
-				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
+		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", deleted=" + deleted
+				+ ", photos=" + photos + ", results=" + results + ", diary=" + diary + ", profiles=" + profiles
+				+ ", club=" + club + "]";
 	}
+
+	
 }

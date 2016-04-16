@@ -117,7 +117,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		for (Profiler el : profiles) {
 
 			el.setDescription(rd.randomDescription());
-			// el.setCode(rd.randomCode());
+			//el.setCode(rd.randomCode());
 			el.setEmail(rd.randomEmail());
 			el.setLastName(rd.randomLastName());
 			el.setLogin(rd.randomLogin());
@@ -134,7 +134,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			/*
 			 * ImageBank image = randomImage(); em.persist(image);
 			 */// el.setImage(image);
-
+			System.out.println(el.toString());
 			em.persist(el);
 		}
 		randomExercise();

@@ -1,6 +1,7 @@
 package sportclub.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,10 +30,12 @@ import com.google.gson.Gson;
 
 import flexjson.JSONSerializer;
 import flexjson.transformer.MapTransformer;
+import random.context.ISportclubRandomDBRepository;
 //import flexjson.JSONSerializer;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
+import sportclub.profile.Athlete;
 import sportclub.profile.Profiler;
 import sportclub.nodeprocessor.*;
 
@@ -44,6 +47,11 @@ import sportclub.nodeprocessor.*;
 public class SportclubRestController {
 	@Autowired
 	ISportclubRepository profiles;
+	
+	@Autowired 
+	ISportclubRandomDBRepository dbrepo;
+	
+	ObjectMapper om;
 	
 	@RequestMapping({"/","home"})
 	public String home(){
@@ -94,6 +102,28 @@ public class SportclubRestController {
 	//System.out.println(res);	
 
 		return res;
+	}
+	
+	@RequestMapping(value=SportclubConstants.CREATE_RANDOM_DB, method=RequestMethod.PUT)
+	public @ResponseBody boolean createRandomDB() throws JsonProcessingException{
+		
+			try {
+				dbrepo.addRandomProfile();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.getMessage();
+			}
+			System.out.println("random Profilers added");
+			dbrepo.addRandomTrainingPool();
+			System.out.println("random TrainingPool added");
+			dbrepo.addRandomEvent();
+			System.out.println("random Event added");
+			dbrepo.addRandomTraining();
+			System.out.println("random Training added");
+			dbrepo.addRandomGame();
+			System.out.println("random game added");
+		System.out.println("random DB created");
+		return true;
 	}
 	
 	@RequestMapping(value=SportclubConstants.GET_PROFILES+"/{SubProfiler}", method=RequestMethod.POST)
@@ -282,5 +312,98 @@ System.out.println("query");
 		}
 		return res;
 	}
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_CLUB, method = RequestMethod.POST)
+	@ResponseBody String updateClub(@RequestBody Club club){
+		String res="";
+		Club resClub = null;
+		if (profiles.updateClub(club)){
+			resClub = profiles.getClub(club.getId());
+		}
+		res = JSONToClient(resClub);
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_PROFILER, method = RequestMethod.POST)
+	@ResponseBody String updateProfiler(@RequestBody Athlete profiler){
+		String res="";
+		String subProfiler = profiler.getClass().getSimpleName();
+		System.out.println("Prof "+profiler.getCode());
+		System.out.println("Sub "+subProfiler);
+		Profiler resProfiler = null;
+		if (profiles.updateAthlete(profiler, subProfiler)){
+			resProfiler = profiles.getProfile(subProfiler, profiler.getCode());
+		}
+		res = JSONToClient(resProfiler);
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_TEAM, method = RequestMethod.POST)
+	@ResponseBody
+    public String updateTeam(@RequestBody Team team) {
+		String res ="";
+		Team resTeam = null;
+		if (profiles.updateTeam(team)){
+			resTeam = profiles.getTeam(team.getId());
+		}
+		res = JSONToClient(resTeam);
+		//System.out.println(res);
+		return res;
+    }
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_CLUB, method = RequestMethod.POST)
+	@ResponseBody String removeClub(@RequestBody Club club){
+		String res="";
+		//Club resClub = profiles.getClub(club.getId());
+		if (profiles.removeClub(club)){
+			res+="{\"Status\":\"Removing Success}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_PROFILER+"{/subProfiler}", method = RequestMethod.POST)
+	@ResponseBody String removeProfiler(@RequestBody Profiler profiler, @PathVariable String subProfiler){
+		String res="";
+		Profiler resProfiler = profiles.getProfile(subProfiler, profiler.getCode());
+		if (profiles.removeProfiler(profiler, subProfiler)){
+			res+="{\"Status\":\" Removing Success\",\"Data\":";
+			String stri="";
+			try {
+				stri = new ObjectMapper().writeValueAsString(resProfiler);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_TEAM, method = RequestMethod.POST)
+	@ResponseBody
+    public String removeTeam(@RequestBody Team team) {
+		String res ="";
+		Team resTeam = profiles.getTeam(team.getId());
+		if (profiles.updateTeam(team)){
+			res+="{\"Status\":\"Removing Success\",\"Data\":";
+			String stri="";
+			try {
+				stri = new ObjectMapper().writeValueAsString(resTeam);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		//System.out.println(res);
+		return res;
+    }
+	
 
 }

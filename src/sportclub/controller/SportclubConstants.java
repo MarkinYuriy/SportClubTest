@@ -22,6 +22,12 @@ public interface SportclubConstants {
 		String SIGN_IN = "/signIn";
 		String REGISTRATION = "/registration";
 		String REMOVE = "";
+		String UPDATE_CLUB = "/updateClub";
+		String UPDATE_PROFILER = "/updateProfiler";
+		String UPDATE_TEAM = "/updateTeam";
+		String REMOVE_TEAM = "/removeTeam";
+		String REMOVE_PROFILER = "/removeProfiler";
+		String REMOVE_CLUB = "/removeClub";
 		
 		
 	}

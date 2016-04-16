@@ -14,8 +14,16 @@ public class AdminManagerClub extends Profiler {
 	}
 
 	@OneToOne
-	License code;
-	
+	License codeLicense;
+
+	public License getCodeLicense() {
+		return codeLicense;
+	}
+
+	public void setCodeLicense(License codeLicense) {
+		this.codeLicense = codeLicense;
+	}
+
 	
 	
 	

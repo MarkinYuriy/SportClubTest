@@ -479,5 +479,211 @@ System.out.println("getAnyRequest");
 		}
 		return profile;
 	}
+	
+	@Override
+	@Transactional
+	public boolean updateTeam(Team team) {
+		Team resTeam = em.find(Team.class, team.getId());
+		if(resTeam!=null){
+			if(team.getName()!=null)
+			resTeam.setName(team.getName());
+			if(team.getDescription()!=null)
+			resTeam.setDescription(team.getDescription());
+			
+			Set<ImageBank> images = new HashSet<ImageBank>();
+			if (team.getPhotos()!=null) {
+				for (ImageBank ib : team.getPhotos()) {
+					ImageBank im = em.find(ImageBank.class, ib.getId());
+					if (im == null)
+						return false;
+					images.add(im);
+				}
+				resTeam.setPhotos(images);
+			}
+			
+			Club club = em.find(Club.class, team.getClub().getId());
+			if(club!=null)
+				resTeam.setClub(club);
+			
+			if (team.getProfiles()!=null) {
+				Set<Profiler> profilers = new HashSet<Profiler>();
+				for (Profiler p : team.getProfiles()) {
+					Profiler pr = em.find(Profiler.class, p.getCode());
+					if (pr == null)
+						return false;
+					profilers.add(pr);
+				}
+				resTeam.setProfiles(profilers);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	@Transactional
+	public boolean updateClub(Club club) {
+		Club cl = em.find(Club.class, club.getId());
+		if(cl!=null){
+			if(club.getName()!=null)
+			cl.setName(club.getName());
+			if(club.getLocation()!=null)
+			cl.setLocation(club.getLocation());
+			if(club.getDescription()!=null)
+			cl.setDescription(club.getDescription());
+			
+			if (club.getPhotos()!=null) {
+				List<ImageBank> images = new LinkedList<ImageBank>();
+				for (ImageBank ib : club.getPhotos()) {
+					ImageBank im = em.find(ImageBank.class, ib.getId());
+					if (im == null)
+						return false;
+					images.add(im);
+				}
+				cl.setPhotos(images);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	@Transactional
+	public boolean updateAthlete(Athlete profiler, String subProfiler) {
+		Profiler pr = selectorSubprofiles(subProfiler);
+		pr = em.find(Profiler.class, profiler.getCode());
+		if(pr!=null){
+			if(profiler.getLogin()!=null)
+			pr.setLogin(profiler.getLogin());
+			if(profiler.getPassword()!=null)
+			pr.setPassword(profiler.getPassword());
+			if(profiler.getName()!=null)
+			pr.setName(profiler.getName());
+			if(profiler.getLastName()!=null)
+			pr.setLastName(profiler.getLastName());
+			if(profiler.getEmail()!=null)
+			pr.setEmail(profiler.getEmail());
+			if(profiler.getPosition()!=null)
+			pr.setPosition(profiler.getPosition());
+			if(profiler.getDescription()!=null)
+			pr.setDescription(profiler.getDescription());
+			
+			if (profiler.getPhotos()!=null) {
+				Set<ImageBank> images = new HashSet<ImageBank>();
+				for (ImageBank ib : profiler.getPhotos()) {
+					ImageBank im = em.find(ImageBank.class, ib.getId());
+					if (im == null)
+						return false;
+					images.add(im);
+				}
+				pr.setPhotos(images);
+			}
+			
+			Club club = em.find(Club.class, profiler.getClub().getId());
+			if(club!=null)
+				pr.setClub(club);
+			
+			if(profiler.getTeams()!=null){
+				Set<Team> teams = new HashSet<Team>();
+				for(Team t:profiler.getTeams()){
+					Team tm = em.find(Team.class, t.getId());
+					if(tm == null)
+						return false;
+					teams.add(tm);
+				}
+				pr.setTeams(teams);
+			}
+			
+			if(profiler.getRoles()!=null){
+				Set<Role> roles = new HashSet<Role>();
+				for(Role r:profiler.getRoles()){
+					Role rl = em.find(Role.class, r.getIdCode());
+					if(rl == null)
+						return false;
+					roles.add(rl);
+				}
+				pr.setRoles(roles);
+			}
+			
+			return true;
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public boolean removeClub(Club club) {
+		Club cl = em.find(Club.class, club.getId());
+		
+		if (cl!=null) {
+			cl.setDeleted(true);
+			Query q = em.createQuery("Select t.id from Team t join t.club c where c.id=?1");
+			q.setParameter(1, cl.getId());
+			Iterable<Integer> teams = q.getResultList();
+			System.out.println(teams.toString());
+			for (Integer t : teams){
+				Team tm = em.find(Team.class, t);
+				tm.setClub(null);
+			}
+			q = em.createQuery("Select p.code from Profiler p join p.club c where c.id=?1");
+			q.setParameter(1, cl.getId());
+			List<String> profilers = q.getResultList();
+			
+			for (String p : profilers){
+				Profiler pr = em.find(Profiler.class, p);
+				pr.setClub(null);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean removeTeam(Team team) {
+		Team rTeam = em.find(Team.class, team.getId());
+		if(rTeam!=null){
+			rTeam.setDeleted(true);
+			rTeam.setClub(null);
+			
+			Set<Profiler> prs = rTeam.getProfiles();
+			for(Profiler p:prs){
+				Profiler pr = em.find(Profiler.class, p.getCode());
+				Set<Team> teamTmp = pr.getTeams();
+				for(Team t:teamTmp){
+					if(t.getId()==team.getId())
+						prs.remove(t);
+				}
+				pr.setTeams(teamTmp);
+			}
+			rTeam.setProfiles(null);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean removeProfiler(Profiler profiler, String subProfiler) {
+		Profiler pr = selectorSubprofiles(subProfiler);
+		pr = em.find(Profiler.class, profiler.getCode());
+		if(pr!=null){
+			pr.setDeleted(true);
+			pr.setClub(null);
+			
+			Set<Team> teams = pr.getTeams();
+			for(Team t:teams){
+				Team tm = em.find(Team.class, t.getId());
+				Set<Profiler> prs = tm.getProfiles();
+				for(Profiler p:prs){
+					if(p.getCode().equals(profiler.getCode()))
+						prs.remove(p);
+				}
+				tm.setProfiles(prs);
+			}
+			pr.setTeams(null);
+			return true;
+		}
+		return false;
+	}
 
 }

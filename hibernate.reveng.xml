@@ -6,7 +6,7 @@
 	<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 </type-mapping>
 
-<table-filter match-schema="sportclub" match-name=".*" />
+<table-filter match-schema="sportclubtest" match-name=".*" />
 	<table catalog="sportclub" name="imagebank"></table>
 	<table catalog="sportclub" name="exercisedata"></table>
 	<table catalog="sportclub" name="team_imagebank"></table>

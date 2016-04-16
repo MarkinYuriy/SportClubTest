@@ -12,22 +12,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import sportclub.model.ImageBank;
-import sportclub.model.Role;
-import sportclub.model.Team;
+import sportclub.model.*;
 
 @Entity
 public class Profiler implements Serializable{
 	
-	public String getCode() {
-		return code;
-	}
-
-
 	/**
 	 * 
 	 */
@@ -39,14 +33,7 @@ public class Profiler implements Serializable{
     @Column(name="profilerId", columnDefinition ="CHAR(32)" )
     @Id
     private String code;
-	@Override
-	public String toString() {
-		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
-				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
-				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
-				+ "]";
-	}
-
+	
 	private String login; 
 	private String password;
 	private String name;
@@ -55,6 +42,7 @@ public class Profiler implements Serializable{
 	private String position;
 	private String description;
 	private boolean deleted;
+	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	private Set<Role> roles;
 	
@@ -64,8 +52,18 @@ public class Profiler implements Serializable{
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	private Set<Team> teams;
 	
+	@ManyToOne
+	private Club club;
+	
 	public Profiler() {}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	public boolean isDeleted() {
 		return deleted;
@@ -163,6 +161,26 @@ public class Profiler implements Serializable{
 	public void setTeams(Set<Team> teams) {
 		this.teams = teams;
 	}
+
+
+	public Club getClub() {
+		return club;
+	}
+
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
+				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+				+ ", club=" + club + "]";
+	}
+	
 
 
 	

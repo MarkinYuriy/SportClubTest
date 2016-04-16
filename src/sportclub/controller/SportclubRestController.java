@@ -320,7 +320,7 @@ System.out.println("query");
 	@RequestMapping(value = SportclubConstants.UPDATE_PROFILER+"{/subProfiler}", method = RequestMethod.POST)
 	@ResponseBody String updateProfiler(@RequestBody Profiler profiler, @PathVariable String subProfiler){
 		String res="";
-		if (profiles.updateProfiler(profiler)){
+		if (profiles.updateProfiler(profiler, subProfiler)){
 			Profiler resProfiler = profiles.getProfiles(subProfiler, profiler.getCode());
 			res+="{\"Status\":\"Success\",\"Data\":";
 			String stri="";

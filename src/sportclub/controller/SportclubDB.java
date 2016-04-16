@@ -430,13 +430,38 @@ System.out.println("getAnyRequest");
 
 	@Override
 	public boolean updateTeam(Team team) {
-		/*Query q = em.createQuery("from Team t Where t.id=?1");
-		q.setParameter(1, team.getId());
-		Team teamTmp = (Team) q.getSingleResult();*/
 		Team resTeam = em.find(Team.class, team.getId());
 		if(resTeam!=null){
+			if(resTeam.getName()!=null)
 			resTeam.setName(team.getName());
+			if(resTeam.getDescription()!=null)
 			resTeam.setDescription(team.getDescription());
+			
+			Set<ImageBank> images = new HashSet<ImageBank>();
+			if (team.getPhotos().size()>0) {
+				for (ImageBank ib : team.getPhotos()) {
+					ImageBank im = em.find(ImageBank.class, ib.getId());
+					if (im == null)
+						return false;
+					images.add(im);
+				}
+				resTeam.setPhotos(images);
+			}
+			
+			Club club = em.find(Club.class, team.getClub().getId());
+			if(club!=null)
+				resTeam.setClub(club);
+			
+			if (team.getProfiles().size()>0) {
+				List<Profiler> profilers = new LinkedList<Profiler>();
+				for (Profiler p : team.getProfiles()) {
+					Profiler pr = em.find(Profiler.class, p.getCode());
+					if (pr == null)
+						return false;
+					profilers.add(pr);
+				}
+				resTeam.setProfiles(profilers);
+			}
 			return true;
 		}
 		return false;
@@ -444,24 +469,32 @@ System.out.println("getAnyRequest");
 
 	@Override
 	public boolean updateClub(Club club) {
-		/*Query q = em.createQuery("from Club c Where c.id=?1");
-		q.setParameter(1, club.getId());
-		Club cl = (Club) q.getSingleResult();*/
 		Club cl = em.find(Club.class, club.getId());
 		if(cl!=null){
+			if(club.getName()!=null)
 			cl.setName(club.getName());
+			if(club.getLocation()!=null)
 			cl.setLocation(club.getLocation());
+			if(club.getDescription()!=null)
 			cl.setDescription(club.getDescription());
+			
+			if (club.getPhotos().size()>0) {
+				List<ImageBank> images = new LinkedList<ImageBank>();
+				for (ImageBank ib : club.getPhotos()) {
+					ImageBank im = em.find(ImageBank.class, ib.getId());
+					if (im == null)
+						return false;
+					images.add(im);
+				}
+				cl.setPhotos(images);
+			}
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public boolean updateProfiler(Profiler profiler) {
-		/*Query q = em.createQuery("from "+subProfiler+" p Where p.code=?1");
-		q.setParameter(1, profiler.getCode());
-		Profiler pr = (Profiler) q.getSingleResult();*/
+	public boolean updateProfiler(Profiler profiler, String subProfiler) {
 		Profiler pr = em.find(Profiler.class, profiler.getCode());
 		if(pr!=null){
 			pr.setLogin(profiler.getLogin());
@@ -471,9 +504,37 @@ System.out.println("getAnyRequest");
 			pr.setEmail(profiler.getEmail());
 			pr.setPosition(profiler.getPosition());
 			pr.setDescription(profiler.getDescription());
+			
 			return true;
 		}
 		return false;
 	}
+
+	@Override
+	public boolean removeClub(Club club) {
+		
+		Query q = em.createQuery("from Team t join t.club c where c.id=?1");
+		q.setParameter(1, cl.getId());
+		List<Team> teams = q.getResultList();
+		q = em.createQuery("from Profiler p join p.club c where c.id=?1");
+		q.setParameter(1, cl.getId());
+		List<Profiler> profilers = q.getResultList();
+		for(Team t:teams) t.setClub(null);
+		for(Profiler p:profilers) p.setClub(null);
+		return false;
+	}
+
+	@Override
+	public boolean removeTeam(Team team) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeProfiler(Profiler profiler, String subProfiler) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 
 }

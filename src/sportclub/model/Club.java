@@ -15,6 +15,13 @@ public class Club {
 	String location;
 	String description;
 	
+	@OneToMany
+	List<Event> diary;
+	
+	@OneToMany
+	List<ImageBank> photos;
+	
+	
 	public Club() {}
 
 	public int getId() {
@@ -65,10 +72,6 @@ public class Club {
 		this.description = description;
 	}
 	
-	@OneToMany
-	List<Event> diary;
 	
-	@OneToMany
-	List<ImageBank> photos;
 
 }

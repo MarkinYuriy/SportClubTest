@@ -4,9 +4,7 @@ package sportclub.profile;
 import java.util.*;
 import javax.persistence.*;
 
-import sportclub.model.ImageBank;
-import sportclub.model.Role;
-import sportclub.model.Team;
+import sportclub.model.*;
 
 @Entity
 public class Profiler {
@@ -32,6 +30,9 @@ public class Profiler {
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	Set<Team> teams;
+	
+	@ManyToOne
+	Club club;
 	
 	public Profiler() {}
 
@@ -127,6 +128,16 @@ public class Profiler {
 
 	public void setTeams(Set<Team> teams) {
 		this.teams = teams;
+	}
+
+
+	public Club getClub() {
+		return club;
+	}
+
+
+	public void setClub(Club club) {
+		this.club = club;
 	}
 
 

@@ -55,7 +55,10 @@ boolean addProfiler(Profiler profiler, String subProfiler);
 
 boolean updateTeam(Team team);
 boolean updateClub(Club club);
-boolean updateProfiler(Profiler profiler);
+boolean updateProfiler(Profiler profiler, String subProfiler);
+boolean removeClub(Club club);
+boolean removeTeam(Team team);
+boolean removeProfiler(Profiler profiler, String subProfiler);
 
 
 }

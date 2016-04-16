@@ -13,12 +13,6 @@ import sportclub.profile.Profiler;
 @Entity
 public class Team {
 	
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
-				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
-	}
-
 	@Id
 	@GeneratedValue
 	int id;
@@ -33,9 +27,9 @@ public class Team {
 	List<Event> diary;
 	@ManyToMany(mappedBy = "teams")
 	List<Profiler> profiles;
+	@ManyToOne
+	Club club;
 	
-	
-
 	
 	public Team() {}
 
@@ -93,6 +87,20 @@ public class Team {
 
 	public void setDiary(List<Event> diary) {
 		this.diary = diary;
+	}
+
+	public Club getClub() {
+		return club;
+	}
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
+				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + ", club=" + club + "]";
 	}
 	
 

@@ -16,10 +16,13 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+
 import sportclub.model.ImageBank;
 import sportclub.model.Role;
 import sportclub.model.Team;
-
+@JsonIgnoreProperties("deleted")
 @Entity
 public class Profiler implements Serializable{
 	
@@ -39,6 +42,12 @@ public class Profiler implements Serializable{
     @Column(name="profilerId", columnDefinition ="CHAR(32)" )
     @Id
     private String code;
+	public Profiler(String code) {
+		
+		this.code = code;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
@@ -56,6 +65,7 @@ public class Profiler implements Serializable{
 	private String description;
 	private boolean deleted;
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	@JsonRawValue
 	private Set<Role> roles;
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)

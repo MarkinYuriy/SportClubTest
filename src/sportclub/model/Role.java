@@ -4,13 +4,16 @@ package sportclub.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+@JsonIgnoreProperties("deleted")
 @Entity
 @Table(name="roles")
 public class Role {
-	
-	@Id
 	/*@GeneratedValue
 	int id;*/
+	
+	@Id@JsonRawValue
 	private String idCode;
 	private String description;
 	private boolean deleted;

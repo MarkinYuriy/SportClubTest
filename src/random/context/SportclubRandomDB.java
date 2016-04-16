@@ -216,8 +216,8 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			assistCoach.setTeams(teamAth);
 			aths.add(assistCoach);
 		}
-		 AdminManagerClub admin = new AdminManagerClub();
-		aths.add(admin);
+		/* AdminManagerClub admin = new AdminManagerClub();
+		aths.add(admin);*/
 		Profiler teamCoach = new TeamCoach();
 		Set<Team> teamAth = new LinkedHashSet<Team>();
 		teamAth.add(team);

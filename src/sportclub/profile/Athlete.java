@@ -66,6 +66,9 @@ public class Athlete extends Profiler {
 		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
 				+ federationPlayer + ", games=" + games + "]";
 	}
+
+	
+
 	
 
 }

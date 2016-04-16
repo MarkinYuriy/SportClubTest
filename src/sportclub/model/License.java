@@ -5,8 +5,10 @@ import java.util.*;
 
 import javax.persistence.*;
 
-import sportclub.profile.Profiler;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import sportclub.profile.Profiler;
+@JsonIgnoreProperties("deleted")
 @Entity
 public class License {
 	

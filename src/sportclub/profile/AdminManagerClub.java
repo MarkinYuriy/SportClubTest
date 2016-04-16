@@ -15,6 +15,8 @@ public class AdminManagerClub extends Profiler {
 
 	@OneToOne
 	License code;
+
+	
 	
 	
 	

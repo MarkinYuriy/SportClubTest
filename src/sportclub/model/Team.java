@@ -6,10 +6,12 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import sportclub.profile.Profiler;
 
 
-
+@JsonIgnoreProperties("deleted")
 @Entity
 public class Team {
 	
@@ -19,6 +21,7 @@ public class Team {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	
 	private String description;
 	private boolean deleted;
 
@@ -32,12 +35,51 @@ public class Team {
 	private Set<Event> diary;
 	
 	@ManyToMany(mappedBy = "teams")
-	private Set<Profiler> profiles;
+	 Set<Profiler> profiles;
 	
+	public Team(int id, String name, String description, Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.profiles = profiles;
+	}
+
+	public Team(int id, String name, String description) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+
 	public Team() {}
 	
 	public boolean isDeleted() {
 		return deleted;
+	}
+
+	public Team(int id, String name, String description, Set<ImageBank> photos, List<GameTeams> results,
+			Set<Event> diary, Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.photos = photos;
+		this.results = results;
+		this.diary = diary;
+		this.profiles = profiles;
+	}
+
+	
+	public Team(int id, String name, String description, Set<ImageBank> photos, List<GameTeams> results,
+			Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.photos = photos;
+		this.results = results;
+		this.profiles = profiles;
 	}
 
 	public void setDeleted(boolean deleted) {

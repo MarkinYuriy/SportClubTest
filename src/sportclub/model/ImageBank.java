@@ -3,6 +3,8 @@ package sportclub.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties("deleted")
 @Entity
 public class ImageBank {
 	
@@ -31,6 +33,10 @@ public class ImageBank {
 	}
 
 	public ImageBank() {}
+
+	public ImageBank(int id) {
+		this.id=id;
+	}
 
 	public int getId() {
 		return id;

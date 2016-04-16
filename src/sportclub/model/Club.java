@@ -4,6 +4,8 @@ package sportclub.model;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties("deleted")
 @Entity
 public class Club {
 	

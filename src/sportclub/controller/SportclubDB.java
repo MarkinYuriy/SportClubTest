@@ -1,17 +1,36 @@
 package sportclub.controller;
 
 import java.io.IOException;
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 
-import org.codehaus.jackson.JsonGenerationException;
+/*import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectMapper;*/
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
@@ -60,20 +79,24 @@ public class SportclubDB implements ISportclubRepository {
 
         boolean exist = false;
         for (String str : subClasses) {
-            //System.out.println("str "+ str);
-            //System.out.println("subprof "+SubProfiler);
+            
             if (str.equals(SubProfiler)) {
                 exist = true;
-                //System.out.println(exist);
+                
                 break;
             }
 
         }
 
-        if (exist) {
-            Query query = em.createQuery("from " + SubProfiler + " p where deleted=false");
-            res = query.getResultList();
-        }
+        try {
+			if (exist) {
+			    Query query = em.createQuery("from " + SubProfiler + " p where deleted=false");
+			    res = query.getResultList();
+			}
+			return res;
+		} catch (NoResultException e) {
+			
+		}
         return res;
 
     }
@@ -102,19 +125,28 @@ public class SportclubDB implements ISportclubRepository {
         return res;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     @Transactional
-    public boolean addProfiler(Profiler profiler, String subProfiler) {
-        boolean res = false;
-        Profiler finded = em.find(Profiler.class, profiler.getCode());
-
-        if (finded == null) {
+    public boolean addProfiler(Profiler profiler, String subprofile) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    	
+    	Class prf = Class.forName(subprofile);
+    	
+    	boolean res = false;
+        
+        Query query = em.createQuery("from " + subprofile + " p where code=" + "'" + profiler.getCode() + "'" + "and deleted=false");
+        
+        Profiler profile = selectorSubprofiles(subprofile);
+        profile = (Profiler) query.getSingleResult();
+        
+        
+        /*if (finded == null) {
             em.persist(profiler);
             res = true;
 
         } else {
             res = false;
-        }
+        }*/
         return res;
     }
 
@@ -153,7 +185,7 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     public boolean addProfile(Profiler profile) {
-        // TODO Auto-generated method stub
+        
         return false;
     }
 
@@ -312,16 +344,34 @@ public class SportclubDB implements ISportclubRepository {
     @Override
     //@Transactional
 
-    public Iterable<Club> getClubs() {
-        Query query = em.createQuery("from Club c where deleted=false");
-        return query.getResultList();
-    }
+	public Iterable<Club> getClubs() {
+		List<Club> clubs = new LinkedList<>();
+		List<Club> newClubs = new LinkedList<>();
+		try {
+			Query query = em.createQuery("from Club c where deleted=false");
+			clubs = query.getResultList();
+
+			for (Club c : clubs) {
+				Club newClub = c;
+				newClubs.add(newClub);
+			}
+		} catch (javax.persistence.NoResultException e) {
+			newClubs = null;
+		}
+		return newClubs;
+
+	}
 
     public Club getClub(int id) {
-        Query query = em.createQuery("from Club c where id=:id and deleted=false");
-        query.setParameter("id", id);
-
-        return (Club) query.getSingleResult();
+    	
+    	Club foundedClub = em.find(Club.class, id);
+    	Club currentClub = null;
+    	
+    	if(foundedClub!=null && !foundedClub.isDeleted())
+    	{
+    		currentClub = foundedClub;
+    	}
+      return currentClub;
 
     }
 
@@ -329,37 +379,88 @@ public class SportclubDB implements ISportclubRepository {
     @Override
     //@Transactional
     public Team getTeam(int id) {
-        //Query query = em.createQuery("from Team t where id=:id and deleted=false");
-        Query query = em.createQuery("from Team t where id="+id+" and deleted=false");
-     //   query.setParameter("id", id);
-        return (Team) query.getSingleResult();
-
+    	Team findedTeam = null, currentTeam = null;
+    	  	
+    		findedTeam = em.find(Team.class, id);
+    		if(findedTeam!=null&&!findedTeam.isDeleted())	{
+    				currentTeam = teamWithProfilerSet(findedTeam);
+    			}
+       	 return currentTeam;
     }
 
-    @SuppressWarnings("unchecked")
+    private Team teamWithProfilerSet(Team findedTeam) {
+    	 
+    	Set<Profiler> prfs = findedTeam.getProfiles();
+		Set<Profiler> newPrfsSet = new HashSet<Profiler>();
+		Set<ImageBank> photos = findedTeam.getPhotos();
+		Set<ImageBank> photosCurr = new HashSet<ImageBank>();
+		List<GameTeams> results = findedTeam.getResults();
+		List<GameTeams> resultsCurr = new ArrayList<GameTeams>();
+		Set<Event> diary = findedTeam.getDiary();
+		Set<Event>diaryCurr = new HashSet<Event>();
+			
+		
+			for(Profiler p: prfs){
+					p.setPassword(null);
+					p.setDescription(null);
+					p.setEmail(null);
+					p.setName(null);
+					p.setLastName(null);
+					p.setLogin(null);
+					p.setPassword(null);
+					p.setPosition(null);
+					p.setPhotos(null);
+					p.setRoles(null);
+					p.setTeams(null);					
+				}
+			for(ImageBank img: photos)
+			{
+				ImageBank currentImg = new ImageBank(img.getId());
+				photosCurr.add(currentImg);
+			}
+			
+			for(Event e: diary ){
+				Event eCur = new Event(e.getId());
+				diaryCurr.add(eCur);
+			}
+			for(GameTeams gt: results){
+				
+				GameTeams gtCur = new GameTeams(gt.getId());
+				resultsCurr.add(gtCur);
+			}
+					
+			return new Team(findedTeam.getId(), 
+					findedTeam.getName(), 
+					findedTeam.getDescription(), 
+					photosCurr,results,diaryCurr,
+					newPrfsSet);
+	}
+
+	@SuppressWarnings("unchecked")
     @Override
     //@Transactional
     public Iterable<Team> getTeams() {
-        Query query = em.createQuery("select t.name, t.description, profiles from Team t join t.profiles profiles where t.deleted=false");
-
-        return query.getResultList();
-
+    	List<Team> teams = new LinkedList<>();
+    	List<Team> newTeams = new LinkedList<>();
+        try {
+			Query query = em.createQuery("from Team t where t.deleted=false");
+			teams= query.getResultList();
+			
+			for(Team t: teams){
+				Team newTeam = teamWithProfilerSet(t);
+				newTeams.add(newTeam);
+			}
+		} catch (javax.persistence.NoResultException e) {
+			newTeams = null;
+		}
+       return newTeams;
     }
 
     @Override
     public Profiler getProfile(String SubProfiler, String id) {
 
         Profiler prf = null;
-        /*Class<? extends Profiler> prfClass;
-		try {
-			prfClass = (Class<? extends Profiler>) Class.forName(SubProfiler);
-			prf = prfClass.newInstance();
-			
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-        //System.out.println("Sub "+SubProfiler);
+        
         String[] subClasses = {
             "AdminManagerClub",
             "AssitPhysicCoach",
@@ -383,7 +484,9 @@ public class SportclubDB implements ISportclubRepository {
             }
 
         }
-
+/*CriteriaBuilder cb = em.getCriteriaBuilder();
+CriteriaQuery<Profiler> cq;
+Metamodel m = em.getMetamodel();*/
         if (exist) {
             //from Athlete a where id='8805712271700122315'
             Query query = em.createQuery("from " + SubProfiler + " p where code=" + "'" + id + "'" + "and deleted=false");
@@ -395,7 +498,7 @@ public class SportclubDB implements ISportclubRepository {
                 // TODO Auto-generated catch block
                 e.getMessage();
             }
-            System.out.println(prf.toString());
+            
         }
         return prf;
     }
@@ -442,7 +545,7 @@ public class SportclubDB implements ISportclubRepository {
 
             profile.setLogin(lp.getLogin());
             profile.setPassword(lp.getPassword());
-
+            
             em.persist(profile);
 
             id = profile.getCode();

@@ -3,8 +3,10 @@ package sportclub.model;
 
 import javax.persistence.*;
 
-import sportclub.profile.Profiler;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import sportclub.profile.Profiler;
+@JsonIgnoreProperties("deleted")
 @Embeddable
 public class Result {
 	

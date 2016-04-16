@@ -9,9 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import flexjson.JSON;
 
 @SuppressWarnings("serial")
+@JsonIgnoreProperties("deleted")
 @Entity
 public class ExerciseSession implements Serializable{
 	

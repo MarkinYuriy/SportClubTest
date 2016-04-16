@@ -2,7 +2,9 @@ package sportclub.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties("deleted")
 @Entity
 @Table(name ="equipmentPoolData")
 public class EquipmentPoolData {

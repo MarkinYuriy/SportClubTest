@@ -3,8 +3,10 @@ package sportclub.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.StringTransformer;
 
@@ -149,6 +153,7 @@ public class SportclubRestController {
 			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException {
 		
 		JSONSerializer ser = new JSONSerializer();
+		
 		Object obj =	profiles.getClub(id);
 			String res = "";
 			if (obj != null) {
@@ -308,13 +313,13 @@ public class SportclubRestController {
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.ADD_PROFILE + "/{SubProfiler}", method = RequestMethod.POST)
-	public @ResponseBody String addProfile(@RequestBody Athlete profile, @PathVariable String SubProfiler) {
+	@RequestMapping(value = SportclubConstants.ADD_PROFILE, method = RequestMethod.POST)
+	public @ResponseBody String addProfile(@RequestBody String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException {
+		
+		System.out.println(json);
+		boolean f = profiles.addProfiler(json);
 
-		System.out.println(profile.toString()+" "+SubProfiler);
-		/*boolean f = profiles.addProfiler(profile, SubProfiler);
-
-		String res = responseToJSONForAdd(f);*/
+		String res = responseToJSONForAdd(f);
 
 		return "answer";
 

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -23,6 +25,8 @@ import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /*import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;*/
@@ -32,6 +36,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import flexjson.JSONDeserializer;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.profile.*;
@@ -42,7 +47,9 @@ import sportclub.profile.*;
  */
 public class SportclubDB implements ISportclubRepository {
 
-    String[] subClasses = {
+    private static final String SPORTCLUB_PROFILE = "sportclub.profile.";
+
+	String[] subClasses = {
         "AdminManagerClub",
         "AssitPhysicCoach",
         "AssitTeamCoach",
@@ -128,25 +135,24 @@ public class SportclubDB implements ISportclubRepository {
     @SuppressWarnings("unchecked")
 	@Override
     @Transactional
-    public boolean addProfiler(Profiler profiler, String subprofile) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-    	
-    	Class prf = Class.forName(subprofile);
-    	
+    public boolean addProfiler(String json)  {
     	boolean res = false;
-        
-        Query query = em.createQuery("from " + subprofile + " p where code=" + "'" + profiler.getCode() + "'" + "and deleted=false");
-        
-        Profiler profile = selectorSubprofiles(subprofile);
-        profile = (Profiler) query.getSingleResult();
-        
-        
-        /*if (finded == null) {
-            em.persist(profiler);
-            res = true;
+    	
+    	
+    	try {
+    		JSONDeserializer<Map<String,String>> des =new JSONDeserializer<>();
+    		Map<String,String> properties = des.deserialize(json);
+			
+			Profiler finded = em.find(Profiler.class, properties.get("codeId"));
+			finded.setProperties(properties);
 
-        } else {
-            res = false;
-        }*/
+			em.persist(finded);
+			res = true;
+		} catch (Exception e) {
+			
+		}
+            
+        
         return res;
     }
 

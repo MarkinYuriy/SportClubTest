@@ -1,6 +1,8 @@
 package sportclub.profile;
 
 
+import java.util.Map;
+
 import javax.persistence.*;
 
 import sportclub.model.License;
@@ -19,7 +21,11 @@ public class AdminManagerClub extends Profiler {
 	
 	
 	
-	
+	public void setProperties(Map<String, String> properties){
+		
+		super.setProperties(properties);
+		
+	}
 	
 
 }

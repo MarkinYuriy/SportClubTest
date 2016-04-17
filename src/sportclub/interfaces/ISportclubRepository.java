@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.json.simple.parser.ParseException;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -51,8 +53,6 @@ Team getTeam(int id);
 
 
 
-boolean addProfiler(Profiler profiler, String subProfiler) throws ClassNotFoundException, InstantiationException, IllegalAccessException;
-
 
 String signIn(LoginPassword lp);
 
@@ -61,5 +61,8 @@ String registration(LoginPassword lp);
 String registration(Role[] role, String subProfile);
 
 Profiler registrationWid(String id, LoginPassword lp);
+
+
+boolean addProfiler(String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException;
 
 }

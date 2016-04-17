@@ -2,6 +2,7 @@ package sportclub.profile;
 
 
 import java.io.Serializable;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -188,7 +189,18 @@ public class Profiler implements Serializable{
 
 
 	
-
+	public void setProperties(Map<String, String> properties){
+		
+				
+		login = properties.get("login"); 
+		password= properties.get("password"); ;
+		name= properties.get("name"); ;
+		lastName= properties.get("lastName"); ;
+		email= properties.get("email"); ;
+		position= properties.get("position"); ;
+		description= properties.get("description");
+		
+	}
 	
 
 }

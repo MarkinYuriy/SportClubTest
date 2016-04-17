@@ -64,11 +64,19 @@ public class Athlete extends Profiler {
 	@Override
 	public String toString() {
 		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
-				+ federationPlayer + ", games=" + games + "]";
+				+ federationPlayer + ", games=" + games + "]"+super.toString();
 	}
 
 	
-
+@Override
+public void setProperties(Map<String, String> properties){
 	
+	super.setProperties(properties);
+	
+	type = properties.get("type");
+	
+	
+	
+}
 
 }

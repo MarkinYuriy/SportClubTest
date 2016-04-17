@@ -16,6 +16,10 @@ public class GameTeams {
 	
 	public GameTeams() {	}
 
+	public GameTeams(int id) {
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}

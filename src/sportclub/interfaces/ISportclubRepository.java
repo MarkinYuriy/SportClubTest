@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import sportclub.profile.*;
 import sportclub.controller.LoginPassword;
@@ -33,7 +32,11 @@ boolean addGame(Game game);
 
 boolean addAthlete(Athlete ath,Team team);
 
+<<<<<<< HEAD
 public Iterable<Object> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
+=======
+public Iterable<String> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
+>>>>>>> refs/heads/2016-04-14
 
 
 Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException;
@@ -47,14 +50,17 @@ Club getClub(int id);
 Iterable<Team> getTeams();
 
 Team getTeam(int id);
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> refs/heads/2016-04-14
 
 
 
 
 
-boolean addProfiler(Profiler profiler, String subProfiler);
-
-
+<<<<<<< HEAD
 String signIn(LoginPassword lp);
 
 
@@ -66,5 +72,17 @@ boolean updateAthlete(Athlete profiler, String subProfiler);
 boolean removeClub(Club club);
 boolean removeTeam(Team team);
 boolean removeProfiler(Profiler profiler, String subProfiler);
+=======
+boolean addProfiler(Profiler profiler, String subProfiler) throws ClassNotFoundException, InstantiationException, IllegalAccessException;
+
+
+String signIn(LoginPassword lp);
+
+
+String registration(LoginPassword lp);
+String registration(Role[] role, String subProfile);
+
+Profiler registrationWid(String id, LoginPassword lp);
+>>>>>>> refs/heads/2016-04-14
 
 }

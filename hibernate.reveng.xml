@@ -6,7 +6,11 @@
 	<sql-type jdbc-type="VARCHAR" hibernate-type="string"></sql-type>
 </type-mapping>
 
+<<<<<<< HEAD
 <table-filter match-schema="sportclubtest" match-name=".*" />
+=======
+<table-filter match-schema="sportclub" match-name=".*" />
+>>>>>>> refs/heads/2016-04-14
 	<table catalog="sportclub" name="imagebank"></table>
 	<table catalog="sportclub" name="exercisedata"></table>
 	<table catalog="sportclub" name="team_imagebank"></table>

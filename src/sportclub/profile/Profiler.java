@@ -4,7 +4,25 @@ package sportclub.profile;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
+<<<<<<< HEAD
+=======
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRawValue;
+>>>>>>> refs/heads/2016-04-14
+
+<<<<<<< HEAD
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,9 +37,16 @@ import org.hibernate.annotations.GenericGenerator;
 
 import sportclub.model.*;
 
+=======
+import sportclub.model.ImageBank;
+import sportclub.model.Role;
+import sportclub.model.Team;
+@JsonIgnoreProperties("deleted")
+>>>>>>> refs/heads/2016-04-14
 @Entity
 public class Profiler implements Serializable{
 	
+<<<<<<< HEAD
 	/**
 	 * 
 	 */
@@ -43,7 +68,63 @@ public class Profiler implements Serializable{
 	private String description;
 	private boolean deleted;
 	
+=======
+	public Profiler(String code, String name, String lastName, String email,
+			String position, String description) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.position = position;
+		this.description = description;
+	}
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 247213587096808684L;
+	/*@Id@GeneratedValue
+	@Column(name="profilerId")*/
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+    @Column(name="profilerId", columnDefinition ="CHAR(32)" )
+    @Id
+    private String code;
+	public Profiler(String code) {
+		
+		this.code = code;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
+				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+				+ "]";
+	}
+
+	private String login; 
+	private String password;
+	private String name;
+	private String lastName;
+	private String email;
+	private String position;
+	private String description;
+	private boolean deleted;
+>>>>>>> refs/heads/2016-04-14
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+<<<<<<< HEAD
+=======
+	@JsonRawValue
+>>>>>>> refs/heads/2016-04-14
 	private Set<Role> roles;
 	
 	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
@@ -51,18 +132,33 @@ public class Profiler implements Serializable{
 	
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
 	private Set<Team> teams;
+<<<<<<< HEAD
 	
 	@ManyToOne
 	private Club club;
+=======
+>>>>>>> refs/heads/2016-04-14
 	
 	public Profiler() {}
 
+<<<<<<< HEAD
 	public String getCode() {
 		return code;
+=======
+
+	public boolean isDeleted() {
+		return deleted;
+>>>>>>> refs/heads/2016-04-14
 	}
 
+<<<<<<< HEAD
 	public void setCode(String code) {
 		this.code = code;
+=======
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+>>>>>>> refs/heads/2016-04-14
 	}
 
 	public boolean isDeleted() {
@@ -73,6 +169,9 @@ public class Profiler implements Serializable{
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
+
+
+	
 
 
 	

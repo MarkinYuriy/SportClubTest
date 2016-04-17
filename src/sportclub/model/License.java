@@ -5,8 +5,15 @@ import java.util.*;
 
 import javax.persistence.*;
 
+<<<<<<< HEAD
 import sportclub.profile.Profiler;
 
+=======
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import sportclub.profile.Profiler;
+@JsonIgnoreProperties("deleted")
+>>>>>>> refs/heads/2016-04-14
 @Entity
 public class License {
 	

@@ -6,10 +6,12 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import sportclub.profile.Profiler;
 
 
-
+@JsonIgnoreProperties("deleted")
 @Entity
 public class Team {
 	
@@ -19,8 +21,59 @@ public class Team {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String name;
+<<<<<<< HEAD
 	private String description;
 	private boolean deleted;
+=======
+	
+	private String description;
+	private boolean deleted;
+
+	@OneToMany
+	private Set<ImageBank> photos;
+	
+	@OneToMany
+	private List<GameTeams> results;
+	
+	@ManyToMany(mappedBy="teams")
+	private Set<Event> diary;
+	
+	@ManyToMany(mappedBy = "teams")
+	 Set<Profiler> profiles;
+	
+	public Team(int id, String name, String description, Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.profiles = profiles;
+	}
+
+	public Team(int id, String name, String description) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+	}
+
+	public Team() {}
+	
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public Team(int id, String name, String description, Set<ImageBank> photos, List<GameTeams> results,
+			Set<Event> diary, Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.photos = photos;
+		this.results = results;
+		this.diary = diary;
+		this.profiles = profiles;
+	}
+>>>>>>> refs/heads/2016-04-14
 
 	@OneToMany
 	private Set<ImageBank> photos;
@@ -37,10 +90,22 @@ public class Team {
 	@ManyToOne
 	Club club;
 	
+<<<<<<< HEAD
 	public Team() {}
 	
 	public boolean isDeleted() {
 		return deleted;
+=======
+	public Team(int id, String name, String description, Set<ImageBank> photos, List<GameTeams> results,
+			Set<Profiler> profiles) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.photos = photos;
+		this.results = results;
+		this.profiles = profiles;
+>>>>>>> refs/heads/2016-04-14
 	}
 
 	public void setDeleted(boolean deleted) {
@@ -102,6 +167,7 @@ public class Team {
 	public void setProfiles(Set<Profiler> profiles) {
 		this.profiles = profiles;
 	}
+<<<<<<< HEAD
 	
 	
 	public Club getClub() {
@@ -120,4 +186,11 @@ public class Team {
 	}
 
 	
+=======
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
+				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
+	}
+>>>>>>> refs/heads/2016-04-14
 }

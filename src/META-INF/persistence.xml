@@ -10,11 +10,19 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd ">
  		<properties>
  			<property name="hibernate.hbm2ddl.auto" value="update"/>
  			<property name="hibernate.connection.url" 
+<<<<<<< HEAD
 			 value="jdbc:mysql://localhost/sportclubtest"/>
  			<property name="hibernate.connection.driver_class" 
  			value="com.mysql.jdbc.Driver"/>
  			<property name="hibernate.connection.username" value="root"/>
  			<property name="hibernate.connection.password" value="cthtuf77"/>
+=======
+			 value="jdbc:mysql://localhost/sportclub"/>
+ 			<property name="hibernate.connection.driver_class" 
+ 			value="com.mysql.jdbc.Driver"/>
+ 			<property name="hibernate.connection.username" value="root"/>
+ 			<property name="hibernate.connection.password" value="futuris"/>
+>>>>>>> refs/heads/2016-04-14
  <!-- <property name="hibernate.show_sql" value="true"/>
  <property name="hibernate.format_sql" value="true"/>
  <property name="hibernate.use_sql_comments" value="true"/> -->

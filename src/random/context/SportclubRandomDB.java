@@ -117,7 +117,7 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		for (Profiler el : profiles) {
 
 			el.setDescription(rd.randomDescription());
-			//el.setCode(rd.randomCode());
+			// el.setCode(rd.randomCode());
 			el.setEmail(rd.randomEmail());
 			el.setLastName(rd.randomLastName());
 			el.setLogin(rd.randomLogin());
@@ -216,8 +216,13 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 			assistCoach.setTeams(teamAth);
 			aths.add(assistCoach);
 		}
+<<<<<<< HEAD
 		 AdminManagerClub admin = new AdminManagerClub();
 		aths.add(admin);
+=======
+		/* AdminManagerClub admin = new AdminManagerClub();
+		aths.add(admin);*/
+>>>>>>> refs/heads/2016-04-14
 		Profiler teamCoach = new TeamCoach();
 		Set<Team> teamAth = new LinkedHashSet<Team>();
 		teamAth.add(team);

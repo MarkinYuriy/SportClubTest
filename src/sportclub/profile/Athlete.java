@@ -67,6 +67,11 @@ public class Athlete extends Profiler {
 				+ federationPlayer + ", games=" + games + "]";
 	}
 
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> refs/heads/2016-04-14
 	
 
 }

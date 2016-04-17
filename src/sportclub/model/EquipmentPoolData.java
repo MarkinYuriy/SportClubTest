@@ -2,7 +2,13 @@ package sportclub.model;
 
 import javax.persistence.*;
 
+<<<<<<< HEAD
 
+=======
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties("deleted")
+>>>>>>> refs/heads/2016-04-14
 @Entity
 @Table(name ="equipmentPoolData")
 public class EquipmentPoolData {

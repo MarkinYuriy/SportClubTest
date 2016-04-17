@@ -14,6 +14,7 @@ public class AdminManagerClub extends Profiler {
 	}
 
 	@OneToOne
+<<<<<<< HEAD
 	License codeLicense;
 
 	public License getCodeLicense() {
@@ -24,6 +25,12 @@ public class AdminManagerClub extends Profiler {
 		this.codeLicense = codeLicense;
 	}
 
+=======
+	License code;
+
+	
+	
+>>>>>>> refs/heads/2016-04-14
 	
 	
 	

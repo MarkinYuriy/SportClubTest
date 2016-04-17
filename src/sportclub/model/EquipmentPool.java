@@ -6,8 +6,15 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+<<<<<<< HEAD
 import flexjson.JSON;
 
+=======
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import flexjson.JSON;
+@JsonIgnoreProperties("deleted")
+>>>>>>> refs/heads/2016-04-14
 @Entity
 
 public class EquipmentPool implements Serializable {

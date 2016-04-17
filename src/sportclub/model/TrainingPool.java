@@ -6,6 +6,11 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.Cascade;
 
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties("deleted")
+>>>>>>> refs/heads/2016-04-14
 @Entity
 public class TrainingPool {
 	

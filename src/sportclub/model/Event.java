@@ -6,9 +6,12 @@ import javax.persistence.*;
 
 import org.hibernate.engine.internal.Cascade;
 
-import sportclub.profile.Profiler;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import sportclub.profile.Profiler;
+@JsonIgnoreProperties("deleted")
 @Entity
+
 public class Event {
 	
 	@Id@GeneratedValue
@@ -52,6 +55,10 @@ public class Event {
 	
 	public Event() {}
 	
+	public Event(int id) {
+		this.id =id;
+	}
+
 	public int getId() {
 		return id;
 	}

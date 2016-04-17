@@ -26,6 +26,18 @@ import sportclub.model.Team;
 @Entity
 public class Profiler implements Serializable{
 	
+	public Profiler(String code, String name, String lastName, String email,
+			String position, String description) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.position = position;
+		this.description = description;
+	}
+
+
 	public String getCode() {
 		return code;
 	}

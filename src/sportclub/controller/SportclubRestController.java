@@ -3,6 +3,7 @@ package sportclub.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,9 +25,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import flexjson.JSONSerializer;
+import flexjson.transformer.StringTransformer;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //import flexjson.JSONSerializer;
@@ -125,9 +131,9 @@ public class SportclubRestController {
 	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.POST)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler)
 			throws JsonParseException, JsonParseException, IOException, ReflectiveOperationException {
-		System.out.println("GET_PROFILES");
+		
 		String h = JSONToClient(profiles.getProfiles(SubProfiler));
-		System.out.println(h);
+		
 		return h;
 	}
 
@@ -141,12 +147,52 @@ public class SportclubRestController {
 	@RequestMapping(value = SportclubConstants.GET_CLUB + "/{id}", method = RequestMethod.POST)
 	public @ResponseBody String getClub(@PathVariable int id)
 			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException {
-		return singleObjectToRequest(profiles.getClub(id));
+		
+		JSONSerializer ser = new JSONSerializer();
+		Object obj =	profiles.getClub(id);
+			String res = "";
+			if (obj != null) {
+				RequestSuccess rs = new RequestSuccess();
+				rs.setData(obj);
+				res = ser.exclude("*.class").exclude("data.deleted")
+						.exclude("data.diary")
+						.include("status")
+						.serialize(rs);
+			} else {
+				RequestUnsuccess urs = new RequestUnsuccess();
+				urs.setData("Record/es doesn't exist");
+				res = ser.serialize(urs);
+			}
+			
+			
+			System.out.println(res);
+			
+			return res;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_CLUBS, method = RequestMethod.POST)
 	public @ResponseBody String getClubs() throws JsonGenerationException, JsonMappingException, IOException {
-		return singleObjectToRequest(profiles.getClubs());
+		
+		JSONSerializer ser = new JSONSerializer();
+	Object obj =	profiles.getClubs();
+		String res = "";
+		if (obj != null) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setData(obj);
+			res = ser.exclude("*.class").exclude("data.deleted")
+					.exclude("data.diary")
+					.include("status")
+					.serialize(rs);
+		} else {
+			RequestUnsuccess urs = new RequestUnsuccess();
+			urs.setData("Record/es doesn't exist");
+			res = ser.serialize(urs);
+		}
+		
+		
+		System.out.println(res);
+		
+		return res;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.POST)
@@ -308,15 +354,15 @@ public class SportclubRestController {
 	public @ResponseBody void getAnyRequest(@RequestBody String jpql)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		System.out.println("query");
-		Iterable<Object> it = profiles.getAnyRequest(jpql);
+		Iterable<String> it = profiles.getAnyRequest(jpql);
 
-		for (Object t : it) {
+		for (String t : it) {
 
-			JSONSerializer ser = new JSONSerializer();
+			/*JSONSerializer ser = new JSONSerializer();
 
-			String h = ser.exclude("diary").deepSerialize(t);
+			String h = ser.exclude("diary").deepSerialize(t);*/
 
-			System.out.println(h);
+			System.out.println(t);
 		}
 
 	}

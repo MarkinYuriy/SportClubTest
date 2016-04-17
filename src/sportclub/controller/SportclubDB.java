@@ -262,69 +262,67 @@ public class SportclubDB implements ISportclubRepository {
      */
     @Override
     @Transactional
-    public Iterable<Object> getAnyRequest(String jpql)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        System.out.println("getAnyRequest");
-        boolean flMultiple = hasMultipleArguments(jpql);
-        return flMultiple ? runMultipleArgumentsRequest(jpql) : runSingleArgumentRequest(jpql);
-    }
+	public Iterable<String> getAnyRequest(String jpql)
+			throws JsonGenerationException, JsonMappingException, IOException {
 
-    private Iterable<Object> runSingleArgumentRequest(String jpql)
-            throws JsonGenerationException, JsonMappingException, IOException {
+		boolean flMultiple = hasMultipleArguments(jpql);
+		return flMultiple ? runMultipleArgumentsRequest(jpql) : runSingleArgumentRequest(jpql);
+	}
 
-        javax.persistence.Query q = em.createQuery(jpql);
-        @SuppressWarnings("unchecked")
-        List<Object> objects = q.getResultList();
+	private Iterable<String> runSingleArgumentRequest(String jpql)
+			throws JsonGenerationException, JsonMappingException, IOException {
 
-        return objects/*objectsToStringsList(objects)*/;
-    }
+		javax.persistence.Query q = em.createQuery(jpql);
+		@SuppressWarnings("unchecked")
+		List<Object> objects = q.getResultList();
 
-//	private Iterable<String> objectsToStringsList(List<Object> objects)
-//			throws JsonGenerationException, JsonMappingException, IOException {
-//		List<String> res = new LinkedList<String>();
-//		ObjectMapper mapper = new ObjectMapper();
-//		for (Object obj : objects)
-//			res.add(mapper.writeValueAsString(obj));
-//		return res;
-//	}
-    private Iterable<Object> runMultipleArgumentsRequest(String jpql)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        System.out.println(jpql);
-        Query q = em.createQuery(jpql);
-        @SuppressWarnings("unchecked")
-        List<Object[]> objects = q.getResultList();
-        return toIterableString(objects);
-    }
+		return objectsToStringsList(objects);
+	}
 
-    private Iterable<Object> toIterableString(List<Object[]> objects)
-            throws JsonGenerationException, JsonMappingException, IOException {
-        List<Object> res = new LinkedList<Object>();
+	private Iterable<String> objectsToStringsList(List<Object> objects)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<String> res = new LinkedList<String>();
+		ObjectMapper mapper = new ObjectMapper();
+		for (Object obj : objects)
+			res.add(mapper.writeValueAsString(obj));
+		return res;
+	}
 
-        for (Object[] args : objects) {
-            res.add(args);
-        }
+	private Iterable<String> runMultipleArgumentsRequest(String jpql)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		System.out.println(jpql);
+		Query q = em.createQuery(jpql);
+		@SuppressWarnings("unchecked")
+		List<Object[]> objects = q.getResultList();
+		return toIterableString(objects);
+	}
 
-        return res;
-    }
+	private Iterable<String> toIterableString(List<Object[]> objects)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		List<String> res = new LinkedList<String>();
 
-    private boolean hasMultipleArguments(String jpql) {
-        String upJpql = jpql.toUpperCase();
-        int ind = upJpql.indexOf("FROM");
-        if (ind < 0) {
-            return false;
-        }
-        return upJpql.substring(0, ind).contains(",");
-    }
+		for (Object[] args : objects)
+			res.add(objectToJson(args));
 
-    private String objectToJson(Object[] objs) throws JsonGenerationException, JsonMappingException, IOException {
+		return res;
+	}
 
-        ObjectMapper mapper = new ObjectMapper();
-        if (objs == null || objs.length == 0) {
-            return null;
-        }
+	private boolean hasMultipleArguments(String jpql) {
+		String upJpql = jpql.toUpperCase();
+		int ind = upJpql.indexOf("FROM");
+		if (ind < 0)
+			return false;
+		return upJpql.substring(0, ind).contains(",");
+	}
 
-        return mapper.writeValueAsString(objs);
-    }
+	private String objectToJson(Object[] objs) throws JsonGenerationException, JsonMappingException, IOException {
+
+		ObjectMapper mapper = new ObjectMapper();
+		if (objs == null || objs.length == 0)
+			return null;
+
+		return mapper.writeValueAsString(objs);
+	}
 
     @SuppressWarnings("unchecked")
     @Override
@@ -401,17 +399,8 @@ public class SportclubDB implements ISportclubRepository {
 			
 		
 			for(Profiler p: prfs){
-					p.setPassword(null);
-					p.setDescription(null);
-					p.setEmail(null);
-					p.setName(null);
-					p.setLastName(null);
-					p.setLogin(null);
-					p.setPassword(null);
-					p.setPosition(null);
-					p.setPhotos(null);
-					p.setRoles(null);
-					p.setTeams(null);					
+					Profiler profile = new Profiler(p.getCode());
+					newPrfsSet.add(profile);
 				}
 			for(ImageBank img: photos)
 			{
@@ -479,17 +468,17 @@ public class SportclubDB implements ISportclubRepository {
         boolean exist = false;
         for (String str : subClasses) {
             if (str.equals(SubProfiler)) {
+            	
                 exist = true;
                 break;
             }
 
         }
-/*CriteriaBuilder cb = em.getCriteriaBuilder();
-CriteriaQuery<Profiler> cq;
-Metamodel m = em.getMetamodel();*/
+
         if (exist) {
             //from Athlete a where id='8805712271700122315'
-            Query query = em.createQuery("from " + SubProfiler + " p where code=" + "'" + id + "'" + "and deleted=false");
+            Query query = em.createQuery("select new Profiler(p.id, p.name, p.lastName, p.email, p.position, p.description) from " 
+            + SubProfiler + " p where code=" + "'" + id + "'" + "and deleted=false");
             //query.setParameter("code", id);
 
             try {
@@ -498,7 +487,7 @@ Metamodel m = em.getMetamodel();*/
                 // TODO Auto-generated catch block
                 e.getMessage();
             }
-            
+            System.out.println(prf);
         }
         return prf;
     }

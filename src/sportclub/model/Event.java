@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import sportclub.profile.Profiler;
 @JsonIgnoreProperties("deleted")
 @Entity
+
 public class Event {
 	
 	@Id@GeneratedValue

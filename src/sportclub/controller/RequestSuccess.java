@@ -1,7 +1,7 @@
 package sportclub.controller;
 
 public class RequestSuccess {
-	private final String status = "Success";
+	private String status = "Success";
 	private Object data;
 	
 	public String getStatus() {

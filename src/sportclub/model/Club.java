@@ -5,6 +5,8 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 @JsonIgnoreProperties("deleted")
 @Entity
 public class Club {
@@ -84,6 +86,7 @@ public class Club {
 	      joinColumns={ @JoinColumn(name="clubId", referencedColumnName="clubId") },
 	      inverseJoinColumns={ @JoinColumn(name="eventId", referencedColumnName="id") }
 	  )
+	
 	private Set<Event> diary;
 	
 	@OneToMany

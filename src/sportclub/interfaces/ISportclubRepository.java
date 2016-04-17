@@ -32,7 +32,7 @@ boolean addGame(Game game);
 
 boolean addAthlete(Athlete ath,Team team);
 
-public Iterable<Object> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
+public Iterable<String> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
 
 
 Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException;

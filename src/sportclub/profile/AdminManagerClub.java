@@ -11,12 +11,31 @@ public class AdminManagerClub extends Profiler {
 	
 	
 	
+	
+
+
+
+
+	public License getLicense() {
+		return license;
+	}
+
+
+
+
+	public void setLicense(License license) {
+		this.license = license;
+	}
+
+
+
+
 	public AdminManagerClub() {
 		super();
 	}
 
 	@OneToOne
-	License code;
+	License license;
 
 	
 	

@@ -42,7 +42,7 @@ import sportclub.model.*;
 import sportclub.profile.*;
 
 /**
- * @author paul
+ * @author paul 04_18_2016
  *
  */
 public class SportclubDB implements ISportclubRepository {

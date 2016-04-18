@@ -321,7 +321,7 @@ public class SportclubRestController {
 
 		String res = responseToJSONForAdd(f);
 
-		return "answer";
+		return res;
 
 	}
 

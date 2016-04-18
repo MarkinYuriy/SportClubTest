@@ -118,9 +118,6 @@ public class SportclubDB implements ISportclubRepository {
         try { 
          q.getSingleResult();
        
-
-
-        
         }catch(Exception e){
             em.persist(team);
 
@@ -137,8 +134,6 @@ public class SportclubDB implements ISportclubRepository {
     @Transactional
     public boolean addProfiler(String json)  {
     	boolean res = false;
-    	
-    	
     	try {
     		JSONDeserializer<Map<String,String>> des =new JSONDeserializer<>();
     		Map<String,String> properties = des.deserialize(json);
@@ -187,12 +182,6 @@ public class SportclubDB implements ISportclubRepository {
         }
 
         return res;
-    }
-
-    @Override
-    public boolean addProfile(Profiler profile) {
-        
-        return false;
     }
 
     @Override

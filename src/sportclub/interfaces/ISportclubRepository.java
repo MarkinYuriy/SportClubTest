@@ -15,9 +15,6 @@ import sportclub.controller.LoginPassword;
 import sportclub.model.*;
 
 public interface ISportclubRepository {
-boolean addProfile(Profiler profile);
-
-
 boolean removeProfile(int id);
 boolean addTeam(Team team);
 
@@ -48,11 +45,6 @@ Club getClub(int id);
 Iterable<Team> getTeams();
 
 Team getTeam(int id);
-
-
-
-
-
 
 String signIn(LoginPassword lp);
 

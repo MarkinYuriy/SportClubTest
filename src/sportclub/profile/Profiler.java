@@ -65,7 +65,7 @@ public class Profiler implements Serializable{
 	public String toString() {
 		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
 				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
-				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos + ", teams=" + teams
+				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos 
 				+ "]";
 	}
 
@@ -81,10 +81,10 @@ public class Profiler implements Serializable{
 	@JsonRawValue
 	private Set<Role> roles;
 	
-	@OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	@OneToMany
 	private Set<ImageBank> photos;
 	
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
+	@ManyToMany
 	private Set<Team> teams;
 	
 	public Profiler() {}

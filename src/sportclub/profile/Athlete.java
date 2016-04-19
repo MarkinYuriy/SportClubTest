@@ -51,6 +51,22 @@ public class Athlete extends Profiler {
 		this.birthday = birthday;
 	}
 	
+	public boolean isFederationPlayer() {
+		return federationPlayer;
+	}
+
+	public void setFederationPlayer(boolean federationPlayer) {
+		this.federationPlayer = federationPlayer;
+	}
+
+	public List<GameAthletes> getGames() {
+		return games;
+	}
+
+	public void setGames(List<GameAthletes> games) {
+		this.games = games;
+	}
+
 	public Athlete(int number, String type, Date birthday) {
 		super();
 		this.number = number;
@@ -64,7 +80,7 @@ public class Athlete extends Profiler {
 	@Override
 	public String toString() {
 		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
-				+ federationPlayer + ", games=" + games + "]"+super.toString();
+				+ federationPlayer + "]"+super.toString();
 	}
 
 	

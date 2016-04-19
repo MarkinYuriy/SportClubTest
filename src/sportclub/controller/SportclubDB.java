@@ -175,7 +175,7 @@ public class SportclubDB implements ISportclubRepository {
         Set<Team> teams = new LinkedHashSet<Team>();
         if (em.find(Athlete.class, ath.getCode()) == null) {
             teams.add(team);
-            ath.setTeams(teams);
+           // ath.setTeams(teams);
             em.persist(ath);
             res = true;
             System.out.println("true");
@@ -445,21 +445,6 @@ public class SportclubDB implements ISportclubRepository {
 
         Profiler prf = null;
         
-        String[] subClasses = {
-            "AdminManagerClub",
-            "AssitPhysicCoach",
-            "AssitTeamCoach",
-            "Athlete",
-            //"Coach",
-            "Parent",
-            "PhysiologyCoach",
-            "ProffesionalManager",
-            "Profiler",
-            "Psycholog",
-            "TeamAdminManager",
-            "TeamCoach"
-
-        };
         boolean exist = false;
         for (String str : subClasses) {
             if (str.equals(SubProfiler)) {
@@ -467,20 +452,19 @@ public class SportclubDB implements ISportclubRepository {
                 exist = true;
                 break;
             }
-
         }
 
         if (exist) {
-            //from Athlete a where id='8805712271700122315'
-            Query query = em.createQuery("select new Profiler(p.id, p.name, p.lastName, p.email, p.position, p.description) from " 
-            + SubProfiler + " p where code=" + "'" + id + "'" + "and deleted=false");
-            //query.setParameter("code", id);
+           
+Query query = em.createQuery("select p from Profiler as p where p.code=:code and p.class=:type and p.deleted = false");
+query.setParameter("code", id);
+query.setParameter("type", SubProfiler);
 
             try {
                 prf = (Profiler) query.getSingleResult();
             } catch (javax.persistence.NoResultException e) {
                 // TODO Auto-generated catch block
-                e.getMessage();
+               System.out.println(e.getMessage());
             }
             System.out.println(prf);
         }
@@ -489,18 +473,14 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     public String signIn(LoginPassword lp) {
-        //sportclub.profiler WHERE login='login76952' AND password='password99356';
+        
         String id;
         try {
-            Query q = em.createQuery("SELECT p.id FROM Profiler p WHERE p.login='" + lp.getLogin()
-                    + "' AND p.password='" + lp.getPassword() + "'");
-            //em.createQuery("SELECT p.id "
-            //+ "FROM Profiler p WHERE p.login='"+lp.getLogin()+"' AND p.password='"+lp.getPassword()+"'");
-            // em.createNativeQuery("SELECT p.id "
-            // + "FROM Profiler p WHERE p.login=?1 AND p.password=?2");
-            //+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
-            //q.setParameter(1, lp.getLogin());
-            //q.setParameter(2, lp.getPassword());
+            Query q = em.createQuery("SELECT p.id "
+            + "FROM Profiler p WHERE p.login=:login AND p.password=:password");
+            
+            q.setParameter("login", lp.getLogin());
+            q.setParameter("password", lp.getPassword());
             id = (String) q.getSingleResult();
             System.out.println(id);
         } catch (javax.persistence.NoResultException e) {
@@ -511,22 +491,20 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     @Transactional
-    public String registration(LoginPassword lp) {
+    public String registration(LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 
         String id;
-        try {  //createNativeQuery
-            Query q = em.createQuery("SELECT p.id FROM Profiler p WHERE p.login='" + lp.getLogin()
-                    + "' AND p.password='" + lp.getPassword() + "'");
-            //"SELECT p.profilerId "
-            //	+ "FROM sportclub.profiler AS p WHERE p.login=?1 AND p.password=?2");
-            //q.setParameter(1, lp.getLogin());
-            //q.setParameter(2, lp.getPassword());
+        try {  
+            Query q = em.createQuery("SELECT p.id FROM Profiler p WHERE p.login=:login AND p.password=:password");
+            
+            q.setParameter("login", lp.getLogin());
+            q.setParameter("password", lp.getPassword());
             id = (String) q.getSingleResult();
             id = null;
             System.out.println(id);
         } catch (javax.persistence.NoResultException e) {
-            Profiler profile = selectorSubprofiles(lp.subprofile);
-
+            
+        	Profiler profile = (Profiler) Class.forName(lp.getSubprofile()).newInstance();
             profile.setLogin(lp.getLogin());
             profile.setPassword(lp.getPassword());
             
@@ -539,7 +517,7 @@ public class SportclubDB implements ISportclubRepository {
 
     }
 
-    private Profiler selectorSubprofiles(String subprofile) {
+    /*private Profiler selectorSubprofiles(String subprofile) {
 
         Profiler profile = null;
 
@@ -580,7 +558,7 @@ public class SportclubDB implements ISportclubRepository {
 
         }
         return profile;
-    }
+    }*/
 
     @Override
     @Transactional

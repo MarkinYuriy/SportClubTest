@@ -34,8 +34,9 @@ public class Team {
 	@ManyToMany(mappedBy="teams")
 	private Set<Event> diary;
 	
-	@ManyToMany(mappedBy = "teams")
+	@ManyToMany(mappedBy="teams")
 	 Set<Profiler> profiles;
+	
 	
 	public Team(int id, String name, String description, Set<Profiler> profiles) {
 		super();

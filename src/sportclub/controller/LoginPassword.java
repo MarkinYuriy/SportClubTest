@@ -1,7 +1,7 @@
 package sportclub.controller;
 
 public class LoginPassword {
-	String login;
+	private String login;
 	
     public LoginPassword() {
 			}
@@ -17,8 +17,8 @@ public class LoginPassword {
 		this.password = password;
 	}
 
-	String password;
-    String subprofile;
+	private String password;
+    private String subprofile;
     
     
     public String getSubprofile() {

@@ -89,7 +89,7 @@ public class SportclubRestController {
 	}
 
 	@RequestMapping(value = SportclubConstants.REGISTRATION, method = RequestMethod.POST)
-	public @ResponseBody String registration(@RequestBody LoginPassword lp) {
+	public @ResponseBody String registration(@RequestBody LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		System.out.println(lp.toString());
 		String uid = profiles.registration(lp);
 
@@ -148,7 +148,28 @@ public class SportclubRestController {
 	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id)
 			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException, ReflectiveOperationException {
 
-		return singleObjectToRequest(profiles.getProfile(SubProfiler, id));
+		RequestSuccess rs = new RequestSuccess();
+JSONSerializer ser = new JSONSerializer();
+		
+		Object obj =	profiles.getProfile(SubProfiler, id);
+			String res = "";
+			if (obj != null) {
+				rs.setStatus("success");
+				rs.setData(obj);
+				res = ser.exclude("*.class").exclude("data.deleted")
+						.exclude("data.diary")
+						.include("status")
+						.serialize(rs);
+			} else {
+				rs.setStatus("unsuccess");
+				rs.setData("Record/es doesn't exist");
+				res = ser.serialize(rs);
+			}
+			
+			
+			System.out.println(res);
+		//singleObjectToRequest();
+		return res;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_CLUB + "/{id}", method = RequestMethod.POST)

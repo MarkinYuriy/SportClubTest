@@ -49,7 +49,7 @@ Team getTeam(int id);
 String signIn(LoginPassword lp);
 
 
-String registration(LoginPassword lp);
+String registration(LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException;
 String registration(Role[] role, String subProfile);
 
 Profiler registrationWid(String id, LoginPassword lp);

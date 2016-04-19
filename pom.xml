@@ -61,10 +61,16 @@
     </executions>
     <dependencies>
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>5.1.0.Final</version>
-        </dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-jpamodelgen</artifactId>
+	<version>4.3.11.Final</version>
+</dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-commons-annotations</artifactId>
+	<version>3.2.0.Final</version>
+</dependency>
+
     </dependencies>
 </plugin>
     
@@ -74,9 +80,13 @@
 	<dependency>
 	<groupId>com.googlecode.json-simple</groupId>
 	<artifactId>json-simple</artifactId>
-	<version>1.1.1</version>
+	<version>1.1</version>
 </dependency>
-	
+	<dependency>
+		<groupId>com.github.fge</groupId>
+		<artifactId>json-schema-validator</artifactId>
+		<version>2.2.6</version>
+	</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
@@ -87,6 +97,8 @@
 			<artifactId>spring-tx</artifactId>
 			<version>4.0.3.RELEASE</version>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -121,19 +133,21 @@
 	<artifactId>flexjson</artifactId>
 	<version>2.1</version>
 </dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-core</artifactId>
+	<version>4.3.11.Final</version>
+</dependency>
+
 
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.2.12.Final</version>
-		</dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-entitymanager</artifactId>
+	<version>4.3.11.Final</version>
+</dependency>
+
+
 		
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.2.0.Final</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>

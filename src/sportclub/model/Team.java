@@ -37,7 +37,14 @@ public class Team {
 	@ManyToMany(mappedBy="teams")
 	 Set<Profiler> profiles;
 	
+	@ManyToOne
+	Club club;
 	
+	
+	public Club getClub() {
+		return club;
+	}
+
 	public Team(int id, String name, String description, Set<Profiler> profiles) {
 		super();
 		this.id = id;
@@ -147,4 +154,10 @@ public class Team {
 		return "Team [id=" + id + ", name=" + name + ", description=" + description + ", photos=" + photos
 				+ ", results=" + results + ", diary=" + diary + ", profiles=" + profiles + "]";
 	}
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+
+	
 }

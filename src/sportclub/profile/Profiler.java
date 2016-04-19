@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -20,6 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 
+import sportclub.model.Club;
 import sportclub.model.ImageBank;
 import sportclub.model.Role;
 import sportclub.model.Team;
@@ -87,6 +89,19 @@ public class Profiler implements Serializable{
 	@ManyToMany
 	private Set<Team> teams;
 	
+	@ManyToOne
+	private Club club;
+	
+	public Club getClub() {
+		return club;
+	}
+
+
+	public void setClub(Club club) {
+		this.club = club;
+	}
+
+
 	public Profiler() {}
 
 
@@ -199,6 +214,7 @@ public class Profiler implements Serializable{
 		email= properties.get("email"); ;
 		position= properties.get("position"); ;
 		description= properties.get("description");
+		
 		
 	}
 	

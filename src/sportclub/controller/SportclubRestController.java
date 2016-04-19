@@ -317,7 +317,97 @@ JSONSerializer ser = new JSONSerializer();
 		// System.out.println(json);
 		return res;
 	}
-
+@RequestMapping(value = SportclubConstants.UPDATE_CLUB, method = RequestMethod.POST)
+	@ResponseBody String updateClub(@RequestBody Club club){
+		String res="";
+		Club resClub = null;
+		if (profiles.updateClub(club)){
+			resClub = profiles.getClub(club.getId());
+		}
+		res = JSONToClient(resClub);
+		return res;
+	}
+	
+	/*@RequestMapping(value = SportclubConstants.UPDATE_PROFILER, method = RequestMethod.POST)
+	@ResponseBody String updateProfiler(@RequestBody Athlete profiler){
+		String res="";
+		String subProfiler = profiler.getClass().getSimpleName();
+		System.out.println("Prof "+profiler.getCode());
+		System.out.println("Sub "+subProfiler);
+		Profiler resProfiler = null;
+		if (profiles.updateAthlete(profiler, subProfiler)){
+			resProfiler = profiles.getProfile(subProfiler, profiler.getCode());
+		}
+		res = JSONToClient(resProfiler);
+		return res;
+	}*/
+	
+	@RequestMapping(value = SportclubConstants.UPDATE_TEAM, method = RequestMethod.POST)
+	@ResponseBody
+    public String updateTeam(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException {
+		
+		
+		
+		ObjectMapper om = new ObjectMapper();
+		Team team = om.readValue(json, Team.class);
+		
+		
+		String res ="";
+		Team resTeam = null;
+		if (profiles.updateTeam(team)){
+			resTeam = profiles.getTeam(team.getId());
+		}
+		res = JSONToClient(resTeam);
+		//System.out.println(res);
+		return res;
+    }
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_CLUB, method = RequestMethod.POST)
+	@ResponseBody String removeClub(@RequestBody Club club){
+		String res="";
+		//Club resClub = profiles.getClub(club.getId());
+		if (profiles.removeClub(club)){
+			res+="{\"status\":\"removing success}";
+		}else{
+			res+="{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_PROFILER+"{/subProfiler}", method = RequestMethod.POST)
+	@ResponseBody String removeProfiler(@RequestBody Profiler profiler, @PathVariable String subProfiler){
+		String res="";
+		Profiler resProfiler = profiles.getProfile(subProfiler, profiler.getCode());
+		if (profiles.removeProfiler(profiler, subProfiler)){
+			res+="{\"Status\":\" Removing Success\",\"Data\":";
+			String stri="";
+			try {
+				stri = new ObjectMapper().writeValueAsString(resProfiler);
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				// e.printStackTrace();
+			}
+			res+=stri+"}";
+		}else{
+			res+="{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+		}
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.REMOVE_TEAM, method = RequestMethod.POST)
+	@ResponseBody
+    public String removeTeam(@RequestBody Team team) {
+		String res ="";
+		
+		if (profiles.removeTeam(team)){
+			res+="{\"status\":\"success\",\"Data\":\"team deleted\"}";
+			
+		}else{
+			res+="{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
+		}
+		//System.out.println(res);
+		return res;
+	}
 	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
 	public @ResponseBody String addTeam(@RequestBody Team team) {
 		System.out.println("add team");

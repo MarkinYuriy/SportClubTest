@@ -56,5 +56,11 @@ Profiler registrationWid(String id, LoginPassword lp);
 
 
 boolean addProfiler(String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException;
+boolean updateTeam(Team team);
+boolean updateClub(Club club);
+boolean updateAthlete(Athlete profiler, String subProfiler);
+boolean removeClub(Club club);
+boolean removeTeam(Team team);
+boolean removeProfiler(Profiler profiler, String subProfiler);
 
 }

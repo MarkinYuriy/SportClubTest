@@ -33,10 +33,13 @@ import org.codehaus.jackson.map.ObjectMapper;*/
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import flexjson.JSONDeserializer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.profile.*;
@@ -224,8 +227,17 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     public boolean addClub(Club club) {
-        // TODO Auto-generated method stub
-        return false;
+ //       try{
+//        
+//        Query q = em.createQuery("SELECT c.name "
+//            + "FROM Club c WHERE c.name=:name");
+//        q.setParameter("name", club.getName());
+//        String name = (String) q.getSingleResult();   
+//        return false;
+//        } catch (javax.persistence.NoResultException e) {
+            em.persist(club);
+            return true;
+      //  }
     }
 
     @Override
@@ -725,19 +737,30 @@ query.setParameter("type", SubProfiler);
     @Override
     @Transactional
     public String registration(LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-
+        System.err.println("in the registration");
         String id;
         try {  
             Query q = em.createQuery("SELECT p.id FROM Profiler p WHERE p.login=:login AND p.password=:password");
+//         "SELECT p.id FROM Profiler p WHERE p.login='"+lp.getLogin()
+//                    +"' AND p.password='"
+//                    +lp.getPassword()+"'");
+//            try {
+//                System.err.println(new ObjectMapper().writeValueAsString(lp));
+//"SELECT p.id FROM Profiler p WHERE p.login=:login AND p.password=:password");
+//            } catch (JsonProcessingException ex) {
+            //    Logger.getLogger(SportclubDB.class.getName()).log(Level.SEVERE, null, ex);
+            //}
             
             q.setParameter("login", lp.getLogin());
             q.setParameter("password", lp.getPassword());
             id = (String) q.getSingleResult();
             id = null;
-            System.out.println(id);
+            System.out.println("find!!");
         } catch (javax.persistence.NoResultException e) {
-            
-        	Profiler profile = (Profiler) Class.forName(lp.getSubprofile()).newInstance();
+            System.out.println("catch NoResultException");
+            System.err.println("lp.getSubprofile()"+lp.getSubprofile());
+        	Profiler profile = (Profiler) Class.forName("sportclub.profile."+lp.getSubprofile()).newInstance();
+            System.out.println("after for name");    
             profile.setLogin(lp.getLogin());
             profile.setPassword(lp.getPassword());
             
@@ -793,44 +816,44 @@ query.setParameter("type", SubProfiler);
         return profile;
     }*/
 
-    @Override
-    @Transactional
-    public Profiler registrationWid(String id, LoginPassword lp) {
-        Profiler p = null;
-        try {  //createNativeQuery
-            Query q = em.createQuery("SELECT p FROM Profiler p WHERE p.id='" + id + "'");
-
-            p = (Profiler) q.getSingleResult();
-            p.setLogin(lp.getLogin());
-            p.setPassword(lp.getPassword());
-            em.persist(p);
-        } catch (javax.persistence.NoResultException e) {
-            return null;
-        }
-        return p;
-    }
-
-    @Override
-    @Transactional
-    public String registration(Role[] role, String subProfile) {
-
-        String id;
-        try {  //createNativeQuery
-//            Query q = em.createQuery("SELECT p FROM Profiler p");
-//            Profiler p = (Profiler) q.getSingleResult();
-//           
-//            Profiler profile = selectorSubprofiles(lp.subprofile);
+//    @Override
+//    @Transactional
+//    public Profiler registrationWid(String id, LoginPassword lp) {
+//        Profiler p = null;
+//        try {  //createNativeQuery
+//            Query q = em.createQuery("SELECT p FROM Profiler p WHERE p.id='" + id + "'");
 //
-//            profile.setLogin(lp.getLogin());
-//            profile.setPassword(lp.getPassword());
+//            p = (Profiler) q.getSingleResult();
+//            p.setLogin(lp.getLogin());
+//            p.setPassword(lp.getPassword());
+//            em.persist(p);
+//        } catch (javax.persistence.NoResultException e) {
+//            return null;
+//        }
+//        return p;
+//    }
 //
-//            em.persist(profile);
-       
-        } catch (javax.persistence.NoResultException e) {
-       
-        }
-
-        return null;
-    }
+////    @Override
+//    @Transactional
+//    public String registration(Role[] role, String subProfile) {
+//
+//        String id;
+//        try {  //createNativeQuery
+////            Query q = em.createQuery("SELECT p FROM Profiler p");
+////            Profiler p = (Profiler) q.getSingleResult();
+////           
+////            Profiler profile = selectorSubprofiles(lp.subprofile);
+////
+////            profile.setLogin(lp.getLogin());
+////            profile.setPassword(lp.getPassword());
+////
+////            em.persist(profile);
+//       
+//        } catch (javax.persistence.NoResultException e) {
+//       
+//        }
+//
+//        return null;
+//    }
 
 }

@@ -2,7 +2,7 @@ package sportclub.controller;
 
 public interface SportclubConstants {
 	
-		String GET_PROFILE = "/getProfile";
+                String GET_PROFILE = "/getProfile";
 		String GET_PROFILES = "/getProfiles";
 		String GET_ROLE = "/getRole";
 		String GET_ROLES = "/getRoles";

@@ -70,7 +70,16 @@ public class SportclubRestController {
 	}
 
 	@RequestMapping(value = SportclubConstants.SIGN_IN, method = RequestMethod.POST)
-	public @ResponseBody String signIn(@RequestBody LoginPassword lp) {
+	public @ResponseBody String signIn(@RequestBody String json) 
+                   throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+                LoginPassword lp;
+            try {
+                lp = new ObjectMapper().readValue(json, LoginPassword.class);
+            } catch (IOException ex) {
+                return "{\"Status\":\"Unsuccess\",\"Data\":\"Format JSON incorrect\"}";
+               // Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
 		System.out.println(lp.toString());
 		String uid = profiles.signIn(lp);
 
@@ -89,8 +98,16 @@ public class SportclubRestController {
 	}
 
 	@RequestMapping(value = SportclubConstants.REGISTRATION, method = RequestMethod.POST)
-	public @ResponseBody String registration(@RequestBody LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		System.out.println(lp.toString());
+	public @ResponseBody String registration(@RequestBody String json) 
+                throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+                LoginPassword lp;
+            try {
+                lp = new ObjectMapper().readValue(json, LoginPassword.class);
+            } catch (IOException ex) {
+                return "{\"Status\":\"Unsuccess\",\"Data\":\"Format JSON incorrect\"}";
+               // Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		//System.out.println("after try "+lp.toString());
 		String uid = profiles.registration(lp);
 
 		String res = "";
@@ -107,35 +124,35 @@ public class SportclubRestController {
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.REGISTRATION + "/{id}", method = RequestMethod.POST)
-	public @ResponseBody String registrationWid(@PathVariable String id, @RequestBody LoginPassword lp) {
-		Profiler p = profiles.registrationWid(id, lp);
+//	@RequestMapping(value = SportclubConstants.REGISTRATION + "/{id}", method = RequestMethod.POST)
+//	public @ResponseBody String registrationWid(@PathVariable String id, @RequestBody LoginPassword lp) {
+//		Profiler p = profiles.registrationWid(id, lp);
+//
+//		String res = "";
+//		if (p != null) {
+//			res += "{\"Status\":\"Success\",\"Data\":{";
+//
+//			String stri = "";
+//			try {
+//				stri = new ObjectMapper().writeValueAsString(p);
+//				stri = stri.replace("\\\"id\\\"", "\"id\"");
+//				stri = stri.replace("\\\"node\\\"", "\"node\"");
+//				stri = stri.replace("\"{", "{");
+//				stri = stri.replace("}\"", "}");
+//			} catch (JsonProcessingException ex) {
+//				Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
+//			}
+//
+//			res += stri + "}";
+//		} else {
+//			res += "{\"Status\":\"Unsuccess\",\"Data\":\"id no correct\"}";
+//		}
+//		// System.out.println(res);
+//
+//		return res;
+//	}
 
-		String res = "";
-		if (p != null) {
-			res += "{\"Status\":\"Success\",\"Data\":{";
-
-			String stri = "";
-			try {
-				stri = new ObjectMapper().writeValueAsString(p);
-				stri = stri.replace("\\\"id\\\"", "\"id\"");
-				stri = stri.replace("\\\"node\\\"", "\"node\"");
-				stri = stri.replace("\"{", "{");
-				stri = stri.replace("}\"", "}");
-			} catch (JsonProcessingException ex) {
-				Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
-			}
-
-			res += stri + "}";
-		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"id no correct\"}";
-		}
-		// System.out.println(res);
-
-		return res;
-	}
-
-	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.GET)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler)
 			throws JsonParseException, JsonParseException, IOException, ReflectiveOperationException {
 		
@@ -144,7 +161,7 @@ public class SportclubRestController {
 		return h;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_PROFILE + "/{SubProfiler}" + "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_PROFILE + "/{SubProfiler}" + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id)
 			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException, ReflectiveOperationException {
 
@@ -172,7 +189,7 @@ JSONSerializer ser = new JSONSerializer();
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_CLUB + "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_CLUB + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getClub(@PathVariable int id)
 			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException {
 		
@@ -199,7 +216,7 @@ JSONSerializer ser = new JSONSerializer();
 			return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_CLUBS, method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_CLUBS, method = RequestMethod.GET)
 	public @ResponseBody String getClubs() throws JsonGenerationException, JsonMappingException, IOException {
 		
 		JSONSerializer ser = new JSONSerializer();
@@ -224,7 +241,7 @@ JSONSerializer ser = new JSONSerializer();
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.GET)
 	public @ResponseBody String getTeams() throws JsonGenerationException, JsonMappingException, IOException {
 		//ObjectMapper mapper = new ObjectMapper();
 		Iterable<Team> teams = profiles.getTeams();
@@ -232,7 +249,7 @@ JSONSerializer ser = new JSONSerializer();
 		return singleObjectToRequest(teams);
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_TEAM + "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_TEAM + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getTeam(@PathVariable int id)
 			throws JsonGenerationException, JsonMappingException, IOException {
 
@@ -258,7 +275,7 @@ JSONSerializer ser = new JSONSerializer();
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_ROLE + "/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_ROLE + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getRole(@PathVariable String id) {
 		String res = "";
 		Iterable<Role> getRoles = null;
@@ -294,7 +311,7 @@ JSONSerializer ser = new JSONSerializer();
 		return res;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_ROLES, method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.GET_ROLES, method = RequestMethod.GET)
 	public @ResponseBody String getRoles() {
 		String res = "";
 
@@ -328,6 +345,19 @@ JSONSerializer ser = new JSONSerializer();
 		return res;
 	}
 	
+@RequestMapping(value = SportclubConstants.ADD_CLUB, method = RequestMethod.POST)
+	@ResponseBody String addClub(@RequestBody Club club){
+		String res="";
+                Club newClub = new Club();
+                System.err.println("club"+club);
+                club.setId(newClub.getId());
+		//Club resClub = null;
+//		if (profiles.addClub(club)){
+//			resClub = profiles.getClub(club.getId());
+//		}
+		res = JSONToClient(club);
+		return res;
+	}
 	/*@RequestMapping(value = SportclubConstants.UPDATE_PROFILER, method = RequestMethod.POST)
 	@ResponseBody String updateProfiler(@RequestBody Athlete profiler){
 		String res="";
@@ -469,7 +499,7 @@ JSONSerializer ser = new JSONSerializer();
 		profiles.addCourt(court);
 	}
 
-	@RequestMapping(value = SportclubConstants.ALL_QUERIES, method = RequestMethod.POST)
+	@RequestMapping(value = SportclubConstants.ALL_QUERIES, method = RequestMethod.GET)
 	public @ResponseBody void getAnyRequest(@RequestBody String jpql)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		System.out.println("query");

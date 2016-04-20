@@ -63,6 +63,11 @@ public class Club {
 		return diary;
 	}
 
+    @Override
+    public String toString() {
+        return "Club{" + "id=" + id + ", name=" + name + ", location=" + location + ", description=" + description + ", deleted=" + deleted + ", diary=" + diary + ", photos=" + photos + '}';
+    }
+
 	public void setDiary(Set<Event> diary) {
 		this.diary = diary;
 	}

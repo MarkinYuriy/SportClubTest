@@ -50,9 +50,9 @@ String signIn(LoginPassword lp);
 
 
 String registration(LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException;
-String registration(Role[] role, String subProfile);
+//String registration(Role[] role, String subProfile);
 
-Profiler registrationWid(String id, LoginPassword lp);
+//Profiler registrationWid(String id, LoginPassword lp);
 
 
 boolean addProfiler(String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException;

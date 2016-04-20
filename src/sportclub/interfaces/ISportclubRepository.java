@@ -15,7 +15,7 @@ import sportclub.controller.LoginPassword;
 import sportclub.model.*;
 
 public interface ISportclubRepository {
-boolean removeProfile(int id);
+boolean removeProfiler(String id);
 boolean addTeam(Team team);
 
 boolean addCourt(Court court);
@@ -58,9 +58,9 @@ String registration(LoginPassword lp) throws InstantiationException, IllegalAcce
 boolean addProfiler(String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException;
 boolean updateTeam(Team team);
 boolean updateClub(Club club);
-boolean updateAthlete(Athlete profiler, String subProfiler);
+//boolean updateAthlete(Athlete profiler, String subProfiler);
 boolean removeClub(Club club);
 boolean removeTeam(Team team);
-boolean removeProfiler(Profiler profiler, String subProfiler);
+
 
 }

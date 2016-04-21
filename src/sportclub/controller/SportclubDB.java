@@ -73,7 +73,7 @@ public class SportclubDB implements ISportclubRepository {
      @SuppressWarnings("unchecked")
     @Override
     //@Transactional
-    public Iterable<Profiler> getProfiles(String SubProfiler) throws ReflectiveOperationException {
+    public Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException {
 
         Iterable<Profiler> res = null;
         //System.out.println("Sub "+SubProfiler);
@@ -81,7 +81,7 @@ public class SportclubDB implements ISportclubRepository {
         boolean exist = false;
         for (String str : subClasses) {
             
-            if (str.equals(SubProfiler)) {
+            if (str.equals(subProfiler)) {
                 exist = true;
                 
                 break;
@@ -91,7 +91,8 @@ public class SportclubDB implements ISportclubRepository {
 
         try {
 			if (exist) {
-			    Query query = em.createQuery("from " + SubProfiler + " p where deleted=false");
+			    Query query = em.createQuery("select p from Profiler p where deleted=false and p.class=:subprofiler");
+			    query.setParameter("subprofiler", subProfiler);
 			    res = query.getResultList();
 			}
 

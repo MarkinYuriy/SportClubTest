@@ -108,12 +108,12 @@ public class SportclubRestController {
 
 		String res = "";
 		if (uid != null) {
-			res += "{\"Status\":\"Success\",\"Data\":";
+			res += "{\"status\":\"success\",\"data\":";
 
 			String stri = "\"" + uid + "\"";
 			res += stri + "}";
 		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"User exist\"}";
+			res += "{\"status\":\"unsuccess\",\"data\":\"user exist\"}";
 		}
 		// System.out.println(res);
 
@@ -125,10 +125,30 @@ public class SportclubRestController {
 	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.GET)
 	public @ResponseBody String getProfiles(@PathVariable String SubProfiler)
 			throws JsonParseException, JsonParseException, IOException, ReflectiveOperationException {
+		RequestSuccess rs = new RequestSuccess();
+		JSONSerializer ser = new JSONSerializer();
+				
+				Object obj =	profiles.getProfiles(SubProfiler);
+					String res = "";
+					if (obj != null) {
+						rs.setStatus("success");
+						rs.setData(obj);
+						res = ser.exclude("*.class").exclude("data.deleted")
+								.exclude("data.diary")
+								.include("status")
+								.serialize(rs);
+					} else {
+						rs.setStatus("unsuccess");
+						rs.setData("Record/es doesn't exist");
+						res = ser.serialize(rs);
+					}
+					
+					
+					System.out.println(res);
+				//singleObjectToRequest();
+				return res;
 		
-		String h = JSONToClient(profiles.getProfiles(SubProfiler));
 		
-		return h;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_PROFILE + "/{SubProfiler}" + "/{id}", method = RequestMethod.GET)
@@ -175,7 +195,7 @@ JSONSerializer ser = new JSONSerializer();
 						.include("status")
 						.serialize(rs);
 			} else {
-				RequestUnsuccess urs = new RequestUnsuccess();
+				RequestSuccess urs = new RequestSuccess();
 				urs.setData("Record/es doesn't exist");
 				res = ser.serialize(urs);
 			}
@@ -200,7 +220,7 @@ JSONSerializer ser = new JSONSerializer();
 					.include("status")
 					.serialize(rs);
 		} else {
-			RequestUnsuccess urs = new RequestUnsuccess();
+			RequestSuccess urs = new RequestSuccess();
 			urs.setData("Record/es doesn't exist");
 			res = ser.serialize(urs);
 		}
@@ -238,7 +258,7 @@ JSONSerializer ser = new JSONSerializer();
 			rs.setData(obj);
 			res = objectMapper.writeValueAsString(rs);
 		} else {
-			RequestUnsuccess urs = new RequestUnsuccess();
+			RequestSuccess urs = new RequestSuccess();
 			urs.setData("Record/es doesn't exist");
 			res = objectMapper.writeValueAsString(urs);
 		}
@@ -459,7 +479,7 @@ JSONSerializer ser = new JSONSerializer();
 		if (objects != null) {
 			res += "{\"Status\":\"Success\",\"Data\":";
 			JSONSerializer ser = new JSONSerializer();
-			String stri = ser.deepSerialize(objects);
+			String stri = ser.serialize(objects);
 			res += stri + "}";
 		} else {
 			res += "{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";

@@ -76,14 +76,15 @@ public class SportclubDB implements ISportclubRepository {
      @SuppressWarnings("unchecked")
     @Override
     //@Transactional
-    public List<Profiler[]> getProfiles(String subProfiler) {
+    public Iterable<Profiler> getProfiles(String subProfiler) {
     	 Iterable<Profiler> it = null;
         try {
 			    Query query = em.createQuery("select p from Profiler p where deleted=false and p.class=:subprofiler");
 			    query.setParameter("subprofiler", subProfiler);
-			    List<Profiler[]> prs = query.getResultList();
-			    return prs;
-		} catch (NoResultException e) {
+			    it = query.getResultList();
+			   
+			    return !it.iterator().hasNext()?null: it;
+		} catch (NoResultException e) {System.out.println("point2");
 			return null;
 		}
       }
@@ -108,16 +109,13 @@ public class SportclubDB implements ISportclubRepository {
    
 	@Override
     @Transactional
-    public ProfileData addProfiler(String json)  {
-    	
-    	
-    		JSONDeserializer<Map<String,String>> des =new JSONDeserializer<>();
-    		Map<String,String> properties = des.deserialize(json);
-    		
-			Profiler finded = em.find(Profiler.class, properties.get("id"));
+    public ProfileData updateProfiler(Map<String,String> properties)  {
+		ProfileData pd;
+		String idOut = properties.get("id");
+			Profiler finded = em.find(Profiler.class, idOut);
 			if(finded!=null){
 			finded.setProperties(properties);
-			ProfileData pd = new ProfileData(finded.getId());
+			 pd = new ProfileData(finded.getId());
 			return pd;
 			}
             

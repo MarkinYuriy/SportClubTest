@@ -73,6 +73,8 @@ public void setProperties(Map<String, String> properties){
 	super.setProperties(properties);
 	
 	type = properties.get("type");
+	
+	if(properties.get("number")!=null)
 	number = Integer.parseInt(properties.get("number"));
 	
 	

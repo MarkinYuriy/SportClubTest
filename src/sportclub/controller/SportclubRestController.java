@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.gson.Gson;
 
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import sportclub.data.ProfileData;
 import sportclub.interfaces.ISportclubRepository;
@@ -94,10 +95,11 @@ public class SportclubRestController {
 
 
 
-	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.GET)
-	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) {
+	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{subProfiler}", method = RequestMethod.GET)
+	public @ResponseBody String getProfiles(@PathVariable String subProfiler) {
 		
-		String result = getResponse(profiles.getProfiles(SubProfiler),"recordes doesn't exist" );
+		String result = getResponse(profiles.getProfiles(subProfiler),"recordes doesn't exist" );
+		
 		return result;
 			
 	}
@@ -324,16 +326,26 @@ public class SportclubRestController {
 		return ObjectToJson(rs);
 		}
 		
-		String res = getResponse(profiles.addTeam(team), "team with name "+team.getId()+" already exists");
+		String res = getResponse(profiles.addTeam(team), "team with name "+team.getName()+" already exists");
 		
 		return res;
 
 	}
 
-	@RequestMapping(value = SportclubConstants.ADD_PROFILE, method = RequestMethod.POST)
-	public @ResponseBody String addProfile(@RequestBody String json) {
-		ProfileData pd = profiles.addProfiler(json);
-		String res = getResponse(pd, "profile with id "+pd.getId()+" already exists");
+	@RequestMapping(value = SportclubConstants.UPDATE_PROFILER, method = RequestMethod.POST)
+	public @ResponseBody String updateProfiler(@RequestBody String json) {
+		JSONDeserializer<Map<String,String>> des =new JSONDeserializer<>();
+		Map<String,String> properties = des.deserialize(json);
+		if(!properties.containsKey("id")){
+			
+			RequestSuccess rs = new RequestSuccess();
+			rs.setData("id is indefinite");
+			rs.setStatus("unsuccess");
+			return ObjectToJson(rs);
+		};
+		
+		ProfileData pd = profiles.updateProfiler(properties);
+		String res = getResponse(pd, "profile with id "+properties.get("id")+" doesn't exist");
 		
 		return res;
 

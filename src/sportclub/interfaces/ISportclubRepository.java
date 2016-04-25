@@ -3,6 +3,7 @@ package sportclub.interfaces;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.parser.ParseException;
 
@@ -36,7 +37,7 @@ boolean addAthlete(Athlete ath,Team team);
 public Iterable<String> getAnyRequest(String jpql) throws JsonGenerationException, JsonMappingException, IOException;
 
 
-List<Profiler[]> getProfiles(String subProfiler);
+Iterable<Profiler> getProfiles(String subProfiler);
 Profiler getProfile(String subProfiler, String id);
 
 Iterable<Role> getRoles(String id);
@@ -57,7 +58,7 @@ String registration(LoginPassword lp) throws InstantiationException, IllegalAcce
 //Profiler registrationWid(String id, LoginPassword lp);
 
 
-ProfileData addProfiler(String json);
+ProfileData updateProfiler(Map<String,String> properties);
 Team updateTeam(Team team);
 Club updateClub(Club club);
 //boolean updateAthlete(Athlete profiler, String subProfiler);

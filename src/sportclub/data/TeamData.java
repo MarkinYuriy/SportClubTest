@@ -5,6 +5,14 @@ public class TeamData {
 	String name;
 	String description;
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public TeamData(String name, String description) {
 		super();
 		this.name = name;

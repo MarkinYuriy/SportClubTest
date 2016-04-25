@@ -5,6 +5,8 @@ package sportclub.controller;
  */
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,29 +27,20 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
-import flexjson.transformer.StringTransformer;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-//import flexjson.JSONSerializer;
+import sportclub.data.ProfileData;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
-import sportclub.profile.Athlete;
-import sportclub.profile.Profiler;
+import sportclub.profile.*;
+
 import sportclub.nodeprocessor.*;
 
 @Controller
@@ -56,214 +49,97 @@ import sportclub.nodeprocessor.*;
 public class SportclubRestController {
 	@Autowired
 	ISportclubRepository profiles;
-
+	
 	@RequestMapping({ "/", "home" })
 	public String home() {
 		return "success";
 
 	}
 
-	
-
 	@RequestMapping(value = SportclubConstants.SIGN_IN, method = RequestMethod.POST)
-	public @ResponseBody String signIn(@RequestBody String json) 
-                   throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-                LoginPassword lp;
+	public @ResponseBody String signIn(@RequestBody String json) {
+		RequestSuccess rs = new RequestSuccess();
+        LoginPassword lp;
             try {
                 lp = new ObjectMapper().readValue(json, LoginPassword.class);
             } catch (IOException ex) {
-                return "{\"Status\":\"Unsuccess\",\"Data\":\"Format JSON incorrect\"}";
-               // Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
+            	rs.setData("incorrected JSON format");
+            	rs.setStatus("unsuccess");
+            	
+                return ObjectToJson(rs);
             }
-            
-		System.out.println(lp.toString());
-		String uid = profiles.signIn(lp);
-
-		String res = "";
-		if (uid != null) {
-			res += "{\"Status\":\"Success\",\"Data\":";
-
-			String stri = "\"" + uid + "\"";
-			res += stri + "}";
-		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"Authorization error\"}";
-		}
-		// System.out.println(res);
-
-		return res;
+            String result = getResponse(profiles.signIn(lp),"profiler with this id exists" );
+		return result;
 	}
 
 	@RequestMapping(value = SportclubConstants.REGISTRATION, method = RequestMethod.POST)
-	public @ResponseBody String registration(@RequestBody String json) 
-                throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-                LoginPassword lp;
-            try {
-                lp = new ObjectMapper().readValue(json, LoginPassword.class);
-            } catch (IOException ex) {
-                return "{\"Status\":\"Unsuccess\",\"Data\":\"Format JSON incorrect\"}";
-               // Logger.getLogger(SportclubRestController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-		//System.out.println("after try "+lp.toString());
-		String uid = profiles.registration(lp);
-
-		String res = "";
-		if (uid != null) {
-			res += "{\"status\":\"success\",\"data\":";
-
-			String stri = "\"" + uid + "\"";
-			res += stri + "}";
-		} else {
-			res += "{\"status\":\"unsuccess\",\"data\":\"user exist\"}";
-		}
-		// System.out.println(res);
-
-		return res;
+	public @ResponseBody String registration(@RequestBody String json){
+		
+        LoginPassword lp;
+        String uid = null; 
+        try{  
+            lp = new ObjectMapper().readValue(json, LoginPassword.class);
+          	uid = profiles.registration(lp);
+          } catch
+		(InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+        	  RequestSuccess rs = new RequestSuccess();
+        	  rs.setData("incorrected JSON format");
+        	  rs.setStatus("unsuccess");
+            return ObjectToJson(rs);}
+		
+        System.out.println(uid);
+		String result = getResponse(uid,"profiler with such password and login exists" );
+		return result;
 	}
 
 
 
 	@RequestMapping(value = SportclubConstants.GET_PROFILES + "/{SubProfiler}", method = RequestMethod.GET)
-	public @ResponseBody String getProfiles(@PathVariable String SubProfiler)
-			throws JsonParseException, JsonParseException, IOException, ReflectiveOperationException {
-		RequestSuccess rs = new RequestSuccess();
-		JSONSerializer ser = new JSONSerializer();
-				
-				Object obj =	profiles.getProfiles(SubProfiler);
-					String res = "";
-					if (obj != null) {
-						rs.setStatus("success");
-						rs.setData(obj);
-						res = ser.exclude("*.class").exclude("data.deleted")
-								.exclude("data.diary")
-								.include("status")
-								.serialize(rs);
-					} else {
-						rs.setStatus("unsuccess");
-						rs.setData("Record/es doesn't exist");
-						res = ser.serialize(rs);
-					}
-					
-					
-					System.out.println(res);
-				//singleObjectToRequest();
-				return res;
+	public @ResponseBody String getProfiles(@PathVariable String SubProfiler) {
 		
-		
+		String result = getResponse(profiles.getProfiles(SubProfiler),"recordes doesn't exist" );
+		return result;
+			
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_PROFILE + "/{SubProfiler}" + "/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id)
-			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException, ReflectiveOperationException {
+	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id) {
 
-		RequestSuccess rs = new RequestSuccess();
-JSONSerializer ser = new JSONSerializer();
-		
-		Object obj =	profiles.getProfile(SubProfiler, id);
-			String res = "";
-			if (obj != null) {
-				rs.setStatus("success");
-				rs.setData(obj);
-				res = ser.exclude("*.class").exclude("data.deleted")
-						.exclude("data.diary")
-						.include("status")
-						.serialize(rs);
-			} else {
-				rs.setStatus("unsuccess");
-				rs.setData("Record/es doesn't exist");
-				res = ser.serialize(rs);
-			}
-			
-			
-			System.out.println(res);
-		//singleObjectToRequest();
-		return res;
+		String result = getResponse(profiles.getProfile(SubProfiler, id),"recordes doesn't exist" );
+	return result;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_CLUB + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getClub(@PathVariable int id)
-			throws com.fasterxml.jackson.core.JsonGenerationException, com.fasterxml.jackson.databind.JsonMappingException, IOException {
+			 {
+		Object obj = profiles.getClub(id);
 		
-		JSONSerializer ser = new JSONSerializer();
+		String result = getResponse(obj,"record doesn't exist");
 		
-		Object obj =	profiles.getClub(id);
-			String res = "";
-			if (obj != null) {
-				RequestSuccess rs = new RequestSuccess();
-				rs.setData(obj);
-				res = ser.exclude("*.class").exclude("data.deleted")
-						.exclude("data.diary")
-						.include("status")
-						.serialize(rs);
-			} else {
-				RequestSuccess urs = new RequestSuccess();
-				urs.setData("Record/es doesn't exist");
-				res = ser.serialize(urs);
-			}
-			
-			
-			System.out.println(res);
-			
-			return res;
+		return result;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_CLUBS, method = RequestMethod.GET)
-	public @ResponseBody String getClubs() throws JsonGenerationException, JsonMappingException, IOException {
-		
-		JSONSerializer ser = new JSONSerializer();
-	Object obj =	profiles.getClubs();
-		String res = "";
-		if (obj != null) {
-			RequestSuccess rs = new RequestSuccess();
-			rs.setData(obj);
-			res = ser.exclude("*.class").exclude("data.deleted")
-					.exclude("data.diary")
-					.include("status")
-					.serialize(rs);
-		} else {
-			RequestSuccess urs = new RequestSuccess();
-			urs.setData("Record/es doesn't exist");
-			res = ser.serialize(urs);
-		}
-		
-		
-		System.out.println(res);
-		
-		return res;
+	public @ResponseBody String getClubs() {
+		String result = getResponse(profiles.getClubs(),"record doesn't exist");
+		return result;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.GET)
-	public @ResponseBody String getTeams() throws JsonGenerationException, JsonMappingException, IOException {
-		//ObjectMapper mapper = new ObjectMapper();
-		Iterable<Team> teams = profiles.getTeams();
+	public @ResponseBody String getTeams() {
 		
-		return singleObjectToRequest(teams);
+		String result = getResponse(profiles.getTeams(),"record doesn't exist");
+ 
+		return result;
 	}
 
 	@RequestMapping(value = SportclubConstants.GET_TEAM + "/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getTeam(@PathVariable int id)
-			throws JsonGenerationException, JsonMappingException, IOException {
-
-		return singleObjectToRequest(profiles.getTeam(id));
+	public @ResponseBody String getTeam(@PathVariable int id){
+		String result = getResponse(profiles.getTeam(id),"record doesn't exist");
+		return result;
 	}
 
-	private String singleObjectToRequest(Object obj) throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 	
-		objectMapper.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS , false);
-		objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
-		String res = "";
-		if (obj != null) {
-			RequestSuccess rs = new RequestSuccess();
-			rs.setData(obj);
-			res = objectMapper.writeValueAsString(rs);
-		} else {
-			RequestSuccess urs = new RequestSuccess();
-			urs.setData("Record/es doesn't exist");
-			res = objectMapper.writeValueAsString(urs);
-		}
-		return res;
-	}
 
 	@RequestMapping(value = SportclubConstants.GET_ROLE + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getRole(@PathVariable String id) {
@@ -286,7 +162,7 @@ JSONSerializer ser = new JSONSerializer();
 		}
 
 		if (getRoles != null) {
-			res += "{\"Status\":\"Success\",\"Data\":";
+			res += "{\"status\":\"success\",\"data\":";
 			String stri = new Gson().toJson(getRoles);
 			stri = stri.replace("\\\"id\\\"", "\"id\"");
 			stri = stri.replace("\\\"node\\\"", "\"node\"");
@@ -294,7 +170,7 @@ JSONSerializer ser = new JSONSerializer();
 			stri = stri.replace("}\"", "}");
 			res += stri + "}";
 		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+			res += "{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
 		}
 
 		System.out.println(res);
@@ -309,7 +185,7 @@ JSONSerializer ser = new JSONSerializer();
 		Iterable<Role> getRoles = profiles.getRoles("");
 
 		if (getRoles != null) {
-			res += "{\"Status\":\"Success\",\"Data\":";
+			res += "{\"status\":\"success\",\"data\":";
 			String stri = new Gson().toJson(getRoles);
 			stri = stri.replace("\\\"id\\\"", "\"id\"");
 			stri = stri.replace("\\\"node\\\"", "\"node\"");
@@ -318,143 +194,167 @@ JSONSerializer ser = new JSONSerializer();
 			res += stri + "}";
 
 		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+			res += "{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
 		}
 
 		// System.out.println(json);
 		return res;
 	}
 @RequestMapping(value = SportclubConstants.UPDATE_CLUB, method = RequestMethod.POST)
-	@ResponseBody String updateClub(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException{
-	ObjectMapper om = new ObjectMapper();
-		Club club = om.readValue(json, Club.class);
+	@ResponseBody String updateClub(@RequestBody String json) {
 	
-	
-	String res="";
-		
-		
-		Club resClub = null;
-		if (profiles.updateClub(club)){
-			resClub = profiles.getClub(club.getId());
+		Club club = null;
+		try {
+			club = new ObjectMapper().readValue(json, Club.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
 		}
-		res = JSONToClient(resClub);
+		
+	 String res = getResponse(profiles.updateClub(club), "club with id "+club.getId()+" doesn't exist");
+		
+		
 		return res;
 	}
 	
 @RequestMapping(value = SportclubConstants.ADD_CLUB, method = RequestMethod.POST)
-	@ResponseBody String addClub(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException{
-	Club club = new ObjectMapper().readValue(json, Club.class);
-	boolean f = profiles.addClub(club);
-	String res = responseToJSONForAdd(f);
+	@ResponseBody String addClub(@RequestBody String json) {
+	Club club=null;
+	try {
+		club = new ObjectMapper().readValue(json, Club.class);
+	} catch (IOException e) {
+		RequestSuccess rs = new RequestSuccess();
+		rs.setStatus("unsuccess");
+		rs.setData("incorrected JSON format");
+	return ObjectToJson(rs);
+	}
+	
+	String res = getResponse(profiles.addClub(club), "club with name "+club.getName()+"already exists");
+
 	return res;
 	}
 	
 	
 	@RequestMapping(value = SportclubConstants.UPDATE_TEAM, method = RequestMethod.POST)
 	@ResponseBody
-    public String updateTeam(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException {
-		
-		
-		
-		ObjectMapper om = new ObjectMapper();
-		Team team = om.readValue(json, Team.class);
-		
-		
-		String res ="";
-		Team resTeam = null;
-		if (profiles.updateTeam(team)){
-			resTeam = profiles.getTeam(team.getId());
+    public String updateTeam(@RequestBody String json)  {
+		Team team = null;
+		try {
+			team = new ObjectMapper().readValue(json, Team.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
 		}
-		res = JSONToClient(resTeam);
-		//System.out.println(res);
+		
+	 String res = getResponse(profiles.updateTeam(team), "team with id "+team.getId()+" doesn't exist");
+				
 		return res;
+		
     }
 	
 	@RequestMapping(value = SportclubConstants.REMOVE_CLUB, method = RequestMethod.POST)
-	@ResponseBody String removeClub(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException{
+	@ResponseBody String removeClub(@RequestBody String json) {
+		Club club = null;
 		
-		ObjectMapper om = new ObjectMapper();
-		Club club = om.readValue(json, Club.class);
-		String res="";
-		
-		if (profiles.removeClub(club)){
-			res+="{\"status\":\"removing success}";
-		}else{
-			res+="{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
+		try {
+			club = new ObjectMapper().readValue(json, Club.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
 		}
+		
+	 String res = getResponse(profiles.removeClub(club), "club with id "+club.getId()+" doesn't exist");
+		
+		
 		return res;
-	}
+		
+		}
 	
 	@RequestMapping(value = SportclubConstants.REMOVE_PROFILER, method = RequestMethod.POST)
-	@ResponseBody String removeProfiler(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException{
-		Profiler prf = new ObjectMapper().readValue(json, Profiler.class);
-		
-		String code = prf.getCode();
-		String res="";
-		
-		if (profiles.removeProfiler(code)){
-			res+="{\"status\":\"success\",\"data\":\"team deleted\"}";
-			
-		}else{
-			res+="{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
+	@ResponseBody String removeProfiler(@RequestBody String json) {
+		Profiler prf = null;
+		String id="";
+		try {
+			prf = new ObjectMapper().readValue(json, Profiler.class);
+			id = prf.getId();
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
 		}
 		
+		String res = getResponse(profiles.removeProfiler(id), "profiler with id "+id+" doesn't exist");
 		return res;
 	}
 	
 	@RequestMapping(value = SportclubConstants.REMOVE_TEAM, method = RequestMethod.POST)
 	@ResponseBody
-    public String removeTeam(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper om = new ObjectMapper();
-		Team team = om.readValue(json, Team.class);
-		
-		String res ="";
-		
-		if (profiles.removeTeam(team)){
-			res+="{\"status\":\"success\",\"data\":\"team deleted\"}";
-			
-		}else{
-			res+="{\"status\":\"unsuccess\",\"data\":\"undefined\"}";
+    public String removeTeam(@RequestBody String json) {
+		Team team = null;
+		try {
+			team = new ObjectMapper().readValue(json, Team.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
 		}
-		//System.out.println(res);
+		
+	 String res = getResponse(profiles.removeTeam(team), "team with id "+team.getId()+" doesn't exist");
+				
 		return res;
 	}
 	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
-	public @ResponseBody String addTeam(@RequestBody String json) throws JsonParseException, JsonMappingException, IOException {
-		System.out.println("add team");
-		Team team = new ObjectMapper().readValue(json, Team.class);
-		System.out.println(team.toString());
-		boolean f = profiles.addTeam(team);
-
-		String res = responseToJSONForAdd(f);
-
+	public @ResponseBody String addTeam(@RequestBody String json) {
+		
+		Team team = null;
+		try {
+			team = new ObjectMapper().readValue(json, Team.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
+		}
+		
+		String res = getResponse(profiles.addTeam(team), "team with name "+team.getId()+" already exists");
+		
 		return res;
-	}
 
-	private String responseToJSONForAdd(boolean f) {
-		String res = "";
-		if (f) {
-			res += "{\"Status\":\"Success\",\"Data\":\"record added\"}";
-		} else
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"data error or record not found\"}";
-		return res;
 	}
 
 	@RequestMapping(value = SportclubConstants.ADD_PROFILE, method = RequestMethod.POST)
-	public @ResponseBody String addProfile(@RequestBody String json) throws ClassNotFoundException, InstantiationException, IllegalAccessException, ParseException {
+	public @ResponseBody String addProfile(@RequestBody String json) {
+		ProfileData pd = profiles.addProfiler(json);
+		String res = getResponse(pd, "profile with id "+pd.getId()+" already exists");
 		
-		System.out.println(json);
-		boolean f = profiles.addProfiler(json);
-
-		String res = responseToJSONForAdd(f);
-
 		return res;
 
 	}
 
 	@RequestMapping(value = SportclubConstants.ADD_FIELD, method = RequestMethod.POST)
-	public @ResponseBody void addCourt(@RequestBody Court court) {
-		profiles.addCourt(court);
+	public @ResponseBody String addCourt(@RequestBody String json) {
+		
+		Court c = null;
+		try {
+			c = new ObjectMapper().readValue(json, Court.class);
+		} catch (IOException e) {
+			RequestSuccess rs = new RequestSuccess();
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
+		}
+		
+		String res = getResponse(profiles.addCourt(c), "court with name "+c.getName()+" already exists");
+		
+		return res;
 	}
 
 	@RequestMapping(value = SportclubConstants.ALL_QUERIES, method = RequestMethod.GET)
@@ -474,17 +374,33 @@ JSONSerializer ser = new JSONSerializer();
 
 	}
 
-	private String JSONToClient(Object objects) {
-		String res = "";
-		if (objects != null) {
-			res += "{\"Status\":\"Success\",\"Data\":";
-			JSONSerializer ser = new JSONSerializer();
-			String stri = ser.serialize(objects);
-			res += stri + "}";
+	private String getResponse(Object obj, String errInfo) {
+		RequestSuccess rs = new RequestSuccess();
+		if (obj != null) {
+			rs.setStatus("success");
+			rs.setData(obj);
 		} else {
-			res += "{\"Status\":\"Unsuccess\",\"Data\":\"Undefined\"}";
+			rs.setStatus("unsuccess");
+			rs.setData(errInfo);
+		}
+		String res = ObjectToJson(rs);
+		return res;
+	}
+	
+	private String ObjectToJson(Object rs) {
+		ObjectMapper om = new ObjectMapper();
+		om.setSerializationInclusion(Include.NON_EMPTY);
+		om.setSerializationInclusion(Include.NON_NULL);
+		om.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS , false);
+		SimpleBeanPropertyFilter theFilter = SimpleBeanPropertyFilter.serializeAllExcept("deleted");
+	    FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter", theFilter);
+		String res="";
+		try {
+			res = om.writer(filters).writeValueAsString(rs);
+		} catch (JsonProcessingException e) {
+			return "incorrected JSON format";
 		}
 		return res;
 	}
-
+	
 }

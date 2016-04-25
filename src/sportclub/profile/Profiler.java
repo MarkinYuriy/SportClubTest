@@ -18,21 +18,27 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import sportclub.model.Club;
 import sportclub.model.ImageBank;
 import sportclub.model.Role;
 import sportclub.model.Team;
-@JsonIgnoreProperties("deleted")
+@JsonFilter("myFilter")
 @Entity
 public class Profiler implements Serializable{
 	
-	public Profiler(String code, String name, String lastName, String email,
+	public Profiler(String id, String name, String lastName, String email,
 			String position, String description) {
 		super();
-		this.code = code;
+		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
 		this.email = email;
@@ -41,8 +47,8 @@ public class Profiler implements Serializable{
 	}
 
 
-	public String getCode() {
-		return code;
+	public String getId() {
+		return id;
 	}
 
 
@@ -56,16 +62,16 @@ public class Profiler implements Serializable{
 	@GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name="profilerId", columnDefinition ="CHAR(32)" )
     @Id
-    private String code;
-	public Profiler(String code) {
+    private String id;
+	public Profiler(String id) {
 		
-		this.code = code;
+		this.id = id;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Profiler [code=" + code + ", login=" + login + ", password=" + password + ", name=" + name
+		return "Profiler [id=" + id + ", login=" + login + ", password=" + password + ", name=" + name
 				+ ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", description="
 				+ description + ", deleted=" + deleted + ", roles=" + roles + ", photos=" + photos 
 				+ "]";
@@ -79,16 +85,33 @@ public class Profiler implements Serializable{
 	private String position;
 	private String description;
 	private boolean deleted;
+	private boolean federationPlayer;
+	
+	
+	public boolean isFederationPlayer() {
+		return federationPlayer;
+	}
+
+
+	public void setFederationPlayer(boolean federationPlayer) {
+		this.federationPlayer = federationPlayer;
+	}
+
+	@JsonIgnore
+	/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idCode")*/
 	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.REFRESH)
-	@JsonRawValue
 	private Set<Role> roles;
 	
+	@JsonIgnore
 	@OneToMany
 	private Set<ImageBank> photos;
 	
+	/*@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")*/
+	@JsonIgnore
 	@ManyToMany
 	private Set<Team> teams;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Club club;
 	
@@ -214,8 +237,15 @@ public class Profiler implements Serializable{
 		email= properties.get("email"); ;
 		position= properties.get("position"); ;
 		description= properties.get("description");
+		deleted = Boolean.parseBoolean(properties.get("deleted"));
+		federationPlayer =Boolean.parseBoolean(properties.get("federationPlayer"));
 		
 		
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 

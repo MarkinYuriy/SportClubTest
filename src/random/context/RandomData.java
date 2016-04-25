@@ -230,7 +230,7 @@ public class RandomData {
 	}
 
 	public String randomIDcode(){
-		return "code"+random.nextInt(maxNumAuthors);
+		return "id"+random.nextInt(maxNumAuthors);
 	}
 	
 	public ImageBank randomImage() {

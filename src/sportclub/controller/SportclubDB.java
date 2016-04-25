@@ -40,6 +40,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import flexjson.JSONDeserializer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import sportclub.data.ProfileData;
+import sportclub.data.TeamData;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.profile.*;
@@ -73,80 +76,52 @@ public class SportclubDB implements ISportclubRepository {
      @SuppressWarnings("unchecked")
     @Override
     //@Transactional
-    public Iterable<Profiler> getProfiles(String subProfiler) throws ReflectiveOperationException {
-
-        Iterable<Profiler> res = null;
-        //System.out.println("Sub "+SubProfiler);
-
-        boolean exist = false;
-        for (String str : subClasses) {
-            
-            if (str.equals(subProfiler)) {
-                exist = true;
-                
-                break;
-            }
-
-        }
-
+    public List<Profiler[]> getProfiles(String subProfiler) {
+    	 Iterable<Profiler> it = null;
         try {
-			if (exist) {
 			    Query query = em.createQuery("select p from Profiler p where deleted=false and p.class=:subprofiler");
 			    query.setParameter("subprofiler", subProfiler);
-			    res = query.getResultList();
-			}
-
-			return res;
+			    List<Profiler[]> prs = query.getResultList();
+			    return prs;
 		} catch (NoResultException e) {
-			
+			return null;
 		}
-        return res;
-
-    }
+      }
 
     @Override
     @Transactional
-    public boolean addTeam(Team team) {
-        boolean res = false;
+    public TeamData addTeam(Team team) {
+        
 
-        Query q = em.createQuery("from Team team where team.name='"+team.getName()+"'");
-        //q.setParameter(1, team.getName());
+        Query q = em.createQuery("select team from Team team where team.name=:teamName");
+        q.setParameter("teamName", team.getName());
         try { 
          q.getSingleResult();
-       
-
-
-
-        }catch(Exception e){
+         }catch(Exception e){
             em.persist(team);
-
-            res = true;
-        }finally{
-            
+            TeamData td = new TeamData(team.getId());
+            return td;
         }
-
-        return res;
+      return null;
     }
 
-    @SuppressWarnings("unchecked")
+   
 	@Override
     @Transactional
-    public boolean addProfiler(String json)  {
-    	boolean res = false;
-    	try {
+    public ProfileData addProfiler(String json)  {
+    	
+    	
     		JSONDeserializer<Map<String,String>> des =new JSONDeserializer<>();
     		Map<String,String> properties = des.deserialize(json);
     		
-			Profiler finded = em.find(Profiler.class, properties.get("codeId"));
+			Profiler finded = em.find(Profiler.class, properties.get("id"));
+			if(finded!=null){
 			finded.setProperties(properties);
-
-			
-			res = true;
-		} catch (Exception e) {
-			
-		}
+			ProfileData pd = new ProfileData(finded.getId());
+			return pd;
+			}
             
-        return res;
+        return null;
     }
 
     @Override
@@ -155,15 +130,10 @@ public class SportclubDB implements ISportclubRepository {
         boolean res = false;
 
         if (em.find(Court.class, court.getId()) == null) {
-
             em.persist(court);
-
             res = true;
-            System.out.println("true");
-        }
-
+            }
         return res;
-
     }
 
     @Override
@@ -171,7 +141,7 @@ public class SportclubDB implements ISportclubRepository {
     public boolean addAthlete(Athlete ath, Team team) {
         boolean res = false;
         Set<Team> teams = new LinkedHashSet<Team>();
-        if (em.find(Athlete.class, ath.getCode()) == null) {
+        if (em.find(Athlete.class, ath.getId()) == null) {
             teams.add(team);
            // ath.setTeams(teams);
             em.persist(ath);
@@ -189,7 +159,7 @@ public class SportclubDB implements ISportclubRepository {
         if (em.find(Exercise.class, exercise.getId()) == null) {
             em.persist(exercise);
             res = true;
-            System.out.println("true");
+            
         }
 
         return res;
@@ -202,15 +172,13 @@ public class SportclubDB implements ISportclubRepository {
         if (em.find(EquipmentPool.class, equipment.getId()) == null) {
             em.persist(equipment);
             res = true;
-            System.out.println("true");
-        }
-
+           }
         return res;
     }
 
     @Override
     public boolean addTrainingPoolElement(TrainingPool tr) {
-        // TODO Auto-generated method stub
+        
         return false;
     }
 
@@ -222,17 +190,20 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     @Transactional
-    public boolean addClub(Club club) {
+    public Club addClub(Club club) {
         try{
         
        Query q = em.createQuery("SELECT c.name "
             + "FROM Club c WHERE c.name=:name");
         q.setParameter("name", club.getName());
-       String name = (String) q.getSingleResult();   
-        return false;
+       @SuppressWarnings("unused")
+	String name = (String) q.getSingleResult();   
+        return null;
         } catch (javax.persistence.NoResultException e) {
             em.persist(club);
-            return true;
+            
+            Club res = new Club(club.getId());
+            return res;
        }
     }
 
@@ -347,45 +318,22 @@ public class SportclubDB implements ISportclubRepository {
 
 	public Iterable<Club> getClubs() {
 		List<Club> clubs = new LinkedList<>();
-		List<Club> newClubs = new LinkedList<>();
+		
 		try {
-			Query query = em.createQuery("from Club c where deleted=false");
+			Query query = em.createQuery("select c from Club c where deleted=false");
 			clubs = query.getResultList();
 
-			for (Club c : clubs) {
-				Club newClub = c;
-				newClubs.add(newClub);
-			}
+			
 		} catch (javax.persistence.NoResultException e) {
-			newClubs = null;
+			return null;
 		}
-		return newClubs;
+		return clubs;
 
 	}
 
-	private Profiler selectorSubprofiles(String subprofile) {
-		
-		Profiler profile =null;
-		
-		switch(subprofile){
-		case "Athlete":  profile = new Athlete(); break;
-		case "AdminManagerClub":  profile = new AdminManagerClub(); break;
-		case "AssitPhysicCoach": profile = new AssitPhysicCoach(); break;
-		case "AssitTeamCoach": profile = new AssitTeamCoach(); break;
-		case "Parent":  profile = new Parent(); break;
-		case "PhysiologyCoach":  profile = new PhysiologyCoach(); break;
-		case "Psycholog": profile = new Psycholog(); break;
-		case "TeamAdminManager":  profile = new TeamAdminManager(); break;
-		case "ProffesionalManager": profile = new ProffesionalManager(); break;
-		case "TeamCoach": profile = new TeamCoach(); break; 
-					
-		}
-		return profile;
-	}
-	
 	@Override
 	@Transactional
-	public boolean updateTeam(Team team) {
+	public Team updateTeam(Team team) {
 		
 		Team resTeam = em.find(Team.class, team.getId());
 		if(resTeam!=null){
@@ -399,7 +347,7 @@ public class SportclubDB implements ISportclubRepository {
 				for (ImageBank ib : team.getPhotos()) {
 					ImageBank im = em.find(ImageBank.class, ib.getId());
 					if (im == null)
-						return false;
+						return null;
 					images.add(im);
 				}
 				resTeam.setPhotos(images);
@@ -413,21 +361,23 @@ public class SportclubDB implements ISportclubRepository {
 			if (team.getProfiles()!=null) {
 				Set<Profiler> profilers = new HashSet<Profiler>();
 				for (Profiler p : team.getProfiles()) {
-					Profiler pr = em.find(Profiler.class, p.getCode());
+					Profiler pr = em.find(Profiler.class, p.getId());
 					if (pr == null)
-						return false;
+						return null;
 					profilers.add(pr);
 				}
 				resTeam.setProfiles(profilers);
 			}
-			return true;
+			
+			Team res = new Team(resTeam.getId());
+			return res;
 		}
-		return false;
+		return null;
 	}
 
 	@Override
 	@Transactional
-	public boolean updateClub(Club club) {
+	public Club updateClub(Club club) {
 		Club cl = em.find(Club.class, club.getId());
 		if(cl!=null){
 			if(club.getName()!=null)
@@ -442,14 +392,15 @@ public class SportclubDB implements ISportclubRepository {
 				for (ImageBank ib : club.getPhotos()) {
 					ImageBank im = em.find(ImageBank.class, ib.getId());
 					if (im == null)
-						return false;
+						return null;
 					images.add(im);
 				}
 				cl.setPhotos(images);
 			}
-			return true;
+			Club res = new Club(cl.getId());
+			return res;
 		}
-		return false;
+		return null;
 	}
 
 	
@@ -457,11 +408,11 @@ public class SportclubDB implements ISportclubRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
-	public boolean removeClub(Club club) {
+	public Club removeClub(Club club) {
 		Club cl = em.find(Club.class, club.getId());
 		
 		if (cl!=null) {
-			if(cl.isDeleted()) return false;
+			if(cl.isDeleted()) return null;
 			cl.setDeleted(true);
 			Query q = em.createQuery("Select t.id from Team t join t.club c where c.id=?1");
 			q.setParameter(1, cl.getId());
@@ -471,7 +422,7 @@ public class SportclubDB implements ISportclubRepository {
 				Team tm = em.find(Team.class, t);
 				tm.setClub(null);
 			}
-			q = em.createQuery("Select p.code from Profiler p join p.club c where c.id=?1");
+			q = em.createQuery("Select p.id from Profiler p join p.club c where c.id=?1");
 			q.setParameter(1, cl.getId());
 			List<String> profilers = q.getResultList();
 			
@@ -479,23 +430,24 @@ public class SportclubDB implements ISportclubRepository {
 				Profiler pr = em.find(Profiler.class, p);
 				pr.setClub(null);
 			}
-			return true;
+			Club res = new Club(cl.getId());
+			return res;
 		}
-		return false;
+		return null;
 	}
 
 	@Override
 	@Transactional
-	public boolean removeTeam(Team team) {
+	public Team removeTeam(Team team) {
 		Team rTeam = em.find(Team.class, team.getId());
 		if(rTeam!=null){
-			if(rTeam.isDeleted()) {return false;}
+			if(rTeam.isDeleted()) {return null;}
 			
 			rTeam.setClub(null);
 			
 			Set<Profiler> prs = rTeam.getProfiles();
 			for(Profiler p:prs){
-				Profiler pr = em.find(Profiler.class, p.getCode());
+				Profiler pr = em.find(Profiler.class, p.getId());
 				Set<Team> teamTmp = pr.getTeams();
 				for(Team t:teamTmp){
 					if(t.getId()==team.getId())
@@ -505,20 +457,21 @@ public class SportclubDB implements ISportclubRepository {
 			}
 			rTeam.setProfiles(null);
 			rTeam.setDeleted(true);
-			return true;
+			Team res = new Team(rTeam.getId());
+			return res;
 		}
-		return false;
+		return null;
 	}
 
 	@Override
 	@Transactional
 	
-	public boolean removeProfiler(String code) {
+	public ProfileData removeProfiler(String id) {
 		
-		Profiler pr = em.find(Profiler.class, code);
+		Profiler pr = em.find(Profiler.class, id);
 		if(pr!=null){
 			
-			if(pr.isDeleted()){return false;}
+			if(pr.isDeleted()){return null;}
 			pr.setDeleted(true);
 			pr.setClub(null);
 			
@@ -533,9 +486,10 @@ public class SportclubDB implements ISportclubRepository {
 				tm.setProfiles(prs);
 			}
 			pr.setTeams(null);*/
-			return true;
+			ProfileData pd = new ProfileData(id);
+			return pd;
 		}
-		return false;
+		return null;
 		}
     public Club getClub(int id) {
     	
@@ -550,7 +504,7 @@ public class SportclubDB implements ISportclubRepository {
 
     }
 
-    @SuppressWarnings("unchecked")
+    
     @Override
     //@Transactional
     public Team getTeam(int id) {
@@ -558,100 +512,47 @@ public class SportclubDB implements ISportclubRepository {
     	  	
     		findedTeam = em.find(Team.class, id);
     		if(findedTeam!=null&&!findedTeam.isDeleted())	{
-    				currentTeam = teamWithProfilerSet(findedTeam);
+    				currentTeam = findedTeam;
     			}
        	 return currentTeam;
     }
 
-    private Team teamWithProfilerSet(Team findedTeam) {
-    	 
-    	Set<Profiler> prfs = findedTeam.getProfiles();
-		Set<Profiler> newPrfsSet = new HashSet<Profiler>();
-		Set<ImageBank> photos = findedTeam.getPhotos();
-		Set<ImageBank> photosCurr = new HashSet<ImageBank>();
-		List<GameTeams> results = findedTeam.getResults();
-		List<GameTeams> resultsCurr = new ArrayList<GameTeams>();
-		Set<Event> diary = findedTeam.getDiary();
-		Set<Event>diaryCurr = new HashSet<Event>();
-			
-		
-			for(Profiler p: prfs){
-					Profiler profile = new Profiler(p.getCode());
-					newPrfsSet.add(profile);
-				}
-			for(ImageBank img: photos)
-			{
-				ImageBank currentImg = new ImageBank(img.getId());
-				photosCurr.add(currentImg);
-			}
-			
-			for(Event e: diary ){
-				Event eCur = new Event(e.getId());
-				diaryCurr.add(eCur);
-			}
-			for(GameTeams gt: results){
-				
-				GameTeams gtCur = new GameTeams(gt.getId());
-				resultsCurr.add(gtCur);
-			}
-					
-			return new Team(findedTeam.getId(), 
-					findedTeam.getName(), 
-					findedTeam.getDescription(), 
-					photosCurr,results,diaryCurr,
-					newPrfsSet);
-	}
+    
 
 	@SuppressWarnings("unchecked")
     @Override
     //@Transactional
     public Iterable<Team> getTeams() {
     	List<Team> teams = new LinkedList<>();
-    	List<Team> newTeams = new LinkedList<>();
+    	
         try {
-			Query query = em.createQuery("from Team t where t.deleted=false");
+			Query query = em.createQuery("select t from Team t where t.deleted=false");
 			teams= query.getResultList();
 			
-			for(Team t: teams){
-				Team newTeam = teamWithProfilerSet(t);
-				newTeams.add(newTeam);
-			}
+			
 		} catch (javax.persistence.NoResultException e) {
-			newTeams = null;
+			teams = null;
 		}
-       return newTeams;
+       return teams;
     }
 
     @Override
-    public Profiler getProfile(String SubProfiler, String id) {
+    public Profiler getProfile(String subProfiler, String id) {
 
         Profiler prf = null;
-        
-        boolean exist = false;
-        for (String str : subClasses) {
-            if (str.equals(SubProfiler)) {
-            	
-                exist = true;
-                break;
-            }
-        }
-
-        if (exist) {
-           
-Query query = em.createQuery("select p from Profiler as p where p.code=:code and p.class=:type and p.deleted = false");
-query.setParameter("code", id);
-query.setParameter("type", SubProfiler);
+         
+        Query query = em.createQuery("select p from Profiler as p where p.id=:id and p.class=:type and p.deleted = false");
+        query.setParameter("id", id);
+        query.setParameter("type", subProfiler);
 
             try {
                 prf = (Profiler) query.getSingleResult();
+                return prf;
             } catch (javax.persistence.NoResultException e) {
                 // TODO Auto-generated catch block
-               System.out.println(e.getMessage());
+               return null;
             }
-            System.out.println(prf);
-        }
-        return prf;
-    }
+           }
 
     @Override
     public String signIn(LoginPassword lp) {
@@ -674,175 +575,30 @@ query.setParameter("type", SubProfiler);
     @Override
     @Transactional
     public String registration(LoginPassword lp) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        System.err.println("in the registration");
+        
         String id;
         try {  
             Query q = em.createQuery("SELECT p.id FROM Profiler p WHERE p.login=:login AND p.password=:password");
             
             q.setParameter("login", lp.getLogin());
             q.setParameter("password", lp.getPassword());
-            id = (String) q.getSingleResult();
-            id = null;
-            System.out.println("find!!");
+            q.getSingleResult();
+            id=null;
+            
         } catch (javax.persistence.NoResultException e) {
-            System.out.println("catch NoResultException");
-            System.err.println("lp.getSubprofile()"+lp.getSubprofile());
+            
         	Profiler profile = (Profiler) Class.forName("sportclub.profile."+lp.getSubprofile()).newInstance();
-            System.out.println("after for name");    
+            
             profile.setLogin(lp.getLogin());
             profile.setPassword(lp.getPassword());
             
             em.persist(profile);
 
-            id = profile.getCode();
+            id = profile.getId();
             System.out.println(id);
         }
         return id;
 
     }
 
-    /*private Profiler selectorSubprofiles(String subprofile) {
-
-        Profiler profile = null;
-
-        switch (subprofile) {
-            case "Athlete":
-                profile = new Athlete();
-                break;
-            case "AdminManagerClub":
-                profile = new AdminManagerClub();
-                break;
-            case "AssitPhysicCoach":
-                profile = new AssitPhysicCoach();
-                break;
-            case "AssitTeamCoach":
-                profile = new AssitTeamCoach();
-                break;
-            case "Parent":
-                profile = new Parent();
-                break;
-            case "PhysiologyCoach":
-                profile = new PhysiologyCoach();
-                break;
-            case "Psycholog":
-                profile = new Psycholog();
-                break;
-            case "TeamAdminManager":
-                profile = new TeamAdminManager();
-                break;
-            case "ProffesionalManager":
-                profile = new ProffesionalManager();
-                break;
-            case "TeamCoach":
-                profile = new TeamCoach();
-                break;
-            default: {
-                break;
-            }
-
-        }
-        return profile;
-    }*/
-
-//    @Override
-//    @Transactional
-//    public Profiler registrationWid(String id, LoginPassword lp) {
-//        Profiler p = null;
-//        try {  //createNativeQuery
-//            Query q = em.createQuery("SELECT p FROM Profiler p WHERE p.id='" + id + "'");
-//
-//            p = (Profiler) q.getSingleResult();
-//            p.setLogin(lp.getLogin());
-//            p.setPassword(lp.getPassword());
-//            em.persist(p);
-//        } catch (javax.persistence.NoResultException e) {
-//            return null;
-//        }
-//        return p;
-//    }
-//
-////    @Override
-//    @Transactional
-//    public String registration(Role[] role, String subProfile) {
-//
-//        String id;
-//        try {  //createNativeQuery
-////            Query q = em.createQuery("SELECT p FROM Profiler p");
-////            Profiler p = (Profiler) q.getSingleResult();
-////           
-////            Profiler profile = selectorSubprofiles(lp.subprofile);
-////
-////            profile.setLogin(lp.getLogin());
-////            profile.setPassword(lp.getPassword());
-////
-////            em.persist(profile);
-//       
-//        } catch (javax.persistence.NoResultException e) {
-//       
-//        }
-//
-//        return null;
-//    }
-    /*@Override
-	@Transactional
-	public boolean updateAthlete(Athlete profiler, String subProfiler) {
-		Profiler pr = selectorSubprofiles(subProfiler);
-		pr = em.find(Profiler.class, profiler.getCode());
-		if(pr!=null){
-			if(profiler.getLogin()!=null)
-			pr.setLogin(profiler.getLogin());
-			if(profiler.getPassword()!=null)
-			pr.setPassword(profiler.getPassword());
-			if(profiler.getName()!=null)
-			pr.setName(profiler.getName());
-			if(profiler.getLastName()!=null)
-			pr.setLastName(profiler.getLastName());
-			if(profiler.getEmail()!=null)
-			pr.setEmail(profiler.getEmail());
-			if(profiler.getPosition()!=null)
-			pr.setPosition(profiler.getPosition());
-			if(profiler.getDescription()!=null)
-			pr.setDescription(profiler.getDescription());
-			
-			if (profiler.getPhotos()!=null) {
-				Set<ImageBank> images = new HashSet<ImageBank>();
-				for (ImageBank ib : profiler.getPhotos()) {
-					ImageBank im = em.find(ImageBank.class, ib.getId());
-					if (im == null)
-						return false;
-					images.add(im);
-				}
-				pr.setPhotos(images);
-			}
-			
-			Club club = em.find(Club.class, profiler.getClub().getId());
-			if(club!=null)
-				pr.setClub(club);
-			
-			if(profiler.getTeams()!=null){
-				Set<Team> teams = new HashSet<Team>();
-				for(Team t:profiler.getTeams()){
-					Team tm = em.find(Team.class, t.getId());
-					if(tm == null)
-						return false;
-					teams.add(tm);
-				}
-				pr.setTeams(teams);
-			}
-			
-			if(profiler.getRoles()!=null){
-				Set<Role> roles = new HashSet<Role>();
-				for(Role r:profiler.getRoles()){
-					Role rl = em.find(Role.class, r.getIdCode());
-					if(rl == null)
-						return false;
-					roles.add(rl);
-				}
-				pr.setRoles(roles);
-			}
-			
-			return true;
-		}
-		return false;
-	}*/
-}
+   }

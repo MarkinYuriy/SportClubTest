@@ -6,7 +6,10 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import sportclub.profile.Profiler;
 
@@ -30,10 +33,11 @@ public class Team {
 	
 	@OneToMany
 	private List<GameTeams> results;
-	
+	@JsonIgnore
 	@ManyToMany(mappedBy="teams")
 	private Set<Event> diary;
 	
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	@ManyToMany(mappedBy="teams")
 	 Set<Profiler> profiles;
 	
@@ -89,6 +93,10 @@ public class Team {
 		this.results = results;
 		this.profiles = profiles;
 	}
+
+	public Team(int id) {
+this.id = id;
+}
 
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;

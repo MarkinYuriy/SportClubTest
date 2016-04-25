@@ -2,7 +2,7 @@ package sportclub.data;
 
 public class ProfileData {
 	
-	String code;
+	String id;
 	String login;
 	String password;
 	String name;
@@ -12,11 +12,14 @@ public class ProfileData {
 	String description;
 	
 	
-	public String getCode() {
-		return code;
+	public ProfileData(String id) {
+		this.id = id;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getLogin() {
 		return login;

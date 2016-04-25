@@ -13,16 +13,8 @@ public class Athlete extends Profiler {
 	private String type;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthday;
-	private boolean federationPlayer;
 	
-	public boolean isFedPlayer() {
-		return federationPlayer;
-	}
-
-	public void setFedPlayer(boolean fedPlayer) {
-		this.federationPlayer = fedPlayer;
-	}
-
+	
 	public Athlete() {
 		super();
 	}
@@ -51,14 +43,6 @@ public class Athlete extends Profiler {
 		this.birthday = birthday;
 	}
 	
-	public boolean isFederationPlayer() {
-		return federationPlayer;
-	}
-
-	public void setFederationPlayer(boolean federationPlayer) {
-		this.federationPlayer = federationPlayer;
-	}
-
 	public List<GameAthletes> getGames() {
 		return games;
 	}
@@ -79,8 +63,7 @@ public class Athlete extends Profiler {
 
 	@Override
 	public String toString() {
-		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + ", federationPlayer="
-				+ federationPlayer + "]"+super.toString();
+		return "Athlete [number=" + number + ", type=" + type + ", birthday=" + birthday + "]"+super.toString();
 	}
 
 	
@@ -90,6 +73,7 @@ public void setProperties(Map<String, String> properties){
 	super.setProperties(properties);
 	
 	type = properties.get("type");
+	number = Integer.parseInt(properties.get("number"));
 	
 	
 	

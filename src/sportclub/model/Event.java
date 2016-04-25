@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import org.hibernate.engine.internal.Cascade;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import sportclub.profile.Profiler;
@@ -41,7 +42,7 @@ public class Event {
 		      inverseJoinColumns={ @JoinColumn(name="profileId", referencedColumnName="profilerId") }
 		  )
 	private Set<Profiler> viewedRights;
-	
+	@JsonIgnore
 	@ManyToMany@JoinTable
 	  (
 		      name="eventTeam",

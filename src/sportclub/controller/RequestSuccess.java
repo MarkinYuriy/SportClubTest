@@ -2,11 +2,11 @@ package sportclub.controller;
 
 public class RequestSuccess {
 	private String status;
+	private Object data;
+	
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	private Object data;
-	
 	public String getStatus() {
 		return status;
 	}

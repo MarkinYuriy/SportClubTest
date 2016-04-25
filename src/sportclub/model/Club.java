@@ -4,6 +4,7 @@ package sportclub.model;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -30,6 +31,10 @@ public class Club {
 	}
 
 	public Club() {}
+
+	public Club(int id) {
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
@@ -91,9 +96,9 @@ public class Club {
 	      joinColumns={ @JoinColumn(name="clubId", referencedColumnName="clubId") },
 	      inverseJoinColumns={ @JoinColumn(name="eventId", referencedColumnName="id") }
 	  )
-	
+	@JsonIgnore
 	private Set<Event> diary;
-	
+	@JsonIgnore
 	@OneToMany
 	private List<ImageBank> photos;
 

@@ -526,8 +526,25 @@ public class SportclubDB implements ISportclubRepository {
         try {
 			Query query = em.createQuery("select t from Team t where t.deleted=false");
 			teams= query.getResultList();
-			
-			
+			return !teams.iterator().hasNext()?null: teams;
+						
+		} catch (javax.persistence.NoResultException e) {
+			teams = null;
+		}
+       return teams;
+    }
+	@Override
+    //@Transactional
+    public Iterable<Team> getTeams(int clubId) {
+		
+		List<Team> teams = new LinkedList<>();
+    	
+        try {
+			Query query = em.createQuery("select t.id, t.name,t.description from Team t join t.club c where t.deleted=false and c.id=:clubId");
+			query.setParameter("clubId", clubId);
+			teams= query.getResultList();
+			return !teams.iterator().hasNext()?null: teams;
+						
 		} catch (javax.persistence.NoResultException e) {
 			teams = null;
 		}
@@ -558,12 +575,12 @@ public class SportclubDB implements ISportclubRepository {
         String id;
         try {
             Query q = em.createQuery("SELECT p.id "
-            + "FROM Profiler p WHERE p.login=:login AND p.password=:password");
+            + "FROM Profiler p WHERE p.login=:login AND p.password=:password and p.deleted = false");
             
             q.setParameter("login", lp.getLogin());
             q.setParameter("password", lp.getPassword());
             id = (String) q.getSingleResult();
-            System.out.println(id);
+            
         } catch (javax.persistence.NoResultException e) {
             id = null;
         }
@@ -598,5 +615,44 @@ public class SportclubDB implements ISportclubRepository {
         return id;
 
     }
+
+	@Override
+	public List<Profiler[]> getTeamStuff(int id, String subprofiler) {
+		
+		
+		Query q;
+		if (subprofiler==""){
+			
+			q = em.createQuery("select p from Team t join t.profiles p where t.id=:id and t.deleted = false and p.deleted = false");
+			q.setParameter("id", id);
+			
+		}else{
+		 q = em.createQuery("select p from Team t join t.profiles p where t.id=:id and "
+				+ "t.deleted = false and p.deleted = false and p.class=:subprofiler");
+		q.setParameter("id", id);
+		q.setParameter("subprofiler", subprofiler);
+		}
+		List<Profiler[]> list = q.getResultList();
+		
+		return !list.iterator().hasNext()?null: list;
+		
+	}
+
+	@Override
+	public Profiler getProfilerById(String id) {
+		 Profiler prf = null;
+         
+	        Query query = em.createQuery("select p from Profiler as p where p.id=:id and p.deleted = false");
+	        query.setParameter("id", id);
+	       
+
+	            try {
+	                prf = (Profiler) query.getSingleResult();
+	                return prf;
+	            } catch (javax.persistence.NoResultException e) {
+	                // TODO Auto-generated catch block
+	               return null;
+	            }
+	}
 
    }

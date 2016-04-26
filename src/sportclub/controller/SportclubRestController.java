@@ -43,8 +43,8 @@ import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
 import sportclub.profile.*;
-import sportclub.utils.PolymorphicProfilerMixIn;
-import sportclub.utils.ProfilerDeserializer;
+//import sportclub.utils.PolymorphicProfilerMixIn;
+//import sportclub.utils.ProfilerDeserializer;
 import sportclub.nodeprocessor.*;
 
 @Controller
@@ -438,11 +438,11 @@ public class SportclubRestController {
 	}
 	
 	private String ObjectToJson(Object rs) {
-		ProfilerDeserializer pd = new ProfilerDeserializer();
+//		ProfilerDeserializer pd = new ProfilerDeserializer();
 		
-		SimpleModule module =  
-			      new SimpleModule(); 
-		module.addDeserializer(Profiler.class, pd); 
+		//SimpleModule module =  
+		//	      new SimpleModule(); 
+		//module.addDeserializer(Profiler.class, pd); 
 		ObjectMapper om = new ObjectMapper();
 		om.setSerializationInclusion(Include.NON_EMPTY);
 		om.setSerializationInclusion(Include.NON_NULL);

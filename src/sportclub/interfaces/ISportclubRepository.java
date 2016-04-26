@@ -65,9 +65,14 @@ Club updateClub(Club club);
 Club removeClub(Club club);
 Team removeTeam(Team team);
 
+<<<<<<< HEAD
 Profiler getProfilerById(String id);
 List<Profiler[]> getTeamStuff(int id, String subprofiler);
 Iterable<Team> getTeams(int clubId);
+=======
+Iterable<Team> getTeamByClub(int clubId);
+Iterable<Profiler> getProfilerByTeam(int teamId);
+>>>>>>> origin/master
 
 
 }

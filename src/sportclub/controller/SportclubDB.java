@@ -621,7 +621,7 @@ public class SportclubDB implements ISportclubRepository {
 		
 		
 		Query q;
-		if (subprofiler==""){
+		if (subprofiler.equals("")){
 			
 			q = em.createQuery("select p from Team t join t.profiles p where t.id=:id and t.deleted = false and p.deleted = false");
 			q.setParameter("id", id);

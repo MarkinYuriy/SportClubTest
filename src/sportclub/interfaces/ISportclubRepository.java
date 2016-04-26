@@ -65,5 +65,8 @@ Club updateClub(Club club);
 Club removeClub(Club club);
 Team removeTeam(Team team);
 
+Iterable<Team> getTeamByClub(int clubId);
+Iterable<Profiler> getProfilerByTeam(int teamId);
+
 
 }

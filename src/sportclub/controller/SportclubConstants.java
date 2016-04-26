@@ -28,6 +28,8 @@ public interface SportclubConstants {
 		String REMOVE_TEAM = "/removeTeam";
 		String REMOVE_PROFILER = "/removeProfiler";
 		String REMOVE_CLUB = "/removeClub";
+		String GET_TEAM_BY_CLUB = "/getTeamByClub";
+		String GET_PROFILE_BY_TEAM = "/getProfileByTeam";
 		
 	}
 

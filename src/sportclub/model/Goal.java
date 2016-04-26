@@ -1,53 +1,53 @@
 package sportclub.model;
 
-
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties("deleted")
 @Entity
 public class Goal {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	private String name;
-	private String description;
-	private boolean deleted;
-	
-	public boolean isDeleted() {
-		return deleted;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    private String name;
+    private String description;
+    private boolean deleted;
 
-	public Goal() {	}
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Goal() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

@@ -1,7 +1,7 @@
 package sportclub.nodeprocessor;
 
 public class Role {
-/*	Node id;
+    /*	Node id;
 	String description;
 	public Node getId() {
 		return id;
@@ -15,5 +15,5 @@ public class Role {
 	public void setDescription(String description) {
 		this.description = description;
 	}*/
-	
+
 }

@@ -1,60 +1,58 @@
 package sportclub.model;
 
-
 import javax.persistence.*;
 
 @Entity
 public class GameTeams {
-	
-	@Id
-	@GeneratedValue
-	private int id;
-	
-	private int grade;
-	private String result;
-	private String description;
-	
-	public GameTeams() {	}
 
-	public GameTeams(int id) {
-		this.id = id;
-	}
+    @Id
+    @GeneratedValue
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    private int grade;
+    private String result;
+    private String description;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public GameTeams() {
+    }
 
-	public int getGrade() {
-		return grade;
-	}
+    public GameTeams(int id) {
+        this.id = id;
+    }
 
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getResult() {
-		return result;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+    public int getGrade() {
+        return grade;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@OneToOne
-	Game game;
-	
-	
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @OneToOne
+    Game game;
 
 }

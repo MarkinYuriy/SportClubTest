@@ -1,7 +1,6 @@
 package sportclub.json;
 
 import java.util.Map;
-
 import flexjson.JSONContext;
 import flexjson.Path;
 import flexjson.TypeContext;
@@ -9,11 +8,11 @@ import flexjson.transformer.AbstractTransformer;
 import flexjson.transformer.TransformerWrapper;
 import sportclub.model.EquipmentPool;
 
-public class ThisMapTransformer extends AbstractTransformer{
+public class ThisMapTransformer extends AbstractTransformer {
 
-	@Override
-	public void transform(Object object) {
-		JSONContext context = getContext();
+    @Override
+    public void transform(Object object) {
+        JSONContext context = getContext();
         Path path = context.getPath();
         Map<EquipmentPool, Integer> value = (Map<EquipmentPool, Integer>) object;
 
@@ -24,20 +23,21 @@ public class ThisMapTransformer extends AbstractTransformer{
 
             if (context.isIncluded(key != null ? key.toString() : null, value.get(key))) {
 
-                TransformerWrapper transformer = (TransformerWrapper)context.getTransformer(value.get(key));
+                TransformerWrapper transformer = (TransformerWrapper) context.getTransformer(value.get(key));
 
-
-                if(!transformer.isInline()) {
-                    if (!typeContext.isFirst()) getContext().writeComma();
+                if (!transformer.isInline()) {
+                    if (!typeContext.isFirst()) {
+                        getContext().writeComma();
+                    }
                     typeContext.setFirst(false);
-                    if( key != null ) {
+                    if (key != null) {
                         getContext().writeName(key.toString());
                     } else {
                         getContext().writeName(null);
                     }
                 }
 
-                if( key != null ) {
+                if (key != null) {
                     typeContext.setPropertyName(key.toString());
                 } else {
                     typeContext.setPropertyName(null);

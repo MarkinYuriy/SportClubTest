@@ -1,60 +1,45 @@
 package sportclub.model;
 
-
-import java.util.*;
 import javax.persistence.*;
 
 @Entity
 public class Training extends Event {
-		
-	private String results;
-	private int resultsPercent;
-	
-	public Training() {
-		super();
-	}
 
-	
-	/*public String getResults() {
-		return results;
-	}
+    private String results;
+    private int resultsPercent;
 
-	public void setResults(String results) {
-		this.results = results;
-	}*/
+    public Training() {
+        super();
+    }
 
-	public int getResultsPercent() {
-		return resultsPercent;
-	}
+    public int getResultsPercent() {
+        return resultsPercent;
+    }
 
-	public void setResultsPercent(int resultsPercent) {
-		this.resultsPercent = resultsPercent;
-	}
-	
-	@ManyToOne
-	private TrainingPool trainingPool;
-	/*@OneToMany
+    public void setResultsPercent(int resultsPercent) {
+        this.resultsPercent = resultsPercent;
+    }
+
+    @ManyToOne
+    private TrainingPool trainingPool;
+
+    /*@OneToMany
 	List<Result> resultes;*/
-	
 
+    public TrainingPool getTrainingPool() {
+        return trainingPool;
+    }
 
-	public TrainingPool getTrainingPool() {
-		return trainingPool;
-	}
+    public void setTrainingPool(TrainingPool trainingPool) {
+        this.trainingPool = trainingPool;
+    }
 
-	public void setTrainingPool(TrainingPool trainingPool) {
-		this.trainingPool = trainingPool;
-	}
-
-	/*public Field getFields() {
+    /*public Field getFields() {
 		return fields;
 	}
 
 	public void setFields(Field fields) {
 		this.fields = fields;
 	}
-	*/
-	
-	
-
+     */
 }

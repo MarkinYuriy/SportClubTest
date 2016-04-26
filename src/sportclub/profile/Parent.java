@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 @Entity
 public class Parent extends Profiler {
 
-public void setProperties(Map<String, String> properties){
-		
-		super.setProperties(properties);
-		
-	}
-	
+    public void setProperties(Map<String, String> properties) {
+
+        super.setProperties(properties);
+
+    }
+
 }

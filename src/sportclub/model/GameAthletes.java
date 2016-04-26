@@ -1,62 +1,62 @@
 package sportclub.model;
 
-
 import javax.persistence.*;
 
 @Entity
 public class GameAthletes {
 
-	@Id
-	@GeneratedValue
-	private int id;
-	
-	private int grade;
-	private int fouls;
-	private String position;
-	private String description;
-	
-	public GameAthletes() {	}
+    @Id
+    @GeneratedValue
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    private int grade;
+    private int fouls;
+    private String position;
+    private String description;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public GameAthletes() {
+    }
 
-	public int getGrade() {
-		return grade;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setGrade(int grade) {
-		this.grade = grade;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getFouls() {
-		return fouls;
-	}
+    public int getGrade() {
+        return grade;
+    }
 
-	public void setFouls(int fouls) {
-		this.fouls = fouls;
-	}
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public int getFouls() {
+        return fouls;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public void setFouls(int fouls) {
+        this.fouls = fouls;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@ManyToOne
-	Game games;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ManyToOne
+    Game games;
 }

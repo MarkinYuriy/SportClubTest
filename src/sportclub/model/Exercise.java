@@ -1,66 +1,58 @@
 package sportclub.model;
 
-
-import java.util.*;
-
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties("deleted")
 @Entity
 public class Exercise {
-	
-	@Id
-	@GeneratedValue
-	private int id;
-	
-	private String name;
-	private String description;
-	private boolean deleted;
-	
-	public boolean isDeleted() {
-		return deleted;
-	}
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
+    @Id
+    @GeneratedValue
+    private int id;
 
-	@Override
-	public String toString() {
-		return String.format("\"id\":%s, \"name\":\"%s\", \"description\":\"%s\"", id, name, description);
-	}
-	
-	public Exercise() {	}
+    private String name;
+    private String description;
+    private boolean deleted;
 
-	public int getId() {
-		return id;
-	}
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String toString() {
+        return String.format("\"id\":%s, \"name\":\"%s\", \"description\":\"%s\"", id, name, description);
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Exercise() {
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	
+    public String getName() {
+        return name;
+    }
 
-	
-	
-	
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 }

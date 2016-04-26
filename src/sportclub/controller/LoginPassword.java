@@ -1,35 +1,35 @@
 package sportclub.controller;
 
 public class LoginPassword {
-	private String login;
-	
+
+    private String login;
+
     public LoginPassword() {
-			}
+    }
 
-	public LoginPassword(String login, String password, String subprofile) {
-		this.login = login;
-		this.password = password;
-		this.subprofile = subprofile;
-	}
+    public LoginPassword(String login, String password, String subprofile) {
+        this.login = login;
+        this.password = password;
+        this.subprofile = subprofile;
+    }
 
-	public LoginPassword(String login, String password) {
-		this.login = login;
-		this.password = password;
-	}
+    public LoginPassword(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
 
-	private String password;
+    private String password;
     private String subprofile;
-    
-    
+
     public String getSubprofile() {
-		return subprofile;
-	}
+        return subprofile;
+    }
 
-	public void setSubprofile(String subprofile) {
-		this.subprofile = subprofile;
-	}
+    public void setSubprofile(String subprofile) {
+        this.subprofile = subprofile;
+    }
 
-	public String getLogin() {
+    public String getLogin() {
         return login;
     }
 
@@ -45,8 +45,8 @@ public class LoginPassword {
         this.password = password;
     }
 
-	@Override
-	public String toString() {
-		return "LoginPassword [login=" + login + ", password=" + password + ", subprofile=" + subprofile + "]";
-	}
+    @Override
+    public String toString() {
+        return "LoginPassword [login=" + login + ", password=" + password + ", subprofile=" + subprofile + "]";
+    }
 }

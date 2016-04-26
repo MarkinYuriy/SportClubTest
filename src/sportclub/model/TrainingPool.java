@@ -1,144 +1,135 @@
 package sportclub.model;
 
-
 import java.util.*;
 import javax.persistence.*;
-
 import org.hibernate.annotations.Cascade;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @JsonIgnoreProperties("deleted")
 @Entity
 public class TrainingPool {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="tpId")
-	private int id;
-	
-	private String type;
-	private String name;
-	private String description;
-	private int level;
 
-	private boolean deleted;
-	
-	public boolean isDeleted() {
-		return deleted;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "tpId")
+    private int id;
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-	@ManyToMany
-	private Set<Goal>goals=new HashSet<Goal>();
-	
-	
-	
-	public Set<Goal> getGoals() {
-		return goals;
-	}
+    private String type;
+    private String name;
+    private String description;
+    private int level;
 
-	public void setGoals(Set<Goal> goals) {
-		this.goals = goals;
-	}
+    private boolean deleted;
 
-	
+    public boolean isDeleted() {
+        return deleted;
+    }
 
-	public TrainingPool() {	
-		/*equipmentPoolData = new HashMap<EquipmentPool, Integer>();
-		exercises = new HashMap<Exercise,ExerciseSession>();*/}
-	public int getId() {
-		return id;
-	}
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    @ManyToMany
+    private Set<Goal> goals = new HashSet<Goal>();
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Set<Goal> getGoals() {
+        return goals;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setGoals(Set<Goal> goals) {
+        this.goals = goals;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public TrainingPool() {
+        /*equipmentPoolData = new HashMap<EquipmentPool, Integer>();
+		exercises = new HashMap<Exercise,ExerciseSession>();*/
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public int getLevel() {
-		return level;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
-	
-	
-	@OneToMany
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    @OneToMany
     private List<ExerciseSession> exercises;
-	
-	@OneToMany
-	private List<EquipmentPoolData> epd;
-	
-	public List<EquipmentPoolData> getEpd() {
-		return epd;
-	}
 
-	public void setEpd(List<EquipmentPoolData> epd) {
-		this.epd = epd;
-	}
+    @OneToMany
+    private List<EquipmentPoolData> epd;
 
-	public List<ExerciseSession> getExercises() {
-		return exercises;
-	}
+    public List<EquipmentPoolData> getEpd() {
+        return epd;
+    }
 
-	public void setExercises(List<ExerciseSession> exercises) {
-		this.exercises = exercises;
-	}
+    public void setEpd(List<EquipmentPoolData> epd) {
+        this.epd = epd;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
+    public List<ExerciseSession> getExercises() {
+        return exercises;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TrainingPool other = (TrainingPool) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
-	
-	
-	
-	
+    public void setExercises(List<ExerciseSession> exercises) {
+        this.exercises = exercises;
+    }
 
-	
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
 
-	
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        TrainingPool other = (TrainingPool) obj;
+        if (id != other.id) {
+            return false;
+        }
+        return true;
+    }
 
 }

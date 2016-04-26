@@ -5,6 +5,7 @@ package sportclub.controller;
  */
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,6 +41,7 @@ import com.google.gson.Gson;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import sportclub.data.ProfileData;
+import sportclub.data.TeamData;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
@@ -147,15 +150,15 @@ public class SportclubRestController {
 		return result;
 	}
 	
-	@RequestMapping(value = SportclubConstants.GET_TEAM_STUFF+"/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getStuff(@PathVariable int id) {
-		if (id==0){
+	@RequestMapping(value = SportclubConstants.GET_TEAM_STUFF+"/{teamId}", method = RequestMethod.GET)
+	public @ResponseBody String getStuff(@PathVariable int teamId) {
+		if (teamId==0){
 			RequestSuccess rs = new RequestSuccess();
       	  rs.setData("empty id");
       	  rs.setStatus("unsuccess");
           return ObjectToJson(rs);
 			}
-		String result = getResponse(profiles.getTeamStuff(id,""),"record doesn't exist");
+		String result = getResponse(profiles.getTeamStuff(teamId,""),"record doesn't exist");
  
 		return result;
 	}
@@ -353,18 +356,29 @@ public class SportclubRestController {
 	}
 	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
 	public @ResponseBody String addTeam(@RequestBody String json) {
+		Map<String,Object> mapJ = new HashMap<String,Object>();
+		RequestSuccess rs = new RequestSuccess();
 		
-		Team team = null;
 		try {
-			team = new ObjectMapper().readValue(json, Team.class);
+			
+			mapJ = new ObjectMapper().readValue(json, new TypeReference<Map<String,String>>(){});
+			if(!mapJ.containsKey("clubId")&&mapJ.get("clubId")==null){
+				rs.setStatus("unsuccess");
+				rs.setData("club id is absent");
+			return ObjectToJson(rs);
+			}
 		} catch (IOException e) {
-			RequestSuccess rs = new RequestSuccess();
+			
 			rs.setStatus("unsuccess");
 			rs.setData("incorrected JSON format");
 		return ObjectToJson(rs);
 		}
-		
-		String res = getResponse(profiles.addTeam(team), "team with name "+team.getName()+" already exists");
+		TeamData td = profiles.addTeam(mapJ);
+		String error = td.getErrorMassage();
+		if(error!=null){
+			td=null;
+		}
+		String res = getResponse(td, error);
 		
 		return res;
 

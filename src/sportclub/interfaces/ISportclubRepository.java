@@ -19,7 +19,7 @@ import sportclub.model.*;
 
 public interface ISportclubRepository {
 ProfileData removeProfiler(String id);
-TeamData addTeam(Team team);
+TeamData addTeam(Map<String, Object> mapJ);
 
 boolean addCourt(Court court);
 boolean addExercise(Exercise exercise);

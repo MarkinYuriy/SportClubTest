@@ -91,19 +91,29 @@ public class SportclubDB implements ISportclubRepository {
 
     @Override
     @Transactional
-    public TeamData addTeam(Team team) {
+    public TeamData addTeam(Map<String,Object> mapJ) {
+    	Team team = new Team ();
+         Query q = em.createQuery("select team from Team team where team.name=:teamName");
+        q.setParameter("teamName", mapJ.get("name"));
         
-
-        Query q = em.createQuery("select team from Team team where team.name=:teamName");
-        q.setParameter("teamName", team.getName());
         try { 
          q.getSingleResult();
          }catch(Exception e){
+        	 int clubId = Integer.parseInt((String) mapJ.get("clubId"));
+        	 
+        	 Club clubFinded = em.find(Club.class, clubId);
+        	if(clubFinded.getId()==0)return new TeamData("club with id "+clubId+" doesn't exist!");
+        	
+        	team.setClub(clubFinded);
+        	team.setDescription((String) mapJ.get("description"));
+        	team.setName((String)mapJ.get("name"));
+        	      	
             em.persist(team);
-            TeamData td = new TeamData(team.getId());
-            return td;
+            
+           
+            return new TeamData(team.getId());
         }
-      return null;
+      return new TeamData("team with name "+team.getName()+" already exists!");
     }
 
    
@@ -111,11 +121,23 @@ public class SportclubDB implements ISportclubRepository {
     @Transactional
     public ProfileData updateProfiler(Map<String,String> properties)  {
 		ProfileData pd;
-		String idOut = properties.get("id");
-			Profiler finded = em.find(Profiler.class, idOut);
-			if(finded!=null){
-			finded.setProperties(properties);
-			 pd = new ProfileData(finded.getId());
+		String profIdIn = properties.get("id");
+		
+			Profiler findedProfiler = em.find(Profiler.class, profIdIn);
+			if(findedProfiler!=null){
+			findedProfiler.setProperties(properties);
+			
+			if(properties.containsKey("teamId")&&properties.get("teamId")!=null){
+				
+				Team teamFinded = em.find(Team.class, properties.get("teamId"));
+				if (teamFinded!=null){
+					Set<Team> setTeam = new HashSet<Team>();
+					setTeam.add(teamFinded);
+					findedProfiler.setTeams(setTeam);
+				}
+			}
+			
+			 pd = new ProfileData(findedProfiler.getId());
 			return pd;
 			}
             

@@ -25,6 +25,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import sportclub.model.Club;
@@ -229,18 +232,24 @@ public class Profiler implements Serializable{
 	
 	public void setProperties(Map<String, String> properties){
 		
-				
-		login = properties.get("login"); 
-		password= properties.get("password"); ;
-		name= properties.get("name"); ;
-		lastName= properties.get("lastName"); ;
-		email= properties.get("email"); ;
-		position= properties.get("position"); ;
+		if(properties.get("login")!=null)
+		login = properties.get("login");
+		if(properties.get("password")!=null)
+		password= properties.get("password"); 
+		if(properties.get("name")!=null)
+		name= properties.get("name"); 
+		if(properties.get("lastName")!=null)
+		lastName= properties.get("lastName"); 
+		if(properties.get("email")!=null)
+		email= properties.get("email"); 
+		if(properties.get("position")!=null)
+		position= properties.get("position"); 
+		if(properties.get("description")!=null)
 		description= properties.get("description");
+		if(properties.get("deleted")!=null)
 		deleted = Boolean.parseBoolean(properties.get("deleted"));
+		if(properties.get("federationPlayer")!=null)
 		federationPlayer =Boolean.parseBoolean(properties.get("federationPlayer"));
-		
-		
 	}
 
 

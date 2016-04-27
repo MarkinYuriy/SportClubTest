@@ -5,6 +5,7 @@ package sportclub.controller;
  */
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +26,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -37,11 +41,13 @@ import com.google.gson.Gson;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import sportclub.data.ProfileData;
+import sportclub.data.TeamData;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
 import sportclub.profile.*;
-
+import sportclub.utils.PolymorphicProfilerMixIn;
+import sportclub.utils.ProfilerDeserializer;
 import sportclub.nodeprocessor.*;
 
 @Controller
@@ -103,6 +109,15 @@ public class SportclubRestController {
 		return result;
 			
 	}
+	
+	@RequestMapping(value = SportclubConstants.GET_PROFILE_BY_ID + "/{id}", method = RequestMethod.GET)
+	public @ResponseBody String getProfilerById(@PathVariable String id) {
+		
+		String result = getResponse(profiles.getProfilerById(id),"recordes doesn't exist" );
+		
+		return result;
+			
+	}
 
 	@RequestMapping(value = SportclubConstants.GET_PROFILE + "/{SubProfiler}" + "/{id}", method = RequestMethod.GET)
 	public @ResponseBody String getProfile(@PathVariable String SubProfiler, @PathVariable String id) {
@@ -127,17 +142,52 @@ public class SportclubRestController {
 		return result;
 	}
 
-	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.GET)
-	public @ResponseBody String getTeams() {
-		
-		String result = getResponse(profiles.getTeams(),"record doesn't exist");
+	@RequestMapping(value = SportclubConstants.GET_TEAMS+"/{clubId}", method = RequestMethod.GET)
+	public @ResponseBody String getTeams(@PathVariable int clubId) {
+		System.out.println(clubId);
+		String result = getResponse(profiles.getTeams(clubId),"record doesn't exist");
  
 		return result;
 	}
+	
+	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.GET)
+	public @ResponseBody String getTeams() {
+		
+		RequestSuccess rs = new RequestSuccess();
+  	  rs.setData("input club id!");
+  	  rs.setStatus("unsuccess");
+      return ObjectToJson(rs);
+	}
+	
+	@RequestMapping(value = SportclubConstants.GET_TEAM_STUFF+"/{teamId}", method = RequestMethod.GET)
+	public @ResponseBody String getStuff(@PathVariable int teamId) {
+		if (teamId==0){
+			RequestSuccess rs = new RequestSuccess();
+      	  rs.setData("empty id");
+      	  rs.setStatus("unsuccess");
+          return ObjectToJson(rs);
+			}
+		String result = getResponse(profiles.getTeamStuff(teamId,""),"record doesn't exist");
+ 
+		return result;
+	}
+	@RequestMapping(value = SportclubConstants.GET_TEAM_STUFF+"/{teamId}" +"/{subprofiler}", method = RequestMethod.GET)
+	public @ResponseBody String getStuff(@PathVariable int teamId, @PathVariable String subprofiler) {
+		if (teamId==0){
+			RequestSuccess rs = new RequestSuccess();
+      	  rs.setData("empty id");
+      	  rs.setStatus("unsuccess");
+          return ObjectToJson(rs);
+			}
+		String result = getResponse(profiles.getTeamStuff(teamId,subprofiler),"record doesn't exist");
+ 
+		return result;
+	}
+	
 
-	@RequestMapping(value = SportclubConstants.GET_TEAM + "/{id}", method = RequestMethod.GET)
-	public @ResponseBody String getTeam(@PathVariable int id){
-		String result = getResponse(profiles.getTeam(id),"record doesn't exist");
+	@RequestMapping(value = SportclubConstants.GET_TEAM + "/{teamId}", method = RequestMethod.GET)
+	public @ResponseBody String getTeam(@PathVariable int teamId){
+		String result = getResponse(profiles.getTeam(teamId),"record doesn't exist");
 		return result;
 	}
 
@@ -315,18 +365,29 @@ public class SportclubRestController {
 	}
 	@RequestMapping(value = SportclubConstants.ADD_TEAM, method = RequestMethod.POST)
 	public @ResponseBody String addTeam(@RequestBody String json) {
+		Map<String,Object> mapJ = new HashMap<String,Object>();
+		RequestSuccess rs = new RequestSuccess();
 		
-		Team team = null;
 		try {
-			team = new ObjectMapper().readValue(json, Team.class);
+			
+			mapJ = new ObjectMapper().readValue(json, new TypeReference<Map<String,String>>(){});
+			if(!mapJ.containsKey("clubId")&&mapJ.get("clubId")==null){
+				rs.setStatus("unsuccess");
+				rs.setData("club id is absent");
+			return ObjectToJson(rs);
+			}
 		} catch (IOException e) {
-			RequestSuccess rs = new RequestSuccess();
+			
 			rs.setStatus("unsuccess");
 			rs.setData("incorrected JSON format");
 		return ObjectToJson(rs);
 		}
-		
-		String res = getResponse(profiles.addTeam(team), "team with name "+team.getName()+" already exists");
+		TeamData td = profiles.addTeam(mapJ);
+		String error = td.getErrorMassage();
+		if(error!=null){
+			td=null;
+		}
+		String res = getResponse(td, error);
 		
 		return res;
 
@@ -400,10 +461,16 @@ public class SportclubRestController {
 	}
 	
 	private String ObjectToJson(Object rs) {
+		ProfilerDeserializer pd = new ProfilerDeserializer();
+		
+		SimpleModule module =  
+			      new SimpleModule(); 
+		module.addDeserializer(Profiler.class, pd); 
 		ObjectMapper om = new ObjectMapper();
 		om.setSerializationInclusion(Include.NON_EMPTY);
 		om.setSerializationInclusion(Include.NON_NULL);
 		om.configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS , false);
+		
 		SimpleBeanPropertyFilter theFilter = SimpleBeanPropertyFilter.serializeAllExcept("deleted");
 	    FilterProvider filters = new SimpleFilterProvider().addFilter("myFilter", theFilter);
 		String res="";

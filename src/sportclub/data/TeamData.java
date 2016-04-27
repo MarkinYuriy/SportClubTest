@@ -1,10 +1,24 @@
 package sportclub.data;
 
 public class TeamData {
-	int id;
-	String name;
-	String description;
+	private int id;
+	private String name;
+	private String description;
+	private String errorMassage;
 	
+	public String getErrorMassage() {
+		return errorMassage;
+	}
+
+	public void setErrorMassage(String errorMassage) {
+		this.errorMassage = errorMassage;
+	}
+
+	public TeamData(String errorMassage) {
+		super();
+		this.errorMassage = errorMassage;
+	}
+
 	public int getId() {
 		return id;
 	}

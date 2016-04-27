@@ -31,6 +31,9 @@ public interface SportclubConstants {
 		String GET_TEAM_BY_CLUB = "/getTeamByClub";
 		String GET_PROFILE_BY_TEAM = "/getProfileByTeam";
 		
+		String GET_TEAM_STUFF = "/getStuff";
+		String GET_PROFILE_BY_ID = "/getProfilerById";
+		
 	}
 
 	

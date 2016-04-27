@@ -19,7 +19,7 @@ import sportclub.model.*;
 
 public interface ISportclubRepository {
 ProfileData removeProfiler(String id);
-TeamData addTeam(Team team);
+TeamData addTeam(Map<String, Object> mapJ);
 
 boolean addCourt(Court court);
 boolean addExercise(Exercise exercise);
@@ -65,8 +65,9 @@ Club updateClub(Club club);
 Club removeClub(Club club);
 Team removeTeam(Team team);
 
-Iterable<Team> getTeamByClub(int clubId);
-Iterable<Profiler> getProfilerByTeam(int teamId);
+Profiler getProfilerById(String id);
+List<Profiler[]> getTeamStuff(int id, String subprofiler);
+Iterable<Team> getTeams(int clubId);
 
 
 }

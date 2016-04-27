@@ -68,6 +68,8 @@ Team removeTeam(Team team);
 Profiler getProfilerById(String id);
 List<Profiler[]> getTeamStuff(int id, String subprofiler);
 Iterable<Team> getTeams(int clubId);
+Iterable<Profiler> getProfilerByTeam(int teamId);
+Iterable<Team> getTeamByClub(int clubId);
 
 
 }

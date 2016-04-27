@@ -52,7 +52,7 @@ import sportclub.profile.*;
  *
  */
 public class SportclubDB implements ISportclubRepository {
-    };
+    
 
 	@PersistenceContext(unitName = "springHibernate", type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
@@ -677,7 +677,7 @@ public class SportclubDB implements ISportclubRepository {
 		}
 	}
 
-}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<Team> getTeamByClub(int clubId) {

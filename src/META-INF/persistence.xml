@@ -9,9 +9,8 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd ">
  	<shared-cache-mode>NONE</shared-cache-mode>
  		<properties>
  			<property name="hibernate.hbm2ddl.auto" value="update"/>
- 			<property name="hibernate.connection.url" 
- 			<property name="hibernate.connection.driver_class" 
- 			value="com.mysql.jdbc.Driver"/>
+ 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost/sportclub"/>
+ 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
  			<property name="hibernate.connection.username" value="root"/>
  			<property name="hibernate.connection.password" value="futuris"/>
  <!-- <property name="hibernate.show_sql" value="true"/>

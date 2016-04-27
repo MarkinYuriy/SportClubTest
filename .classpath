@@ -27,5 +27,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.38-bin.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

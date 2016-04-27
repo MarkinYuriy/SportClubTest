@@ -482,4 +482,20 @@ public class SportclubRestController {
 		return res;
 	}
 	
+	@RequestMapping(value = SportclubConstants.GET_TEAM_BY_CLUB+"/{clubId}", method = RequestMethod.GET)
+	public @ResponseBody String getTeamByClub(@PathVariable String clubId){
+		int clId = Integer.parseInt(clubId);
+		Object obj = profiles.getTeamByClub(clId);
+		String res = getResponse(obj, "record doesn't exist");
+		return res;
+	}
+	
+	@RequestMapping(value = SportclubConstants.GET_PROFILE_BY_TEAM+"/{teamId}", method = RequestMethod.GET)
+	public @ResponseBody String getProfileByTeam(@PathVariable String teamId){
+		int tmId = Integer.parseInt(teamId);
+		Object obj = profiles.getProfilerByTeam(tmId);
+		String res = getResponse(obj, "record doesn't exist");
+		return res;
+	}
+	
 }

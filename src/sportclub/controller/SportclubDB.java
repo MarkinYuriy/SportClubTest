@@ -52,11 +52,7 @@ import sportclub.profile.*;
  *
  */
 public class SportclubDB implements ISportclubRepository {
-	String[] subClasses = { "AdminManagerClub", "AssitPhysicCoach", "AssitTeamCoach", "Athlete",
-			// "Coach",
-			"Parent", "PhysiologyCoach", "ProffesionalManager", "Profiler", "Psycholog", "TeamAdminManager", "TeamCoach"
-
-	};
+    };
 
 	@PersistenceContext(unitName = "springHibernate", type = PersistenceContextType.EXTENDED)
 	private EntityManager em;
@@ -682,3 +678,60 @@ public class SportclubDB implements ISportclubRepository {
 	}
 
 }
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Team> getTeamByClub(int clubId) {
+		Query q = em.createQuery("Select t From Team t join t.club c Where t.deleted=false and c.id=?1");
+		q.setParameter(1, clubId);
+		List<Team> teams = new LinkedList<Team>();
+		teams =	q.getResultList();
+		for(Team t:teams){
+			t.setDiary(null);
+			t.setResults(null);
+		Set<Profiler> prof = t.getProfiles();
+		Set<Profiler> resProf = new HashSet<Profiler>();
+		for(Profiler p:prof){
+			Profiler pr = new Profiler(p.getId());
+//			pr.setFederationPlayer(p.isFederationPlayer());
+//			pr.setDeleted(p.isDeleted());
+			resProf.add(pr);
+		}
+		t.setProfiles(resProf);
+		}
+		return teams;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<Profiler> getProfilerByTeam(int teamId) {
+		Query q = em.createQuery("Select p From Profiler p join p.teams t Where p.deleted=false and t.deleted=false and t.id=?1");
+		q.setParameter(1, teamId);
+		List<Profiler> profiles = new LinkedList<Profiler>();
+		profiles = q.getResultList();
+		for(Profiler p:profiles){
+			Set<Role> resRol = new HashSet<Role>(), roles = new HashSet<Role>();
+			Set<Team> resTeam = new HashSet<Team>(), teams = new HashSet<Team>();
+			roles = p.getRoles();
+			teams = p.getTeams();
+			if(roles.size()>0){
+			for(Role r:roles){
+				Role tmpR = new Role();
+				tmpR.setIdCode(r.getIdCode());
+				resRol.add(tmpR);
+			}
+			p.setRoles(resRol);
+			}
+			if(teams.size()>0){
+			for(Team t:teams){
+				Team tmpT = new Team(t.getId());
+				resTeam.add(tmpT);
+			}
+			p.setTeams(resTeam);
+			}
+			
+			
+		}
+		return profiles;
+	}
+
+   }

@@ -565,7 +565,7 @@ public class SportclubDB implements ISportclubRepository {
 
 		try {
 			Query query = em.createQuery(
-					"select t from Team t join t.club c where t.deleted=false and c.id=:clubId");
+					"select new Team(t.id,t.name,t.description) from Team t join t.club c where t.deleted=false and c.id=:clubId");
 			query.setParameter("clubId", clubId);
 			teams = query.getResultList();
 			return !teams.iterator().hasNext() ? null : teams;

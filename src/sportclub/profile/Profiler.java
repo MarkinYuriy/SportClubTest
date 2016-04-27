@@ -231,15 +231,24 @@ public class Profiler implements Serializable{
 
 	
 	public void setProperties(Map<String, String> properties){
-						
-		login = properties.get("login"); 
+		
+		if(properties.get("login")!=null)
+		login = properties.get("login");
+		if(properties.get("password")!=null)
 		password= properties.get("password"); 
+		if(properties.get("name")!=null)
 		name= properties.get("name"); 
+		if(properties.get("lastName")!=null)
 		lastName= properties.get("lastName"); 
+		if(properties.get("email")!=null)
 		email= properties.get("email"); 
+		if(properties.get("position")!=null)
 		position= properties.get("position"); 
+		if(properties.get("description")!=null)
 		description= properties.get("description");
+		if(properties.get("deleted")!=null)
 		deleted = Boolean.parseBoolean(properties.get("deleted"));
+		if(properties.get("federationPlayer")!=null)
 		federationPlayer =Boolean.parseBoolean(properties.get("federationPlayer"));
 	}
 

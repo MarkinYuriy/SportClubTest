@@ -150,6 +150,15 @@ public class SportclubRestController {
 		return result;
 	}
 	
+	@RequestMapping(value = SportclubConstants.GET_TEAMS, method = RequestMethod.GET)
+	public @ResponseBody String getTeams() {
+		
+		RequestSuccess rs = new RequestSuccess();
+  	  rs.setData("input club id!");
+  	  rs.setStatus("unsuccess");
+      return ObjectToJson(rs);
+	}
+	
 	@RequestMapping(value = SportclubConstants.GET_TEAM_STUFF+"/{teamId}", method = RequestMethod.GET)
 	public @ResponseBody String getStuff(@PathVariable int teamId) {
 		if (teamId==0){

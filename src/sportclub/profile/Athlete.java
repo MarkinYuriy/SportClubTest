@@ -71,7 +71,7 @@ public class Athlete extends Profiler {
 public void setProperties(Map<String, String> properties){
 	
 	super.setProperties(properties);
-	
+	if(properties.get("type")!=null)
 	type = properties.get("type");
 	
 	if(properties.get("number")!=null)

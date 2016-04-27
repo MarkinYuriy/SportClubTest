@@ -27,20 +27,21 @@ public class Team {
 	
 	private String description;
 	private boolean deleted;
-
+	@JsonIgnore
 	@OneToMany
 	private Set<ImageBank> photos;
-	
+	@JsonIgnore
 	@OneToMany
 	private List<GameTeams> results;
 	@JsonIgnore
 	@ManyToMany(mappedBy="teams")
 	private Set<Event> diary;
 	
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIgnore
 	@ManyToMany(mappedBy="teams")
 	 Set<Profiler> profiles;
-	
+	@JsonIgnore
 	@ManyToOne
 	Club club;
 	

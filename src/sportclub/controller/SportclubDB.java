@@ -643,7 +643,7 @@ public class SportclubDB implements ISportclubRepository {
 	public List<Profiler[]> getTeamStuff(int id, String subprofiler) {
 
 		Query q;
-		if (subprofiler == "") {
+		if (subprofiler.equals("")){
 
 			q = em.createQuery(
 					"select p from Team t join t.profiles p where t.id=:id and t.deleted = false and p.deleted = false");

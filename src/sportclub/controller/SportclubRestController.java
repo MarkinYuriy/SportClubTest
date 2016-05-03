@@ -40,14 +40,15 @@ import com.google.gson.Gson;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
+import sportclub.data.EventData;
+import sportclub.data.MessageData;
 import sportclub.data.ProfileData;
 import sportclub.data.TeamData;
 import sportclub.interfaces.ISportclubRepository;
 import sportclub.model.*;
 import sportclub.model.Role;
 import sportclub.profile.*;
-import sportclub.utils.PolymorphicProfilerMixIn;
-import sportclub.utils.ProfilerDeserializer;
+
 import sportclub.nodeprocessor.*;
 
 @Controller
@@ -461,11 +462,9 @@ public class SportclubRestController {
 	}
 	
 	private String ObjectToJson(Object rs) {
-		ProfilerDeserializer pd = new ProfilerDeserializer();
 		
-		SimpleModule module =  
-			      new SimpleModule(); 
-		module.addDeserializer(Profiler.class, pd); 
+		
+		
 		ObjectMapper om = new ObjectMapper();
 		om.setSerializationInclusion(Include.NON_EMPTY);
 		om.setSerializationInclusion(Include.NON_NULL);
@@ -498,4 +497,62 @@ public class SportclubRestController {
 		return res;
 	}
 	
+	/** Events Methods
+	 * 
+	 */
+	
+	@RequestMapping(value = SportclubConstants.GET_EVENT+ "/{clubId}", method = RequestMethod.GET)
+	public @ResponseBody String getEvent(@PathVariable int clubId){
+		
+		
+		String result = getResponse(profiles.getEvents(clubId),"record doesn't exist");
+ 
+		return result;
+		
+			}
+	
+	
+	@RequestMapping(value = SportclubConstants.ADD_EVENT, method = RequestMethod.POST)
+	public @ResponseBody String addEvent(@RequestBody String json){
+		
+		
+		return jsonResponseToRequestEvent(json,true);
+		
+	}
+	
+	private String jsonResponseToRequestEvent (String json, boolean hasClub){
+		Map<String,Object> mapJ = new HashMap<String,Object>();
+		RequestSuccess rs = new RequestSuccess();
+
+		try {
+			mapJ = parseJSONToMap(json);
+		} catch (IOException e) {
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
+		}
+		if(hasClub){
+			if(!mapJ.containsKey("clubId")&&mapJ.get("clubId")==null){
+			rs.setStatus("unsuccess");
+			rs.setData("club id is absent");
+		return ObjectToJson(rs);
+		};
+		}
+		
+		MessageData md = profiles.addEvent(mapJ);
+		String error = md.getErrorMessage();
+		if(error!=null){
+			md=null;
+		}
+		String res = getResponse(md, error);
+		
+		
+		return res;
+	}
+
+	private Map<String, Object> parseJSONToMap(String json) throws JsonParseException, JsonMappingException, IOException {
+		Map<String,Object> mapJ = new HashMap<String,Object>();
+		mapJ = new ObjectMapper().readValue(json, new TypeReference<Map<String,String>>(){});
+		return mapJ;
+	}
 }

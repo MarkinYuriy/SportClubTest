@@ -2,8 +2,11 @@ package sportclub.controller;
 
 import java.io.IOException;
 import java.lang.reflect.Member;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,6 +44,7 @@ import flexjson.JSONDeserializer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import sportclub.data.EventData;
 import sportclub.data.ProfileData;
 import sportclub.data.TeamData;
 import sportclub.interfaces.ISportclubRepository;
@@ -213,9 +217,87 @@ public class SportclubDB implements ISportclubRepository {
 	}
 
 	@Override
-	public boolean addEvent(Event event) {
+	@Transactional
+	public EventData addEvent(Map<String,Object> map) {
+		
+		String type = (String) map.get("type");
+		DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm");
+		
+		Date startTime,endTime;
+		try {
+			startTime = df.parse((String) map.get("startTime"));
+			endTime = df.parse((String) map.get("endTime"));
+		} catch (java.text.ParseException e1) {
+			return new EventData(0, "type error: unidentified date format"); 
+		}
+				
+		Slot slot = new Slot();
+		
+		slot.setStartTime(startTime);
+		slot.setEndTime(endTime);
+		
+		Event event;
+			
+			switch (type){
+			case "clubEvent": event = addClubEventData(map); break;
+			case "training": event = addTrainingData(map);break;
+			case "game": event = addGameData(map);break;
+			default: return new EventData(0, "unidentified event type"); 
+			}
+		/*add slot to event*/
+			em.persist(slot);
+		event.setSlots(slot);
+		/*check club id*/
+		int clubId = Integer.parseInt((String)map.get("clubId"));
+		Club club = em.find(Club.class, clubId);
+			if (club==null)return new EventData(0, "unidentified club id");
+			
+			try {
+				em.persist(event);
+				Set<Event> diary = club.getDiary();
+				
+				diary.add(event);
+				club.setDiary(diary);
+				
+				return new EventData(event.getId(), null);
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				return new EventData(0, "type error: the record didn't add!");
+			}
+		
+			
+	}
+
+	private Event addGameData(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
+	}
+
+	private Event addTrainingData(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Event addClubEventData(Map<String, Object> map) {
+		
+		Event newEvent = new Event();
+		Event event = setEventFields(newEvent, map);
+		
+		return event;
+		
+	}
+
+	private Event setEventFields(Event event, Map<String,Object> map) {
+		
+		event.setName((String) map.get("name"));
+		event.setDescription((String) map.get("description"));
+		event.setAddress((String) map.get("adress"));
+		event.setGoogleMapLink((String) map.get("googleMapLink"));
+		
+		
+		
+		return event;
 	}
 
 	@Override
@@ -732,6 +814,20 @@ public class SportclubDB implements ISportclubRepository {
 			
 		}
 		return profiles;
+	}
+
+	@Override
+	public Iterable<Event> getEvents(int clubId) {
+		
+		Query q = em.createQuery("select event from Club cl join cl.diary event "
+				+ "where cl.deleted=false and event.deleted=false and cl.id=?1");
+		q.setParameter(1, clubId);
+		List<Event> events = new LinkedList<Event>();
+		events = q.getResultList();
+		
+		
+		
+		return events;
 	}
 
    }

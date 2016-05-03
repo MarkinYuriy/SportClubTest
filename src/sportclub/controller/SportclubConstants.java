@@ -17,6 +17,7 @@ public interface SportclubConstants {
 		String ALL_QUERIES = "/getAnyRequest";
 		String ADD_FIELD = "/addField";
 		String ADD_ATHLETE = "/addAthelet";
+		String ADD_EVENT = "/addEvent";
 		String CREATE_RANDOM_DB = "/createRandomDB";
 		String ADD_CLUB = "/addClub";
 		String SIGN_IN = "/signIn";
@@ -33,6 +34,7 @@ public interface SportclubConstants {
 		
 		String GET_TEAM_STUFF = "/getStuff";
 		String GET_PROFILE_BY_ID = "/getProfilerById";
+		String GET_EVENT = "/getEvent";
 		
 	}
 

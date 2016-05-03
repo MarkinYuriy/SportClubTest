@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Slot {
 	
@@ -18,6 +20,7 @@ public class Slot {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(unique=true, nullable = false, updatable = false )
 	private Date endTime;
+	@JsonIgnore
 	private boolean deleted;
 	
 	public boolean isDeleted() {

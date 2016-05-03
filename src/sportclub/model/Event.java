@@ -15,7 +15,7 @@ import sportclub.profile.Profiler;
 
 public class Event {
 	
-	@Id@GeneratedValue
+	@Id@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
@@ -34,6 +34,7 @@ public class Event {
 	@ManyToOne
 	private Slot slots;
 	
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable
 	  (
@@ -42,6 +43,7 @@ public class Event {
 		      inverseJoinColumns={ @JoinColumn(name="profileId", referencedColumnName="profilerId") }
 		  )
 	private Set<Profiler> viewedRights;
+	
 	@JsonIgnore
 	@ManyToMany@JoinTable
 	  (
@@ -49,6 +51,7 @@ public class Event {
 		      joinColumns={ @JoinColumn(name="eventId", referencedColumnName="Id") },
 		      inverseJoinColumns={ @JoinColumn(name="profileId", referencedColumnName="id") }
 		  )
+	
 	private Set<Team> teams;
 	
 	/*@OneToOne
@@ -131,7 +134,7 @@ public class Event {
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((slots == null) ? 0 : slots.hashCode());
 		result = prime * result + ((teams == null) ? 0 : teams.hashCode());
-		//result = prime * result + ((viewedRights == null) ? 0 : viewedRights.hashCode());
+		
 		return result;
 	}
 
@@ -176,11 +179,6 @@ public class Event {
 				return false;
 		} else if (!teams.equals(other.teams))
 			return false;
-		/*if (viewedRights == null) {
-			if (other.viewedRights != null)
-				return false;
-		} else if (!viewedRights.equals(other.viewedRights))
-			return false;*/
 		return true;
 	}
 	

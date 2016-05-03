@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import sportclub.profile.*;
 import sportclub.controller.LoginPassword;
+import sportclub.data.EventData;
 import sportclub.data.ProfileData;
 import sportclub.data.TeamData;
 import sportclub.model.*;
@@ -27,7 +28,7 @@ boolean addEquipment(EquipmentPool equipment);
 boolean addTrainingPoolElement(TrainingPool tr);
 boolean addGoal(Goal goal);
 Club addClub(Club club);
-boolean addEvent(Event event);
+EventData addEvent(Map<String, Object> mapJ);
 boolean addTraining(Training training);
 boolean addPrivateTraining(PrivateTraining pt);
 boolean addGame(Game game);
@@ -70,6 +71,7 @@ List<Profiler[]> getTeamStuff(int id, String subprofiler);
 Iterable<Team> getTeams(int clubId);
 Iterable<Profiler> getProfilerByTeam(int teamId);
 Iterable<Team> getTeamByClub(int clubId);
+Iterable<Event> getEvents(int clubId);
 
 
 }

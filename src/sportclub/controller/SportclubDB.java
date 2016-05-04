@@ -5,8 +5,10 @@ import java.lang.reflect.Member;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -75,7 +77,7 @@ public class SportclubDB implements ISportclubRepository {
 
 			return !it.iterator().hasNext() ? null : it;
 		} catch (NoResultException e) {
-			System.out.println("point2");
+			
 			return null;
 		}
 	}
@@ -221,20 +223,21 @@ public class SportclubDB implements ISportclubRepository {
 	public EventData addEvent(Map<String,Object> map) {
 		
 		String type = (String) map.get("type");
-		DateFormat df = new SimpleDateFormat("dd.MM.yy HH:mm");
-		
-		Date startTime,endTime;
-		try {
-			startTime = df.parse((String) map.get("startTime"));
-			endTime = df.parse((String) map.get("endTime"));
-		} catch (java.text.ParseException e1) {
-			return new EventData(0, "type error: unidentified date format"); 
-		}
 				
-		Slot slot = new Slot();
+		int firstSlot = Integer.parseInt((String) map.get("firstSlot"));
+		int lastSlot = Integer.parseInt((String) map.get("lastSlot"));
 		
-		slot.setStartTime(startTime);
-		slot.setEndTime(endTime);
+		
+		List<Slot> slotList;
+		try {
+			Query q = em.createQuery("select new Slot(id, startTime, endTime) "
+					+ "from Slot slots where slots.id between :firstSlot and :lastSlot");
+			q.setParameter("firstSlot", firstSlot);
+			q.setParameter("lastSlot", lastSlot);
+			slotList = q.getResultList();
+		} catch (Exception e) {
+			return new EventData(0, "time slots doesn't exist");
+		}
 		
 		Event event;
 			
@@ -245,8 +248,8 @@ public class SportclubDB implements ISportclubRepository {
 			default: return new EventData(0, "unidentified event type"); 
 			}
 		/*add slot to event*/
-			em.persist(slot);
-		event.setSlots(slot);
+			
+		event.setSlots(slotList);
 		/*check club id*/
 		int clubId = Integer.parseInt((String)map.get("clubId"));
 		Club club = em.find(Club.class, clubId);
@@ -828,6 +831,73 @@ public class SportclubDB implements ISportclubRepository {
 		
 		
 		return events;
+	}
+
+	@Override
+	@Transactional
+	public Iterable<Slot> getSlots(Map<String,Object> mapJ) {
+		
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		
+		Date startTime = null, endTime = null;
+		
+		try {
+			
+			startTime = df.parse((String)mapJ.get("startTime"));
+			
+			endTime  = df.parse((String)mapJ.get("endTime"));
+			
+		Query q = em.createQuery("select new Slot(id, startTime,endTime) from Slot slot "
+				+ "where slot.startTime between :startTime and :endTime ");
+		q.setParameter("startTime", startTime);
+		q.setParameter("endTime", endTime);
+		
+		Iterable<Slot> slts = q.getResultList();
+		if(slts.iterator().hasNext()) return slts;
+			 
+		
+			
+		} catch (Exception e) {
+			
+			return null;
+		}
+		return createSlotTable(startTime,endTime);
+		
+	}
+	
+	private List<Slot> createSlotTable(Date startTime, Date endTime) {
+		
+		Calendar calendar = new GregorianCalendar();
+		calendar.setTime(startTime);
+		List<Slot> listSlots = new LinkedList<Slot>();
+		Date dateNext = null;
+		
+		do  {
+			Slot slot = new Slot();
+			//DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+			Date strt =calendar.getTime();
+			
+			slot.setStartTime(strt);
+			
+			int minutes = 30;
+			calendar.add(Calendar.MINUTE, minutes);
+			dateNext = calendar.getTime();
+			
+			 
+			slot.setEndTime(dateNext);
+			em.persist(slot);
+			
+			
+			Query q = em.createQuery("select slot from Slot slot "
+					+ "where slot.startTime = :startTime ");
+			q.setParameter("startTime", strt);
+			
+			slot = (Slot) q.getSingleResult();
+			//System.out.println(slot.getId());
+			listSlots.add(slot);
+		}while(endTime.getTime()!=dateNext.getTime());
+		return listSlots;
+
 	}
 
    }

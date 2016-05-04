@@ -520,6 +520,38 @@ public class SportclubRestController {
 		
 	}
 	
+	@RequestMapping(value = SportclubConstants.GET_SLOTS,method = RequestMethod.POST)
+	public @ResponseBody String getSlots (@RequestBody String json){
+		Map<String,Object> mapJ = new HashMap<String,Object>();
+		RequestSuccess rs = new RequestSuccess();
+
+		try {
+			mapJ = parseJSONToMap(json);
+		} catch (IOException e) {
+			rs.setStatus("unsuccess");
+			rs.setData("incorrected JSON format");
+		return ObjectToJson(rs);
+		}
+		
+		
+		Object obj = profiles.getSlots(mapJ);
+		String res = getResponse(obj, "slots doesn't exist");
+			
+		
+		return res;
+		
+		
+	}
+	
+	@RequestMapping(value = SportclubConstants.ADD_SLOTS,method = RequestMethod.POST)
+	public @ResponseBody String addSlots (@RequestBody String json){
+		
+		
+		return "";
+	}
+	
+	
+	
 	private String jsonResponseToRequestEvent (String json, boolean hasClub){
 		Map<String,Object> mapJ = new HashMap<String,Object>();
 		RequestSuccess rs = new RequestSuccess();

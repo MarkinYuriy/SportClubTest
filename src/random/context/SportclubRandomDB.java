@@ -281,7 +281,9 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 		Query q = em.createQuery("from Slot");
 		List<Slot> slots = q.getResultList();
 		Slot slot = slots.get(random.nextInt(slots.size()));
-		event.setSlots(slot);
+		List<Slot> thisSlots = new LinkedList<Slot>();
+		thisSlots.add(slot);
+		event.setSlots(thisSlots);
 
 		em.persist(event);
 
@@ -343,7 +345,10 @@ public class SportclubRandomDB implements ISportclubRandomDBRepository {
 
 		while (fs == null) {
 			slot = slots.get(random.nextInt(slots.size()));
-			event.setSlots(slot);
+			
+			List<Slot> thisSlots =  new LinkedList<Slot> ();
+			thisSlots.add(slot);
+			event.setSlots(thisSlots);
 			fs = selectFreeScheduleRow(slot);
 		}
 		em.persist(event);

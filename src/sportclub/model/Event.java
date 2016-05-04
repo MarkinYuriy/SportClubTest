@@ -31,8 +31,8 @@ public class Event {
 	public void setDeleted(boolean deleted) {
 		this.deleted = deleted;
 	}
-	@ManyToOne
-	private Slot slots;
+	@ManyToMany
+	private List<Slot> slots;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -99,13 +99,7 @@ public class Event {
 	
 	
 
-	public Slot getSlots() {
-		return slots;
-	}
-
-	public void setSlots(Slot slots) {
-		this.slots = slots;
-	}
+	
 
 	/*public List<Profiler> getViewedRights() {
 		return viewedRights;
@@ -114,6 +108,14 @@ public class Event {
 	public void setViewedRights(List<Profiler> viewedRights) {
 		this.viewedRights = viewedRights;
 	}*/
+
+	public List<Slot> getSlots() {
+		return slots;
+	}
+
+	public void setSlots(List<Slot> slots) {
+		this.slots = slots;
+	}
 
 	public Set<Team> getTeams() {
 		return teams;

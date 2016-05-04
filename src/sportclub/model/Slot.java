@@ -10,16 +10,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Slot {
 	
-	/*@Id
-	@GeneratedValue
-	int id;*/
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(unique=true, nullable = false, updatable = false )
 	private Date startTime;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(unique=true, nullable = false, updatable = false )
 	private Date endTime;
+	public Slot(int id, Date startTime, Date endTime) {
+		super();
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	@JsonIgnore
 	private boolean deleted;
 	
@@ -32,13 +39,13 @@ public class Slot {
 	}
 	public Slot() {	}
 
-	/*public int getId() {
+	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
-	}*/
+	}
 
 	public Date getStartTime() {
 		return startTime;

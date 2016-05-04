@@ -35,6 +35,8 @@ public interface SportclubConstants {
 		String GET_TEAM_STUFF = "/getStuff";
 		String GET_PROFILE_BY_ID = "/getProfilerById";
 		String GET_EVENT = "/getEvent";
+		String GET_SLOTS = "/getSlots";
+		String ADD_SLOTS = "/addSlots";
 		
 	}
 

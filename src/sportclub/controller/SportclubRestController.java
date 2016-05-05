@@ -550,8 +550,6 @@ public class SportclubRestController {
 		return "";
 	}
 	
-	
-	
 	private String jsonResponseToRequestEvent (String json, boolean hasClub){
 		Map<String,Object> mapJ = new HashMap<String,Object>();
 		RequestSuccess rs = new RequestSuccess();
